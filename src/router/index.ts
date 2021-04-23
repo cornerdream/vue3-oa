@@ -5,6 +5,7 @@ import {
 } from 'vue-router'
 
 import Layout from '@/layout/index.vue'
+import User from '@/views/user/index.vue'
 
 const routes:Array<RouteRecordRaw> =[
     {
@@ -22,10 +23,22 @@ const routes:Array<RouteRecordRaw> =[
                 component:()=>import(/*webpackChunkName:'home'*/'@/views/home/index.vue')
             },
             {
-                path:'/user',
-                name:'user',
-                component:()=>import(/*webpackChunkName:'home'*/'@/views/user/index.vue')
+                path:'/user',                
+                component:User,
+                children:[
+                    {
+                        path:'',
+                        name:'user',
+                        component:()=>import(/*webpackChunkName:'user'*/'@/views/user/components/me/app-user.vue'),
+                    },
+                    {
+                        path:'/cart',
+                        name:'cart',
+                        component:()=>import(/*webpackChunkName:'cart'*/'@/views/user/components/cart/index.vue')
+                    }
+                ]
             }
+            
         ]
     }
 ]
