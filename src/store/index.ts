@@ -1,7 +1,7 @@
 import {createStore} from 'vuex'
 
 const defaultState ={
-
+    user:JSON.parse(window.localStorage.getItem('user') || 'null')
 }
 
 export default createStore({
@@ -9,8 +9,9 @@ export default createStore({
         return defaultState
     },
     mutations:{
-        increment(state:typeof defaultState){
-
+        setUser(state:typeof defaultState,payload){
+            state.user = JSON.parse(payload);
+            window.localStorage.setItem('user',payload)
         }
     },
     actions:{
