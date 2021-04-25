@@ -13,7 +13,7 @@
       <el-submenu index="1">
         <template #title>
           <i class="el-icon-location"></i>
-          <span>审批管理</span>
+          <span>我的主页</span>
         </template>
         <el-menu-item-group>
           <template #title>分组一</template>

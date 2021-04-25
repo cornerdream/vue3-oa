@@ -5,7 +5,7 @@ import {
 } from 'vue-router'
 
 import Layout from '@/layout/index.vue'
-import User from '@/views/user/index.vue'
+import User from '@/views/crm/user/index.vue'
 
 const routes:Array<RouteRecordRaw> =[
     {
@@ -18,9 +18,19 @@ const routes:Array<RouteRecordRaw> =[
         component:Layout,
         children:[
             {
-                path:'',
+                path:'/home',
                 name:'home',
-                component:()=>import(/*webpackChunkName:'home'*/'@/views/home/index.vue')
+                component:()=>import(/*webpackChunkName:'home'*/'@/views/shop/home/index.vue')
+            },
+            {
+                path:'/productList',
+                name:'productList',
+                component:()=>import(/*webpackChunkName:'home'*/'@/views/shop/productList/index.vue')
+            },
+            {
+                path:'/productDetail',
+                name:'productDetail',
+                component:()=>import(/*webpackChunkName:'home'*/'@/views/shop/productDetail/index.vue')
             },
             {
                 path:'/user',                
@@ -29,12 +39,12 @@ const routes:Array<RouteRecordRaw> =[
                     {
                         path:'',
                         name:'user',
-                        component:()=>import(/*webpackChunkName:'user'*/'@/views/user/components/me/app-user.vue'),
+                        component:()=>import(/*webpackChunkName:'user'*/'@/views/crm/user/components/me/app-user.vue'),
                     },
                     {
                         path:'/cart',
                         name:'cart',
-                        component:()=>import(/*webpackChunkName:'cart'*/'@/views/user/components/cart/index.vue')
+                        component:()=>import(/*webpackChunkName:'cart'*/'@/views/crm/user/components/cart/index.vue')
                     }
                 ]
             }

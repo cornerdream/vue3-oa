@@ -1,13 +1,13 @@
 <!-- -->
 <template>
-<div>
-    cart
+<div class="search">
+    search
 </div>
 </template>
 
 <script lang="ts">
 export default {
-       name:"cart",
+       name:"search",
        data(){
 return {
 

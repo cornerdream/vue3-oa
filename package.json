@@ -9,6 +9,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "element-plus": "^1.0.2-beta.40",
+    "jquery": "^3.6.0",
     "sass": "^1.32.11",
     "scss": "^0.2.4",
     "vue": "^3.0.5",
