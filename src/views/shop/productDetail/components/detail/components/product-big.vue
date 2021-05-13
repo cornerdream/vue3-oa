@@ -18,7 +18,7 @@
 export default {
        name:"product-big",
        components:{
-          PicZoom
+          
         },
        data(){
 
@@ -40,13 +40,17 @@ methods:{
 }
 </script>
 <style scopted>
+.product-big{
+  width: 400px;
+  float: left;
+}
 .box{
   width: 400px;
-  height: 320px;
+  height: 220px;
 }
 .list{
   width: 400px;
-  height: 130px;
+  height: 30px;
 }
   .list ul{
     width: 400px;

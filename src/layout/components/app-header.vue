@@ -1,11 +1,10 @@
 <!-- -->
 <template>
 <div class="header">
-  
-          <app-top/>
-          <app-tab/>
-  
-    
+    <el-container>
+        <el-header height="auto"><app-top/></el-header>
+        <el-header height="auto"><app-tab/></el-header>
+    </el-container>
 </div>
 </template>
 

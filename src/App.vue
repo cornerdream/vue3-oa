@@ -27,4 +27,15 @@ li{ list-style:none; }
 img{ border:none 0;}
 input{ outline:none; border:none; background:none;}
 button{ outline:none; }
+.clearfix::after {
+    content: ".";
+    clear: both;
+    display: block;
+    overflow: hidden;
+    font-size: 0;
+    height: 0;
+}
+.clearfix {
+zoom: 1;
+}
 </style>

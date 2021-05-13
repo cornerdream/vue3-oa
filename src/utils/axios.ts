@@ -1,17 +1,19 @@
 import Axios from 'axios'
 import {ElMessage} from 'element-plus'
 
-import store from './store'
-import router from './router'
+import store from '../store'
+import router from '../router'
 import qs from 'qs'
-import { request } from 'http'
+// import { request } from 'http'
 
-const baseURL='';
+//const baseURL='http://192.168.31.107:8000';
+const baseURL='http://192.168.1.218:8000';
 const timeout=2000;
-
+const crossDomain=true
 const $axios = Axios.create({
     baseURL,
-    timeout
+    timeout,
+    crossDomain
 })
 
 function redirectLogin(){
@@ -23,22 +25,23 @@ function redirectLogin(){
     })
 }
 
-function refreshToken(){
-    return Axios.create()({
-        method:"POST",
-        url:'',
-        data:qs.stringify({
-            refreshToken:store.state.user.refresh_token
-        })
-    })
-}
+// function refreshToken(){
+//     return Axios.create()({
+//         method:"POST",
+//         url:'',
+//         data:qs.stringify({
+//             refreshToken:store.state.user.refresh_token
+//         })
+//     })
+// }
 
 $axios.interceptors.request.use(
     (config) =>{
-        const { user } = store.state;
-        if(user && user.access_token){
-            config.headers.Authorization = user.access_token;
+        const { token } = store.state.user;       
+        if(token){
+            config.headers.Authorization = "JWT "+ token;
         }
+        
         return config
     },
     (error) =>{
@@ -58,28 +61,28 @@ $axios.interceptors.response.use(
             if(status == 400){
                 ElMessage.error('请求参数错误');
             }else if(status == 401){
-                if(!store.state.user){
+                if(!store.state.user.token){                   
                     redirectLogin();
                     return Promise.reject(error)
                 }
-                if(!isRfreshing){
-                    isRfreshing = true;
-                    return refreshToken().then(res=>{
-                        if(!res.data.success){
-                            throw new Error('刷新Token失败')
-                        }
-                        store.commit('setUser',res.data.content);
-                        requests.forEach(cb=>cb());
-                        requests = [];
-                        return request(error.config)
-                    }).catch(error=>{
-                        store.commit('setUser',null);
-                        redirectLogin();
-                        return Promise.reject(error);
-                    }).finally(()=>{
-                        isRfreshing = false;
-                    })
-                }
+                // if(!isRfreshing){
+                //     isRfreshing = true;
+                //     return refreshToken().then(res=>{
+                //         if(!res.data.success){
+                //             throw new Error('刷新Token失败')
+                //         }
+                //         store.commit('setUser',res.data.content);
+                //         requests.forEach(cb=>cb());
+                //         requests = [];
+                //         return request(error.config)
+                //     }).catch(error=>{
+                //         store.commit('setUser',null);
+                //         redirectLogin();
+                //         return Promise.reject(error);
+                //     }).finally(()=>{
+                //         isRfreshing = false;
+                //     })
+                // }
                 return new Promise(resolve=>{
                     requests.push(()=>{
                         resolve($axios(error.config))

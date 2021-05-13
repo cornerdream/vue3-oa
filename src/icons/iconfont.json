@@ -1,0 +1,100 @@
+{
+  "id": "2537033",
+  "name": "oa",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "11488016",
+      "name": "connections",
+      "font_class": "zuzhi",
+      "unicode": "e74a",
+      "unicode_decimal": 59210
+    },
+    {
+      "icon_id": "11488024",
+      "name": "Customer management",
+      "font_class": "user",
+      "unicode": "e74b",
+      "unicode_decimal": 59211
+    },
+    {
+      "icon_id": "11488064",
+      "name": "integral",
+      "font_class": "permission",
+      "unicode": "e754",
+      "unicode_decimal": 59220
+    },
+    {
+      "icon_id": "11488086",
+      "name": "office-supplies",
+      "font_class": "role",
+      "unicode": "e75a",
+      "unicode_decimal": 59226
+    },
+    {
+      "icon_id": "11488167",
+      "name": "viewlist",
+      "font_class": "order",
+      "unicode": "e76d",
+      "unicode_decimal": 59245
+    },
+    {
+      "icon_id": "11488168",
+      "name": "set",
+      "font_class": "config",
+      "unicode": "e76c",
+      "unicode_decimal": 59244
+    },
+    {
+      "icon_id": "11487995",
+      "name": "cart- full",
+      "font_class": "cart",
+      "unicode": "e748",
+      "unicode_decimal": 59208
+    },
+    {
+      "icon_id": "11488000",
+      "name": "category",
+      "font_class": "caidan",
+      "unicode": "e747",
+      "unicode_decimal": 59207
+    },
+    {
+      "icon_id": "11474219",
+      "name": "all",
+      "font_class": "system",
+      "unicode": "e6ef",
+      "unicode_decimal": 59119
+    },
+    {
+      "icon_id": "11474220",
+      "name": "bussiness-man",
+      "font_class": "me",
+      "unicode": "e6f0",
+      "unicode_decimal": 59120
+    },
+    {
+      "icon_id": "11487997",
+      "name": "calculator",
+      "font_class": "caigou",
+      "unicode": "e746",
+      "unicode_decimal": 59206
+    },
+    {
+      "icon_id": "11488010",
+      "name": "confirm",
+      "font_class": "shenpi",
+      "unicode": "e749",
+      "unicode_decimal": 59209
+    },
+    {
+      "icon_id": "11488091",
+      "name": "packaging",
+      "font_class": "cangku",
+      "unicode": "e75b",
+      "unicode_decimal": 59227
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+@font-face {
+  font-family: "iconfont"; /* Project id 2537033 */
+  src: url('iconfont.woff2?t=1620611805850') format('woff2'),
+       url('iconfont.woff?t=1620611805850') format('woff'),
+       url('iconfont.ttf?t=1620611805850') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-zuzhi:before {
+  content: "\e74a";
+}
+
+.icon-user:before {
+  content: "\e74b";
+}
+
+.icon-permission:before {
+  content: "\e754";
+}
+
+.icon-role:before {
+  content: "\e75a";
+}
+
+.icon-order:before {
+  content: "\e76d";
+}
+
+.icon-config:before {
+  content: "\e76c";
+}
+
+.icon-cart:before {
+  content: "\e748";
+}
+
+.icon-caidan:before {
+  content: "\e747";
+}
+
+.icon-system:before {
+  content: "\e6ef";
+}
+
+.icon-me:before {
+  content: "\e6f0";
+}
+
+.icon-caigou:before {
+  content: "\e746";
+}
+
+.icon-shenpi:before {
+  content: "\e749";
+}
+
+.icon-cangku:before {
+  content: "\e75b";
+}
+

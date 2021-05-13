@@ -5,7 +5,12 @@
     
                 <p class="logo"></p>
                 <ul class="tabLink">
-                    <li>首页</li>
+                    
+                    <li>                       
+                        <router-link :to="{name:'home'}">
+                            <span>首页</span> 
+                        </router-link>  
+                    </li>
                     <li>专题</li>
                     <li>帮助</li>
                     
@@ -69,8 +74,7 @@ return {
     float: left;
     margin-right: 20px;
 }
-/* .search{
-    width: 400px;
-    float: right;
-} */
+.router-link-active {
+    color: #fff;
+}
 </style>

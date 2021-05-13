@@ -1,27 +1,30 @@
 import {createStore} from 'vuex'
 
-const defaultState ={
-    user:JSON.parse(window.localStorage.getItem('user') || 'null')
-}
+import user from './modules/login'
+import sliderMenus from './modules/sliderMenus'
+// import permission from './modules/permission'
+import getters from './getters'
+
+
+// import router from '../router'
+// import {routes} from '../router'
+import Layout from '../layout/index.vue'
+// import { getCurrentInstance } from "vue";
+// import { useRouter } from "vue-router";
+
+// const router = useRouter();
+// console.log(router);
+// const initRoutes = router.options.routes;
 
 export default createStore({
-    state(){
-        return defaultState
+    modules: {      
+        user, 
+        sliderMenus
+        // permission
     },
-    mutations:{
-        setUser(state:typeof defaultState,payload){
-            state.user = JSON.parse(payload);
-            window.localStorage.setItem('user',payload)
-        }
-    },
-    actions:{
-        increment(context){
-            context.commit('increment')
-        }
-    },
-    getters:{
-        double(state:typeof defaultState){
-            return 
-        }
-    }
+    getters,
+    
 })
+
+
+  

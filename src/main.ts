@@ -1,3 +1,4 @@
+
 import { createApp } from 'vue'
 import App from './App.vue'
 
@@ -8,9 +9,16 @@ import elementplus from 'element-plus'
 import 'element-plus/lib/theme-chalk/index.css'
 
 
+import './icons/iconfont.css'
+// import './permission'
+
+
+
 
 createApp(App)
 .use(router)
 .use(store)
 .use(elementplus)
 .mount('#app')
+
+

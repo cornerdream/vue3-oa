@@ -2,12 +2,16 @@
 <template>
 <div class="layout">
   
-   
-      <app-header/>
-     
-      <router-view/>
+  <el-container>
+    <el-header height="auto"><app-header/></el-header>
+    <el-main><router-view/></el-main>
+  </el-container>
+    <!-- <app-header/>
+      
+    <router-view/>  -->
       
       
+    
    
   
 </div>
@@ -18,9 +22,9 @@
 import appHeader from './components/app-header.vue'
 
 export default {
-  components: { appHeader },
-    name,
-    AppMain:"layout",
+  
+    name:"layout",
+    components: { appHeader },
     data(){
     return {
 
@@ -39,18 +43,17 @@ export default {
 .layout {
   min-height: 100vh;
   min-width: 980px;
+  display: flex;
+  flex-flow: row nowrap;
 }
 
-.el-aside {
-  background: #d3dce6;
+.layout .el-header,.layout .el-main{
+  padding:0;
 }
-
-.el-header {
-  height: 120px;
-  background: #fff;
+..layout .el-header{
+  
 }
-
-.el-main {
-  background: #e9eef3;
+.layout .el-main{
+  flex-grow: 1;
 }
 </style>
