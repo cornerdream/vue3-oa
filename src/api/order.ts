@@ -1,18 +1,19 @@
-//购物车
+//订单
 import $axios from '../utils/axios'
 
-// 获取购物车信息
-export function getCart() {
+// 获取订单信息
+export function getOrder(params) {
   return $axios({
-    url: 'cart/',
-    method: 'get'
+    url: '/api/orders/list/',
+    method: 'get',
+    params
   })
 }
 
-// 保存购物车信息
+// 保存订单信息
 export function save(data) {
   return $axios({
-    url: 'cart/',
+    url: '/api/orders/',
     method: 'post',
     data
   })

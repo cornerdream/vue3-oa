@@ -1,5 +1,6 @@
 @import './variables.scss';
 
+
 // globals
 html {
   font-family: $font-family;
@@ -12,9 +13,38 @@ html {
 
 body {
   margin: 0;
+  padding:0;
+  font-size: 14px;
   background-color: $body-bg;
 }
-
+a {
+  text-decoration: none;
+}
+li {
+  list-style: none;
+}
+img {
+  border: none 0;
+}
+input {
+  outline: none;
+  border: none;
+  background: none;
+}
+button {
+  outline: none;
+}
+.clearfix::after {
+  content: '.';
+  clear: both;
+  display: block;
+  overflow: hidden;
+  font-size: 0;
+  height: 0;
+}
+.clearfix {
+  zoom: 1;
+}
 // custom element theme
 $--color-primary: $primary-color;
 $--color-success: $success-color;
@@ -22,9 +52,8 @@ $--color-warning: $warning-color;
 $--color-danger: $danger-color;
 $--color-info: $info-color;
 // change font path, required
-$--font-path: '~element-ui/lib/theme-chalk/fonts';
+// $--font-path: '~element-ui/lib/theme-chalk/fonts';
 // import element default theme
-
 
 // overrides
 
@@ -42,8 +71,8 @@ $--font-path: '~element-ui/lib/theme-chalk/fonts';
 .status {
   display: inline-block;
   cursor: pointer;
-  width: .875rem;
-  height: .875rem;
+  width: 0.875rem;
+  height: 0.875rem;
   vertical-align: middle;
   border-radius: 50%;
 

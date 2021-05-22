@@ -2,8 +2,6 @@
 import $axios from '../utils/axios'
 import qs from 'qs'
 
-
-
 export function add(data) {
   return $axios({
     url: 'api/users/',
@@ -36,13 +34,11 @@ export function updatePasswd(id, data) {
 }
 
 export function getUser(params) {
-  
   return $axios({
     url: 'api/users/',
     method: 'get',
     params
   })
-  
 }
 
 export function getUserList(name) {
@@ -58,4 +54,3 @@ export function getUserList(name) {
     })
   }
 }
-

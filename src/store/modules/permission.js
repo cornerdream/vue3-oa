@@ -1,8 +1,8 @@
 // import { constantRouterMap } from '@/router'
 import router from '@/router'
 import Layout from '../../layout/index.vue'
-console.log(router);
-const initRoutes = router.options.routes;
+console.log(router)
+const initRoutes = router.options.routes
 const permission = {
   state: {
     routers: initRoutes,
@@ -21,10 +21,12 @@ const permission = {
   }
 }
 
-export const filterAsyncRouter = (routers) => { // 遍历后台传来的路由字符串，转换为组件对象
-  const accessedRouters = routers.filter(router => {
+export const filterAsyncRouter = (routers) => {
+  // 遍历后台传来的路由字符串，转换为组件对象
+  const accessedRouters = routers.filter((router) => {
     if (router.component) {
-      if (router.component === 'Layout') { // Layout组件特殊处理
+      if (router.component === 'Layout') {
+        // Layout组件特殊处理
         router.component = Layout
       } else {
         const component = router.component
@@ -39,7 +41,8 @@ export const filterAsyncRouter = (routers) => { // 遍历后台传来的路由�
   return accessedRouters
 }
 
-export const loadView = (view) => { // 路由懒加载
+export const loadView = (view) => {
+  // 路由懒加载
   return () => import(`@/views/${view}`)
 }
 

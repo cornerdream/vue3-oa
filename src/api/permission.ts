@@ -1,10 +1,11 @@
 import $axios from '../utils/axios'
 
 // 获取所有的权限树
-export function getPermissionTree() {
+export function getPermissionTree(params) {
   return $axios({
     url: 'api/permission/tree/',
-    method: 'get'
+    method: 'get',
+    params
   })
 }
 

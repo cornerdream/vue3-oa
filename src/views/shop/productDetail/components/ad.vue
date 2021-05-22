@@ -1,64 +1,52 @@
 <!-- -->
 <template>
-<div class="ad">
+  <div class="ad">
     <div class="adBox">
-        <div class="adTitle">热销产品</div>
-        <div class="adList" v-for="o in 2" :key="o">
-        <!-- <el-row> -->
-            
-            <el-card :body-style="{ padding: '0px' }">
-            <img src="../../../../assets/images/mouse.png" class="image">
-            <div style="padding: 14px;">
-                <span>好吃的汉堡</span>
-                <div class="bottom">
-                <time class="time">{{ currentDate }}</time>
-                <el-button type="text" class="button">操作按钮</el-button>
-                </div>
-            </div>
-            </el-card>
+      <div class="adTitle">热销产品</div>
+      <div class="adList" v-for="o in 2" :key="o">
         
-        <!-- </el-row>     -->
-        </div>
+
+        <el-card :body-style="{ padding: '10px',width:'180px'}" v-for="o in productList" :key="o" :id="o.id" @click="onClick(o.id)">
+          <img v-if="!o.default_image_url" :src="defaultImage" class="image" />
+          <img v-else :src="o.default_image_url" class="image" />
+          <div style="padding: 14px" class="productResult">
+            <p class="card-title">{{ o.name }}</p>
+            <div class="bottom">
+              <p class="price">{{ '¥' + o.price }}</p>
+              
+            </div>
+          </div>
+        </el-card>
+
+        
+      </div>
     </div>
-</div>
+  </div>
 </template>
 
 <script lang="ts">
+import defaultImg from '../../../../assets/images/mouse.png'
 export default {
-       name:"ad",
-       data(){
-return {
-
-}
-},
-       created(){
-
-},
-       mounted(){
-
-}
+  name: 'ad',
+  data() {
+    return {
+      defaultImage: defaultImg,
+    }
+  },
+  created() {},
+  mounted() {}
 }
 </script>
 <style scopted>
-.ad{
-    margin-top: 20px;
+.ad {
+  margin-top: 20px;
 }
-.adtBox{
-    padding:20px;
-    overflow: hidden;
+.adBox {
+  padding: 5px;
+  overflow: hidden;
 }
-.adTitle{
-    margin:10px 0;
+.adTitle {
+  margin: 10px 0;
 }
-.adList{
-    
-    /* display: flex;
-    justify-content: space-around;
-    align-items: center; */
-    
-}
-.adList .el-card{
-    margin:0 20px 20px 0;
-    float: left;
-}
+
 </style>

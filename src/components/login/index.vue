@@ -1,6 +1,6 @@
 <!-- -->
 <template>
-<div class="login">
+  <div class="login">
     <el-form
       class="login-form"
       label-position="top"
@@ -16,84 +16,55 @@
         <el-input type="password" v-model="form.password"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button
-          class="login-btn"
-          type="primary"
-          :loading="isLoginLoading"
-          @click="onLogin"
-        >登录</el-button>
+        <el-button class="login-btn" type="primary" :loading="isLoginLoading" @click="onLogin"
+          >登录</el-button
+        >
       </el-form-item>
     </el-form>
-</div>
+  </div>
 </template>
 
 <script lang="ts">
-import {ElMessage } from 'element-plus'
-import {login} from '../../api/login'
 export default {
-    name:"login",
-    data(){
-        return {
-          form: {
-              username: 'admin',
-              password: '1'
-          },
-          rules: {
-                  phone: [
-                        { required: true, message: '请输入用户名', trigger: 'blur' },
-                        { pattern: /./, message: '请输入正确的用户名', trigger: 'blur' }
-                  ],
-                  password: [
-                        { required: true, message: '请输入密码', trigger: 'blur' },
-                        { min: 1, max: 18, message: '长度在 1 到 18 个字符', trigger: 'blur' }
-                  ]
-          },
-          isLoginLoading: false   
-        }
-    },
-    created(){
-
-    },
-    mounted(){
-
-    },
-    methods:{
-        async onLogin(){
-              
-            try{
-                  await (this.$refs.form as any).validate();
-                  this.isLoginLoading = true;
-                  // const {data} = await login(this.form);
-                  // console.log(data);
-                  // if(data.code !== 200){
-                  //     ElMessage.error(data.error);
-                  // }else{
-                  //     //console.log(1);
-                  //     // this.$store.dispatch('Login', this.form).then(() => {
-                  //     //   this.isLoginLoading = false
-                  //     //   this.$router.push(this.$route.query.redirect as string || '/' );
-                  //     //   ElMessage.success('登录成功');
-                  //     // }).catch(() => {
-                  //     //   this.isLoginLoading = false
-                  //     // })
-                  //     (this as any).$store.commit('setUser',data.data);
-                  //     console.log(this.$route);
-                  //     //this.$router.push(this.$route.query.redirect as string || '/shop');
-                  //     this.$router.push(this.$route.query.redirect as string || '/');
-                  //     ElMessage.success('登录成功');
-                  // }
-                  this.$store.dispatch('Login', this.form).then(() => {
-                    this.isLoginLoading = false;
-                    this.$router.push(this.$route.query.redirect as string || '/');
-                  }).catch(() => {
-                    this.isLoginLoading = false
-                  })
-            }catch(error){
-              console.log(error);
-            }
-            this.isLoginLoading = false;
-        }
+  name: 'login',
+  data() {
+    return {
+      form: {
+        username: 'admin',
+        password: '1'
+      },
+      rules: {
+        phone: [
+          { required: true, message: '请输入用户名', trigger: 'blur' },
+          { pattern: /./, message: '请输入正确的用户名', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { min: 1, max: 18, message: '长度在 1 到 18 个字符', trigger: 'blur' }
+        ]
+      },
+      isLoginLoading: false
     }
+  },
+  created() {},
+  mounted() {},
+  methods: {
+    async onLogin() {
+      try {
+        await (this.$refs.form as any).validate();
+        this.isLoginLoading = true;        
+        this.$store.dispatch('Login', this.form).then(() => {
+            this.isLoginLoading = false
+            this.$router.push((this.$route.query.redirect as string) || '/')
+        }).catch(() => {
+            this.isLoginLoading = false
+          })
+      }catch (error) {
+        console.log(error);
+      }
+      this.isLoginLoading = false
+    }
+  }
 }
 </script>
 <style scopted>
@@ -102,16 +73,14 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  
-  
 }
 .login-form {
-    width: 300px;
-    background: #fff;
-    padding: 20px;
-    border-radius: 5px;
-  }
+  width: 300px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 5px;
+}
 .login-btn {
-    width: 100%;
-  }
+  width: 100%;
+}
 </style>
