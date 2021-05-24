@@ -1,13 +1,12 @@
-const webpack = require('webpack');
+const webpack = require('webpack')
 module.exports = {
-    configureWebpack:{
-        
-        plugins:[
-            new webpack.ProvidePlugin({
-                $:'jquery',
-                jquery:'jquery',
-                "window.jquery":'jquery'
-            })
-        ]
-    }
+  configureWebpack: {
+    plugins: [
+      new webpack.ProvidePlugin({
+        $: 'jquery',
+        jquery: 'jquery',
+        'window.jquery': 'jquery'
+      })
+    ]
+  }
 }

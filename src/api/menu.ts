@@ -1,9 +1,6 @@
 // 菜单
 import $axios from '../utils/axios'
 
-
-
-
 // 获取菜单列表
 export function getMenuTree() {
   return $axios({
@@ -57,4 +54,3 @@ export function save(id, data) {
     data
   })
 }
-
