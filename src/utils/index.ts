@@ -1,6 +1,19 @@
-/**
- * Created by jiachenpan on 16/11/18.
- */
+import $ from 'jquery'
+export function offset(ele){
+  // 可以获取到 ele 这个元素到body的偏移量
+  let l = ele.offsetLeft,
+      t = ele.offsetTop;// 获取当前元素到父级参照物的偏移量
+  let parent = ele.offsetParent;// 获取父级参照物 
+  while(parent){
+    // 若父级参照物存在；
+    l += (parent.clientLeft||0) + parent.offsetLeft;
+    t += (parent.clientTop||0) + parent.offsetTop;
+    parent = parent.offsetParent;
+  }  
+  return {
+    l,t
+  }
+}
 
 export function parseTime(time) {
   if (time) {
@@ -107,4 +120,29 @@ export function regMobile(mobile) {
     var new_mobile = mobile.substr(0, 3) + '****' + mobile.substr(7)
   }
   return new_mobile
+}
+
+//日期转时间戳   2021/5/21
+export function transdate(time: any) {
+  var date = new Date()
+  date.setFullYear(time.substring(0, 4))
+  date.setMonth(time.substring(5, 7) - 1)
+  date.setDate(time.substring(8, 10))
+  date.setHours(time.substring(11, 13))
+  date.setMinutes(time.substring(14, 16))
+  date.setSeconds(time.substring(17, 19))
+  return Date.parse(date) / 1000
+}
+// 转换时间戳，获取年月日-时分秒  2021/5/21
+export function timestampToTime(timestamp: any) {
+  var date = new Date(Number(timestamp) * 1000) //时间戳为10位需*1000，时间戳为13位的话不需乘1000
+  var Y = date.getFullYear() + '-'
+  var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-'
+  var D = (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) + ' '
+  var h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':'
+  var m = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) + ':'
+  var s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
+
+  var strDate = Y + M + D + h + m + s
+  return strDate //2020-07-30 01:05:54
 }

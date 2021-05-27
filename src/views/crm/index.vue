@@ -31,12 +31,12 @@ export default {
   mounted() {},
   methods: {
     async loadUserMenu() {
-      this.$store.dispatch('GetUserMenu').then(() => {})
+      (this as any).$store.dispatch('GetUserMenu').then(() => {})
     }
   }
 }
 </script>
-<style scopted>
+<style scoped>
 .crm {
   height: 100%;
 }

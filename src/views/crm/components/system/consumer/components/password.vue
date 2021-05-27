@@ -46,7 +46,7 @@ export default {
   },
   data() {
     const confirmPass = (rule, value, callback) => {
-      if (this.form.new_password1 !== value) {
+      if ((this as any).form.new_password1 !== value) {
         callback(new Error('两次输入的密码不一致'))
       } else {
         callback()
@@ -79,26 +79,25 @@ export default {
       this.loading = true
       updatePasswd(this.rowId, this.form)
         .then((res) => {
-          this.resetForm()
-          this.$message({
+          this.resetForm();
+          (this as any).$message({
             showClose: true,
             type: 'success',
             message: '密码修改成功!请重新登录!',
             duration: 2500
           })
-          this.$parent.$parent.loadUsers()
+          (this as any).$parent.$parent.loadUsers();
         })
         .catch((err) => {
-          this.loading = false
-          console.log(err)
+          this.loading = false;
         })
     },
     resetForm() {
-      this.dialog = false
-      this.$refs.form.resetFields()
+      (this as any).dialog = false;
+      (this as any).$refs.form.resetFields()
       this.form = { new_password1: '', new_password2: '' }
     }
   }
 }
 </script>
-<style scopted></style>
+<style scoped></style>

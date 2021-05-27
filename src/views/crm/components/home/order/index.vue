@@ -10,16 +10,14 @@
       ></el-input>
       <el-button type="primary" icon="el-icon-search" size="small" @click="onQuery">搜索</el-button>
     </div>
-    <orderList
-      :orderList="orderList"
-    />
+    <orderList :orderList="orderList" />
   </div>
 </template>
 
 <script lang="ts">
 import { ElMessage } from 'element-plus'
 import orderList from './components/orderList.vue'
-import {getOrder} from '../../../../../api/order'
+import { getOrder } from '../../../../../api/order'
 export default {
   name: 'order',
   components: {
@@ -28,7 +26,7 @@ export default {
   data() {
     return {
       orderList: [],
-      total:'',
+      total: '',
       filterParams: {
         search: '',
         ordering: '',
@@ -38,12 +36,10 @@ export default {
     }
   },
   created() {
-    this.loadOrder();
+    this.loadOrder()
   },
-  mounted() {
-
-  },
-  methods:{
+  mounted() {},
+  methods: {
     async loadOrder() {
       const { data } = await getOrder(this.filterParams)
       console.log(data)
@@ -56,12 +52,12 @@ export default {
     },
     onQuery() {
       console.log('查询')
-      this.loadOrder();
-    },
+      this.loadOrder()
+    }
   }
 }
 </script>
-<style scopted>
+<style scoped>
 .order {
   padding: 20px;
 }

@@ -57,7 +57,6 @@
 
 <script lang="ts">
 import { add, edit } from '../../../../../../api/menu'
-
 export default {
   name: 'createOrEdit',
   props: {
@@ -163,28 +162,22 @@ export default {
   mounted() {},
   methods: {
     cancel() {
-      this.resetForm()
+      this.resetForm();
     },
     async onSubmit() {
-      await (this.$refs.form as any).validate()
-
-      this.loading = true
-      console.log(this.isAdd)
+      await (this.$refs.form as any).validate();
+      this.loading = true;
       if (this.isAdd) {
-        console.log('add')
-        this.onAdd()
+        this.onAdd();
       } else {
-        console.log('edit')
-        this.onEdit()
+        this.onEdit();
       }
     },
     onAdd() {
-      console.log(this.form)
       add(this.form)
         .then((res) => {
-          console.log(res)
-          this.resetForm()
-          this.$message({
+          this.resetForm();
+          (this as any).$message({
             showClose: true,
             type: 'success',
             message: '添加成功!',
@@ -192,7 +185,7 @@ export default {
           })
           this.loading = false
           this.sup_this.loadMenus()
-          this.$store.dispatch('GetUserMenu').then(() => {})
+          (this as any).$store.dispatch('GetUserMenu').then(() => {})
         })
         .catch((err) => {
           this.loading = false
@@ -200,20 +193,18 @@ export default {
         })
     },
     onEdit() {
-      console.log(this.rowId)
-      console.log(this.form)
       edit(this.rowId, this.form)
         .then((res) => {
-          this.resetForm()
-          this.$message({
+          this.resetForm();
+          (this as any).$message({
             showClose: true,
             type: 'success',
             message: '修改成功!',
             duration: 2500
           })
-          this.loading = false
-          this.$parent.$parent.loadMenus()
-          this.$store.dispatch('GetUserMenu').then(() => {})
+          this.loading = false;
+          (this as any).$parent.$parent.loadMenus();
+          (this as any).$store.dispatch('GetUserMenu').then(() => {})
         })
         .catch((err) => {
           this.loading = false
@@ -221,9 +212,9 @@ export default {
         })
     },
     resetForm() {
-      this.dialogVisible = false
-      this.$refs.form.resetFields()
-      this.form = {
+      this.dialogVisible = false;
+      (this as any).$refs.form.resetFields()
+      (this as any).form = {
         name: '',
         sort: 999,
         path: '',
@@ -237,4 +228,4 @@ export default {
   }
 }
 </script>
-<style scopted></style>
+<style scoped></style>

@@ -2,7 +2,7 @@
 import $axios from '../utils/axios'
 import qs from 'qs'
 
-export function add(data) {
+export function add(data:any) {
   return $axios({
     url: 'api/users/',
     method: 'post',
@@ -10,14 +10,14 @@ export function add(data) {
   })
 }
 
-export function del(id) {
+export function del(id:Number) {
   return $axios({
     url: 'api/users/' + id + '/',
     method: 'delete'
   })
 }
 
-export function edit(id, data) {
+export function edit(id:Number, data:any) {
   return $axios({
     url: 'api/users/' + id + '/',
     method: 'put',
@@ -25,7 +25,7 @@ export function edit(id, data) {
   })
 }
 
-export function updatePasswd(id, data) {
+export function updatePasswd(id:Number, data:any) {
   return $axios({
     url: 'api/users/' + id + '/change-passwd/',
     method: 'post',
@@ -33,7 +33,7 @@ export function updatePasswd(id, data) {
   })
 }
 
-export function getUser(params) {
+export function getUser(params:any) {
   return $axios({
     url: 'api/users/',
     method: 'get',
@@ -41,7 +41,7 @@ export function getUser(params) {
   })
 }
 
-export function getUserList(name) {
+export function getUserList(name:string) {
   if (name) {
     return $axios({
       url: 'api/user/list/?name=' + name,

@@ -4,16 +4,15 @@ import { ElMessage } from 'element-plus'
 import store from '../store'
 import router from '../router'
 import qs from 'qs'
+import { routeLocationKey } from 'vue-router'
 // import { request } from 'http'
 
 //const baseURL='http://192.168.31.107:8000';
-const baseURL = 'http://192.168.1.218:8000'
-const timeout = 2000
-const crossDomain = true
+const baseURL = 'http://192.168.1.218:8000';
+const timeout = 2000;
 const $axios = Axios.create({
   baseURL,
-  timeout,
-  crossDomain
+  timeout
 })
 
 function redirectLogin() {
@@ -82,12 +81,15 @@ $axios.interceptors.response.use(
         //     }).finally(()=>{
         //         isRfreshing = false;
         //     })
+        // }else{
+          
         // }
-        return new Promise((resolve) => {
-          requests.push(() => {
-            resolve($axios(error.config))
-          })
-        })
+        redirectLogin();
+        // return new Promise((resolve) => {
+        //   requests.push(() => {
+        //     resolve($axios(error.config))
+        //   })
+        // })
       } else if (status == 403) {
         ElMessage.error('没有权限，请联系管理员')
       } else if (status == 404) {

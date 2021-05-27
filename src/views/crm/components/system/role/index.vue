@@ -58,18 +58,16 @@ export default {
       }
     },
     onQuery() {
-      console.log('查询')
       this.loadRoles()
     },
 
     onAdd() {
-      console.log(this.$refs.form)
-      this.$refs.form.dialogVisible = true
+      (this as any).$refs.form.dialogVisible = true
     }
   }
 }
 </script>
-<style scopted>
+<style scoped>
 .role {
   padding: 20px;
 }

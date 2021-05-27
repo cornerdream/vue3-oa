@@ -27,14 +27,14 @@ export default {
   name: 'app-tab',
   data() {
     return {
-      input2:''
+      input2: ''
     }
   },
   created() {},
   mounted() {}
 }
 </script>
-<style scopted>
+<style scoped>
 .app-tab {
   padding: 10px;
   background: #000;
@@ -45,7 +45,7 @@ export default {
 .logo {
   width: 100px;
   height: 20px;
-  border: 1px solid #eee;  
+  border: 1px solid #eee;
 }
 .tabLink {
   color: #fff;

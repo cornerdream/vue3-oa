@@ -2,7 +2,7 @@
 import $axios from '../utils/axios'
 
 // 获取订单信息
-export function getOrder(params) {
+export function getOrder(params:any) {
   return $axios({
     url: '/api/orders/list/',
     method: 'get',
@@ -11,7 +11,7 @@ export function getOrder(params) {
 }
 
 // 保存订单信息
-export function save(data) {
+export function save(data:any) {
   return $axios({
     url: '/api/orders/',
     method: 'post',
@@ -20,7 +20,7 @@ export function save(data) {
 }
 
 // 删除购物车信息
-export function del(data) {
+export function del(data:any) {
   return $axios({
     url: 'cart/',
     method: 'delete',
@@ -29,7 +29,7 @@ export function del(data) {
 }
 
 // 修改购物车信息
-export function update (data) {
+export function update(data:any) {
   return $axios({
     url: 'cart/',
     method: 'put',
@@ -38,7 +38,7 @@ export function update (data) {
 }
 
 // 选择购物车信息
-export function select (data) {
+export function select(data:any) {
   return $axios({
     url: '/cart/selection/',
     method: 'put',

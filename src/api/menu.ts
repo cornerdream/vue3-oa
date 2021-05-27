@@ -9,7 +9,7 @@ export function getMenuTree() {
   })
 }
 // 获取菜单信息
-export function getMenus(params) {
+export function getMenus(params:any) {
   return $axios({
     url: 'api/menus/',
     method: 'get',
@@ -17,7 +17,7 @@ export function getMenus(params) {
   })
 }
 //菜单新增
-export function add(data) {
+export function add(data:any) {
   return $axios({
     url: 'api/menus/',
     method: 'post',
@@ -25,14 +25,14 @@ export function add(data) {
   })
 }
 //菜单删除
-export function del(id) {
+export function del(id:Number) {
   return $axios({
     url: 'api/menus/' + id + '/',
     method: 'delete'
   })
 }
 //菜单编辑
-export function edit(id, data) {
+export function edit(id:Number, data:any) {
   return $axios({
     url: 'api/menus/' + id + '/',
     method: 'put',
@@ -40,14 +40,14 @@ export function edit(id, data) {
   })
 }
 //菜单编辑后更新
-export function retrieve(id) {
+export function retrieve(id:Number) {
   return $axios({
     url: 'api/menus/' + id + '/',
     method: 'get'
   })
 }
 //菜单编辑后保存
-export function save(id, data) {
+export function save(id:Number, data:any) {
   return $axios({
     url: 'api/menus/' + id + '/',
     method: 'patch',

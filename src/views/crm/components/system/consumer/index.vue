@@ -72,7 +72,7 @@ export default {
   mounted() {},
   methods: {
     async loadRole() {
-      const { data } = await getRoles()
+      const { data } = await getRoles(this.filterParams)
       if (data.code !== 200) {
         ElMessage.error(data.error)
       } else {
@@ -82,7 +82,7 @@ export default {
       }
     },
     async loadOrganization() {
-      const { data } = await getOrganizationTree()
+      const { data } = await getOrganizationTree(this.filterParams)
       if (data.code !== 200) {
         ElMessage.error(data.error)
       } else {
@@ -96,22 +96,21 @@ export default {
       if (data.code !== 200) {
         ElMessage.error(data.error)
       } else {
-        this.userList = data.data.results
-        this.orgusers = data.data.results
-        console.log(this.orgusers)
+        this.userList = data.data.results;
+        this.orgusers = data.data.results;
       }
     },
     onQuery() {
-      this.loadUsers()
+      this.loadUsers();
     },
     onAdd() {
-      this.$refs.form.dialogVisible = true
+      (this as any).$refs.form.dialogVisible = true;
     },
     onDownload() {}
   }
 }
 </script>
-<style scopted>
+<style scoped>
 .consumer {
   padding: 20px;
 }

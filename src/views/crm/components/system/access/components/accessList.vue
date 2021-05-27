@@ -3,6 +3,7 @@
   <div class="accessList">
     <el-table
       :data="accessList"
+      height="650"
       style="width: 100%"
       row-key="id"
       border
@@ -66,44 +67,34 @@ export default {
   mounted() {},
   methods: {
     handleEdit(item: any) {
-      console.log('编辑')
-      console.log(item)
-      const _this = this.$refs.form
+      const _this = (this as any).$refs.form;
       _this.form = {
         id: item.id,
         name: item.name
-      }
-      console.log(item.id)
-      console.log(this.$refs.form)
-      this.accessId = item.id
-      this.$refs.form.dialogVisible = true
+      };
+      (this as any).accessId = item.id;
+      (this as any).$refs.form.dialogVisible = true;
     },
     handleDelete(item: any) {
-      this.$confirm('确认删除吗？', '删除提示', {
+      (this as any).$confirm('确认删除吗？', '删除提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
         center: true
       })
-        .then(async () => {
-          // 确认执行这里
-          // 请求删除操作
-          const { data } = await del(item.id)
-          console.log(data)
-
-          this.$message.success('删除成功')
-          this.$emit('initList') // 更新数据列表
+        .then(async () => {          
+          const { data } = await del(item.id);
+          (this as any).$message.success('删除成功')
+          (this as any).$emit('initList') // 更新数据列表
         })
-        .catch((err) => {
-          // 取消执行这里
-          console.log(err)
-          this.$message.info('已取消删除')
+        .catch((err:any) => {
+          (this as any).$message.info('已取消删除')
         })
     }
   }
 }
 </script>
-<style scopted>
+<style scoped>
 .accessList {
   margin: 10px 0;
 }

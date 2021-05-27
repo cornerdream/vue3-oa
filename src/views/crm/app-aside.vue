@@ -47,8 +47,7 @@ export default {
       activeIndex: 'me'
     }
   },
-  created() {
-  },
+  created() {},
   mounted() {},
   methods: {
     handleSelect(key, keyPath) {
@@ -57,6 +56,4 @@ export default {
   }
 }
 </script>
-<style scopted>
-
-</style>
+<style scoped></style>

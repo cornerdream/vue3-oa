@@ -25,25 +25,20 @@ export default {
       this.getBreadcrumb()
     }
   },
-  created() {},
+  created() {
+    this.getBreadcrumb();
+  },
   mounted() {},
   methods: {
     getBreadcrumb() {
-      this.breadList = []
-      console.log(this.$route.matched)
-      let matched = this.$route.matched.splice(1)
-      console.log(this.$route)
-      console.log(matched)
-
-      this.breadList = matched
+      this.breadList = [];
+      let matched = this.$route.matched.splice(1);
+      (this as any).breadList = matched;
     }
-  },
-  created() {
-    this.getBreadcrumb()
   }
 }
 </script>
-<style scopted>
+<style scoped>
 .app-bread {
   height: 50px;
   display: flex;

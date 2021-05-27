@@ -9,51 +9,48 @@ export function getProductTree() {
   })
 }
 // 获取商品分类详情
-export function getProductTag(params) {
-  if(!isNaN(params)){
-    
+export function getProductTag(params:any) {
+  if (!isNaN(params)) {
     return $axios({
       url: '/api/' + params + '/spec/',
       method: 'get'
     })
-  }else{
-   
-    params = qs.parse(params)[0]; 
-    const idObj =params.shift();  
-    const id = idObj.category_id;
-    let obj = {};
-    params.map((item)=>{
-      Object.assign(obj,item)
+  } else {
+    params = qs.parse(params)[0]
+    const idObj = params.shift()    
+    const id = idObj.category_id
+    let obj = {}
+    params.map((item:any) => {
+      Object.assign(obj, item)
     })
     return $axios({
       url: '/api/' + id + '/spec/',
       method: 'get',
-      params:obj
+      params: obj
     })
   }
 }
 // 获取商品类别下列表
-export function getProductClassify(params) {
-  if(!isNaN(params)){
+export function getProductClassify(params:any) {
+  if (!isNaN(params)) {
     return $axios({
       url: '/categories/' + params + '/skus/',
-      method: 'get',
+      method: 'get'
     })
-  }else{
-    params = qs.parse(params)[0]; 
-    const idObj =params.shift();  
-    const id = idObj.category_id;
-    let obj = {};
-    params.map((item)=>{
-      Object.assign(obj,item)
+  } else {
+    params = qs.parse(params)[0]
+    const idObj = params.shift()   
+    const id = idObj.category_id
+    let obj = {}
+    params.map((item:any) => {
+      Object.assign(obj, item)
     })
     return $axios({
       url: '/categories/' + id + '/skus/',
       method: 'get',
-      params:obj
+      params: obj
     })
   }
-  
 }
 
 // 获取首页商品列表
@@ -65,9 +62,9 @@ export function getProductList() {
 }
 
 // 获取商品详情
-export function getProductDetail(id) {
+export function getProductDetail(id:Number) {
   return $axios({
-    url: '/api/skus/' + id+'/',
+    url: '/api/skus/' + id + '/',
     method: 'get'
   })
 }

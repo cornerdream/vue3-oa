@@ -20,7 +20,7 @@ export default {
   methods: {}
 }
 </script>
-<style scopted>
+<style scoped>
 .product-big {
   width: 400px;
   float: left;
