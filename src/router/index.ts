@@ -79,8 +79,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: '',
         name: 'home',
-        component: Home,
-        meta: { title: '首页', icon: 'index', noCache: true }
+        component: Home
       },
       {
         path: '/productClassify',
@@ -102,7 +101,7 @@ const routes: Array<RouteRecordRaw> = [
         }
       },
       {
-        path: '/crm',
+        path: '',
         name: 'crm',
         component: () => crm,
         children: [

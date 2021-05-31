@@ -68,7 +68,7 @@
               v-if="treeShow"
               @node-click="nodeClick">
             </el-tree> -->
-              {{ form.department }}
+              <!-- {{ form.department }} -->
               <el-cascader
                 v-model="form.department"
                 :options="organizations"

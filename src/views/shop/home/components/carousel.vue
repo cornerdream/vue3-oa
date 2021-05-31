@@ -43,7 +43,7 @@ export default {
 }
 .el-carousel__item img{
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
 }
 .el-carousel__item h3 {
   color: #475669;
