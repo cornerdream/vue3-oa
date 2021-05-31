@@ -272,7 +272,7 @@ export default {
   }
 }
 </script>
-<style scopted>
+<style scoped>
 
 .cart-footer{
   position: absolute;

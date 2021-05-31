@@ -19,7 +19,7 @@ export default {
   mounted() {}
 }
 </script>
-<style scopted>
+<style scoped>
 .carousel {
   flex: 1;
 }

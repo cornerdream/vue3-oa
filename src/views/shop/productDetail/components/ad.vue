@@ -37,7 +37,7 @@ export default {
   mounted() {}
 }
 </script>
-<style scopted>
+<style scoped>
 .ad {
   margin-top: 20px;
 }

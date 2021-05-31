@@ -64,7 +64,7 @@ export default {
   }
 }
 </script>
-<style scopted>
+<style scoped>
 .cate .el-dropdown-menu__item,
 .cate .el-menu-item {
   padding: 0 40px;

@@ -48,7 +48,7 @@ export default {
   }
 }
 </script>
-<style scopted>
+<style scoped>
 .news {
   flex: 0 0 900px;
 }

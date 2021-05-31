@@ -69,7 +69,7 @@ export default {
   }
 }
 </script>
-<style scopted>
+<style scoped>
 .role {
   padding: 20px;
 }

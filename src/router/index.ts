@@ -15,7 +15,7 @@ const Login = () => import(/*webpackChunkName:'login'*/ '../components/login/ind
 const Home = () => import(/*webpackChunkName:'shop'*/ '../views/shop/home/index.vue')
 const ProductClassify = () => import(/*webpackChunkName:'shop'*/ '../views/shop/productClassify/index.vue')
 const ProductDetail = () =>
-import(/*webpackChunkName:'shop'*/ '../views/shop/productDetail/index.vue')
+  import(/*webpackChunkName:'shop'*/ '../views/shop/productDetail/index.vue')
 const Cart = () => import(/*webpackChunkName:'shop'*/ '../views/shop/cart/index.vue')
 /*
  *后台我的
@@ -23,16 +23,20 @@ const Cart = () => import(/*webpackChunkName:'shop'*/ '../views/shop/cart/index.
 const Me = () => import(/*webpackChunkName:'home'*/ '../views/crm/components/home/me/index.vue')
 const Order = () =>
   import(/*webpackChunkName:'home'*/ '../views/crm/components/home/order/index.vue')
-  //入库单
-const personal  = ()=>import(/*webpackChunkName:'home'*/'../views/crm/components/warehouse/index.vue');
-const publish  = ()=>import(/*webpackChunkName:'home'*/'../views/crm/components/list/selectlist/index.vue');
-const categories  = ()=>import(/*webpackChunkName:'home'*/'../views/crm/components/list/selectlist/components/categories/categories.vue');
-const infortion  = ()=>import(/*webpackChunkName:'home'*/'../views/crm/components/list/selectlist/components/infortion/infortion.vue');
-const release  = ()=>import(/*webpackChunkName:'home'*/'../views/crm/components/list/selectlist/components/release/release.vue');
+//入库单
+const personal = () => import(/*webpackChunkName:'home'*/'../views/crm/components/warehouse/index.vue');
+const publish = () => import(/*webpackChunkName:'home'*/'../views/crm/components/list/selectlist/index.vue');
+const detail = () => import(/*webpackChunkName:'home'*/'../views/crm/components/warehouse/components/detail.vue');
+const categories = () => import(/*webpackChunkName:'home'*/'../views/crm/components/list/selectlist/components/categories/categories.vue');
+const infortion = () => import(/*webpackChunkName:'home'*/'../views/crm/components/list/selectlist/components/infortion/infortion.vue');
+const release = () => import(/*webpackChunkName:'home'*/'../views/crm/components/list/selectlist/components/release/release.vue');
 // 审批管理
 
-const approving  = ()=>import(/*webpackChunkName:'home'*/'../views/crm/components/approving/index.vue');
-const approved  = ()=>import(/*webpackChunkName:'home'*/'../views/crm/components/approved/index.vue');
+const approving = () => import(/*webpackChunkName:'home'*/'../views/crm/components/approving/index.vue');
+const approved = () => import(/*webpackChunkName:'home'*/'../views/crm/components/approved/index.vue');
+const picking = () => import(/*webpackChunkName:'home'*/'../views/crm/components/picking/index.vue');
+const picklist = () => import(/*webpackChunkName:'home'*/'../views/crm/components/picking/components/picklist.vue');
+const pickdetail = () => import(/*webpackChunkName:'home'*/'../views/crm/components/picking/components/pickdetail.vue');
 
 /*
  *系统设置
@@ -49,7 +53,7 @@ const Organize = () =>
   import(/*webpackChunkName:'system'*/ '../views/crm/components/system/organize/index.vue')
 
 
-const routes:Array<RouteRecordRaw> = [
+const routes: Array<RouteRecordRaw> = [
   {
     path: '/login',
     name: 'login',
@@ -74,7 +78,7 @@ const routes:Array<RouteRecordRaw> = [
         name: 'productClassify',
         component: ProductClassify
       },
-      
+
       {
         path: '/productDetail',
         name: 'productDetail',
@@ -100,7 +104,7 @@ const routes:Array<RouteRecordRaw> = [
             meta: {
               title: '我的主页'
             }
-          },         
+          },
           {
             path: '/order',
             name: 'order',
@@ -151,65 +155,97 @@ const routes:Array<RouteRecordRaw> = [
           },
           // 新增入库单 2021/5/18
           {
-            path:'/personal',
-            name:'personal',
-            component:personal,
-            meta:{
-                title:'入库单'
+            path: '/personal',
+            name: 'personal',
+            component: personal,
+            meta: {
+              title: '采购订单',
+            },
+          },
+          {
+            path: '/detail',
+            name: 'detail',
+            component: detail,
+            meta: {
+              title: '采购订单详情'
             }
-        },
-        {
-            path:'/publish',
-            name:'publish',
-            component:publish,
-            children:[
-                {
-                    path:'/',        //如果只写 / 则说明默认打开一个页面
-                    redirect:'categories'//默认指向页面
-                },
-                {
-                    path:'/categories',
-                    name:'categories',
-                    component:categories,
-                    meta:{
-                        title:'选择分类'
-                    } 
-                },
-                {
-                    path:'/infortion',
-                    name:'infortion',
-                    component:infortion,
-                    meta:{
-                        title:'基础信息'
-                    } 
-                },
-                {
-                    path:'/release',
-                    name:'release',
-                    component:release,
-                    meta:{
-                        title:'发布商品'
-                    } 
-                },
-                
+          },
+          {
+            path: '/publish',
+            name: 'publish',
+            component: publish,
+            children: [
+              {
+                path: '/',        //如果只写 / 则说明默认打开一个页面
+                redirect: 'categories'//默认指向页面
+              },
+              {
+                path: '/categories',
+                name: 'categories',
+                component: categories,
+                meta: {
+                  title: '选择分类'
+                }
+              },
+              {
+                path: '/infortion',
+                name: 'infortion',
+                component: infortion,
+                meta: {
+                  title: '基础信息'
+                }
+              },
+              {
+                path: '/release',
+                name: 'release',
+                component: release,
+                meta: {
+                  title: '发布商品'
+                }
+              },
+
             ]
-        },
-        {
-            path:'/approving',
-            name:'approving',
-            component:approving,
-            meta:{
-                title:'待我审批'
+          },
+          {
+            path: '/approving',
+            name: 'approving',
+            component: approving,
+            meta: {
+              title: '待我审批'
             },
-        },
-        {
-            path:'/approved',
-            name:'approved',
-            component:approved,
-            meta:{
-                title:'已审批'
+          },
+          {
+            path: '/approved',
+            name: 'approved',
+            component: approved,
+            meta: {
+              title: '已审批'
             },
-        },
+          },
+          {
+            path: '/picking',
+            name: 'picking',
+            component: picking,
+            meta: {
+              title: '库存概览'
+            },
+          },
+          {
+            path: '/picklist',
+            name: 'picklist',
+            component: picklist,
+            meta: {
+              title: '出库单列表'
+            },
+          },
+          {
+            path: '/pickdetail',
+            name: 'pickdetail',
+            component: pickdetail,
+            meta: {
+              title: '出库单详情'
+            },
+          },
         ]
       }
     ]

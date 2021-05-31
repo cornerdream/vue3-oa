@@ -133,7 +133,7 @@ export default {
   }
 }
 </script>
-<style scopted>
+<style scoped>
 .list {
   padding: 20px;
 }

@@ -43,7 +43,7 @@ export default {
   }
 }
 </script>
-<style scopted>
+<style scoped>
 .app-bread {
   height: 50px;
   display: flex;

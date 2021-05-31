@@ -86,7 +86,7 @@ export default {
   }
 }
 </script>
-<style scopted>
+<style scoped>
 .menu {
   padding: 20px;
 }

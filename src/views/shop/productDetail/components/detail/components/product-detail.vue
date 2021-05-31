@@ -135,7 +135,7 @@ export default {
   }
 }
 </script>
-<style scopted>
+<style scoped>
 .product-detail {
   display: flex;
   justify-content: center;

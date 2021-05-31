@@ -121,7 +121,7 @@ export default {
   }
 }
 </script>
-<style scopted>
+<style scoped>
 .menuList {
   margin: 10px 0;
 }

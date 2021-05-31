@@ -49,4 +49,4 @@ export default {
   }
 }
 </script>
-<style scopted></style>
+<style scoped></style>

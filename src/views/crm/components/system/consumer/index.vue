@@ -111,7 +111,7 @@ export default {
   }
 }
 </script>
-<style scopted>
+<style scoped>
 .consumer {
   padding: 20px;
 }

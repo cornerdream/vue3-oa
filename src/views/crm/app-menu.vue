@@ -38,4 +38,4 @@ export default {
   methods: {}
 }
 </script>
-<style scopted></style>
+<style scoped></style>

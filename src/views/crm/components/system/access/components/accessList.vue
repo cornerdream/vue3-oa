@@ -103,7 +103,7 @@ export default {
   }
 }
 </script>
-<style scopted>
+<style scoped>
 .accessList {
   margin: 10px 0;
 }

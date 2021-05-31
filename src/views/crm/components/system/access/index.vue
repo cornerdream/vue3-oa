@@ -75,7 +75,7 @@ export default {
   }
 }
 </script>
-<style scopted>
+<style scoped>
 .access {
   padding: 20px;
 }

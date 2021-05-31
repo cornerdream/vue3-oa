@@ -36,7 +36,7 @@ export default {
   }
 }
 </script>
-<style scopted>
+<style scoped>
 .crm {
   height: 100%;
 }

@@ -65,37 +65,42 @@
           </el-select>
         </li>
       </ul> -->
-      <div
-        class="app-list"
-        v-for="(item, index) in arrlist"
-        :key="index"
-        @click="detail(item)"
-      >
-        <div class="user">
-          <div class="block">
-            <el-avatar :size="50" :src="item.user_id.image"></el-avatar>
+      <div class="flow-content infinite-list-wrapper" style="overflow: auto">
+        <div
+          class="app-list"
+          v-infinite-scroll="load"
+          infinite-scroll-disabled="disabled"
+          v-for="(item, index) in arrlist"
+          :key="index"
+          @click="detail(item, index)"
+        >
+          <div class="user">
+            <div class="block">
+              <el-avatar :size="60" :src="item.user_id.image"></el-avatar>
+            </div>
+          </div>
+          <div class="list-cont">
+            <ul>
+              <li>
+                <span>单号</span> ：<span>{{ item.req_id.name }}</span>
+                <span :class="[item.state[0] == 'approving' ? 'flag' : 'code']">{{
+                  item.state[1]
+                }}</span>
+              </li>
+              <li>
+                <span>申请人</span>：<span>{{ item.user_id.name }}</span>
+              </li>
+              <li>
+                <span>申请时间</span>：<span>{{ create_time }}</span>
+              </li>
+              <li>
+                <span>部门</span>：<span> {{ item.department.name }}</span>
+              </li>
+            </ul>
           </div>
         </div>
-        <div class="list-cont">
-          <ul>
-            <li>
-              <span>单号</span> ：<span>{{ item.req_id.name }}</span>
-              <span
-                :class="[item.type_id.model == 'orderinfo' ? 'flag' : 'code']"
-                >{{ item.type_id.name }}</span
-              >
-            </li>
-            <li>
-              <span>申请人</span>：<span>{{ item.user_id.name }}</span>
-            </li>
-            <li>
-              <span>申请时间</span>：<span>{{ create_time }}</span>
-            </li>
-            <li>
-              <span>部门</span>：<span> {{ item.department.name }}</span>
-            </li>
-          </ul>
-        </div>
+        <p v-if="loading">加载中...</p>
+        <p v-if="noMore">没有更多了</p>
       </div>
     </div>
     <div class="apprconte">
@@ -104,29 +109,22 @@
         <div class="app-box">
           <div class="app-lists">
             <div class="list-policy">
-              <ul>
-                <li>
-                  <span>单号</span> ：<span>{{ order.name }}</span>
-                </li>
-              </ul>
+              <h4>单号：{{ order.name }}</h4>
             </div>
           </div>
           <div class="app-lists">
             <div class="user">
               <div class="block">
-                <el-avatar
-                  :size="50"
-                  src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
-                ></el-avatar>
+                <el-avatar :size="50" :src="order.create_uid.image"></el-avatar>
               </div>
             </div>
-            <div class="list-cont">
+            <div class="list-contr">
               <ul>
                 <li>
                   <span>申请人</span>：<span>{{ order.create_uid.name }}</span>
                 </li>
                 <li>
-                  <span>创建时间</span>：<span>{{ create_time }}</span>
+                  <span>创建时间</span>：<span>{{ order.create_time }}</span>
                 </li>
               </ul>
             </div>
@@ -140,7 +138,9 @@
                     <span>项目</span> ： <span>{{ order.project.name }}</span>
                   </p>
                   <p>
-                    <span>供应商</span> ：<span>{{ order.supplier.name }}</span>
+                    <span>供应商</span> ：<span v-if="order.supplier != null">{{
+                      order.supplier.name
+                    }}</span>
                   </p>
                 </div>
                 <div>
@@ -160,12 +160,11 @@
                 border
                 style="width: 600px; text-align: center; margin: 10px"
               >
-                <el-table-column prop="skuname" label="物品"> </el-table-column>
+                <el-table-column prop="skuname" width="180px" label="物品"> </el-table-column>
                 <el-table-column prop="count" label="数量"> </el-table-column>
                 <el-table-column prop="uom" label="单位"> </el-table-column>
                 <el-table-column prop="price" label="单价"> </el-table-column>
-                <el-table-column prop="total_amount" label="合计">
-                </el-table-column>
+                <el-table-column prop="total_amount" label="合计"> </el-table-column>
               </el-table>
             </div>
           </div>
@@ -177,13 +176,11 @@
                   class="app-listCard"
                   v-for="(item, index) in workflowtask"
                   :key="index"
+                  :class="[index == 0 ? 'first' : 'stat']"
                 >
                   <div class="user">
                     <div class="block">
-                      <el-avatar
-                        :size="50"
-                        :src="item.appro_user.image"
-                      ></el-avatar>
+                      <el-avatar :size="50" :src="item.appro_user.image"></el-avatar>
                     </div>
                   </div>
                   <div class="list-contr">
@@ -192,16 +189,14 @@
                         <span>{{ item.state[1] }}</span>
                       </li>
                       <li>
-                        <span>用户</span>：<span>{{
-                          item.appro_user.name
-                        }}</span>
+                        <span>用户</span>：<span>{{ item.appro_user.name }}</span>
                       </li>
                     </ul>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="app-alls">
+            <!-- <div class="app-alls">
               <p class="font">审批意见：</p>
               <el-input
                 class="textarea"
@@ -219,6 +214,21 @@
                   >拒绝</el-button
                 >
               </div>
+            </div> -->
+          </div>
+          <div class="app-alls">
+            <p class="font">审批意见：</p>
+            <el-input
+              class="textarea"
+              type="textarea"
+              :rows="4"
+              placeholder="请输入内容"
+              v-model="apply_comment"
+            >
+            </el-input>
+            <div class="app-btn">
+              <el-button type="primary" size="mini" @click="agree">同意</el-button>
+              <el-button size="mini" @click="refuse">拒绝</el-button>
             </div>
           </div>
         </div>
@@ -229,128 +239,178 @@
 </template>
 
 <script >
-import { sworkflowtask, worflowre, approve } from "../../../../api/approval";
-import { transdate, timestampToTime } from "../../../../utils/index";
+import { sworkflowtask, worflowre, approve, approving } from '../../../../api/approval'
+import { transdate, timestampToTime } from '../../../../utils/index'
 export default {
-  name: "personal",
+  name: 'personal',
   data() {
     return {
-      is_approve: "", //同意拒绝
-      task_id: "1", //任务id
-      apply_comment: "", // 审批意见
-      search: "火狐",
-      ordering: "33",
-      page: "1",
-      size: "10",
-      create_time: "", // 申请时间
+      loading: false,
+      is_approve: '', //同意拒绝
+      task_id: '', //任务id
+      apply_comment: '', // 审批意见
+      search: '',
+      ordering: '',
+      page: 1,
+      size: 10,
+      create_time: '', // 申请时间
       options: [
         {
-          value: "选项1",
-          label: "黄金糕",
+          value: '选项1',
+          label: '黄金糕'
         },
         {
-          value: "选项2",
-          label: "双皮奶",
+          value: '选项2',
+          label: '双皮奶'
         },
         {
-          value: "选项3",
-          label: "蚵仔煎",
+          value: '选项3',
+          label: '蚵仔煎'
         },
         {
-          value: "选项4",
-          label: "龙须面",
+          value: '选项4',
+          label: '龙须面'
         },
         {
-          value: "选项5",
-          label: "北京烤鸭",
-        },
+          value: '选项5',
+          label: '北京烤鸭'
+        }
       ],
-      value: "",
+      value: '',
       arrlist: [],
       show: false,
-      mag: "",
+      mag: '',
       order: {},
-      tableData: [
-        {
-          skuname: "",
-          count: "",
-          uom: "",
-          price: "",
-          total_amount: "",
-        },
-      ],
-      workflowtask: [],
-    };
+      tableData: [],
+      workflowtask: []
+    }
+  },
+  computed: {
+    noMore() {
+      return this.size >= 20
+    },
+    disabled() {
+      return this.loading || this.noMore
+    }
   },
   created() {
-    this.swork();
+    this.swork()
   },
   mounted() {},
   methods: {
     async swork() {
-      await sworkflowtask(
-        this.search,
-        this.ordering,
-        this.page,
-        this.size
-      ).then((res) => {
-        this.arrlist = res.data.data.results;
-        this.is_approve = res.data.data.results[0].is_approved;
-        this.create_time = timestampToTime(
-          transdate(res.data.data.results[0].create_time)
-        );
-      });
+      await approving(this.search, this.ordering, this.page, this.size).then((res) => {
+        this.arrlist = res.data.data.results
+        this.is_approve = res.data.data.results[0].is_approved
+        this.create_time = timestampToTime(transdate(res.data.data.results[0].create_time))
+        console.log(res.data.data, 'res.data.data', this.count)
+      })
     },
-    async detail(item) {
-      let type_id = item.type_id.id;
-      let req_id = item.req_id.id;
-      this.mag = item.type_id.name;
-      const { data } = await worflowre(type_id, req_id);
-      this.order = data.data;
-      let datalist = [];
-      let list = data.data.line;
+    load() {
+      this.loading = true
+      setTimeout(() => {
+        this.size += 10
+        this.swork()
+        this.loading = false
+        console.log(this.size, 'jkfhjk', this.count)
+      }, 2000)
+    },
+    async detail(item, index) {
+      console.log(item, 'item', index)
+      let type_id = item.type_id.id
+      let req_id = item.req_id.id
+      this.mag = item.type_id.name
+      const { data } = await worflowre(type_id, req_id)
+      this.order = data.data
+      let datalist = []
+      let list = data.data.line
       for (let i in list) {
-        let obj = {};
-        obj.skuname = list[i].sku.name;
-        obj.count = list[i].count;
-        obj.uom = list[i].uom.name;
-        obj.price = list[i].price;
-        obj.total_amount = list[i].total_amount;
-        datalist[i] = obj;
+        let obj = {}
+        obj.skuname = list[i].sku.name
+        obj.count = list[i].count
+        obj.uom = list[i].uom.name
+        obj.price = list[i].price
+        obj.total_amount = list[i].total_amount
+        datalist[i] = obj
       }
-      this.tableData = datalist;
-      this.create_time = timestampToTime(transdate(data.data.create_time));
-      this.workflowtask = data.data.workflowtask;
-      this.show = true;
+      this.tableData = datalist
+      this.order.create_time = timestampToTime(transdate(data.data.create_time))
+      this.workflowtask = data.data.workflowtask
+      this.task_id = data.data.task_id
+      this.apply_comment = ''
+      this.show = true
     },
-    async agree() {
+    agree() {
       let obj = {
         is_approve: this.is_approve,
         task_id: this.task_id,
-        apply_comment: this.apply_comment,
-      };
-      console.log(this.apply_comment);
+        apply_comment: this.apply_comment
+      }
+      if (obj.apply_comment != '') {
+        this.$confirm('确定同意吗?', '', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: ''
+        })
+          .then(() => {
+            approve(obj).then((res) => {
+              console.log(res.data)
+              if (res.data.code == 200) {
+                this.show = false
+                this.swork()
+              }
+            })
+          })
+          .catch(() => {})
+      } else {
+        this.$message({
+          type: 'error',
+          message: '审批意见不能为空'
+        })
+      }
     },
     refuse() {
-    },
-  },
-};
+      let obj = {
+        is_approve: this.is_approve,
+        task_id: this.task_id,
+        apply_comment: this.apply_comment
+      }
+      if (obj.apply_comment != '') {
+        approve(obj).then((res) => {
+          if (res.data.code == 200) {
+            this.show = false
+            this.swork()
+          }
+        })
+      } else {
+        this.$message({
+          type: 'error',
+          message: '审批意见不能为空'
+        })
+      }
+    }
+  }
+}
 </script>
-<style scopted>
+<style scoped>
 .approving {
-  width: 100%;
   display: flex;
   box-sizing: border-box;
   text-align: center;
+  background: #fff;
+  height: 848px;
 }
 .appcontent {
   width: 25%;
-  height: 848px;
+  border-right: 1px solid #000;
 }
-.appcontent h4 {
-  text-align: center;
+.appcontent > h4 {
   font-size: 24px;
   font-weight: 400;
+  height: 28px;
+  line-height: 28px;
+  border-bottom: 1px solid #ccc;
+  background: ghostwhite;
 }
 .app-ul {
   display: flex;
@@ -362,20 +422,26 @@ export default {
   width: 100px;
   padding: 5px;
 }
+.flow-content {
+  height: 787px;
+  overflow: auto;
+  margin-top: -34px;
+}
+
+.flow-content::-webkit-scrollbar {
+  width: 0px;
+  background: none;
+}
 .app-list {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 10px;
-  padding: 10px;
+  border-bottom: 1px solid #ccc;
 }
 .user {
-  width: 70px;
   margin: 10px;
 }
 .list-cont {
-  width: 500px;
   text-align: left;
+  margin-left: -40px;
 }
 .list-cont ul li span:nth-child(1) {
   width: 60px;
@@ -391,7 +457,7 @@ export default {
 }
 .flag {
   margin-left: 10px;
-  width: 100px;
+  width: 80px;
   display: inline-block;
   text-align: center;
   border-radius: 10px;
@@ -410,9 +476,15 @@ export default {
 .apprconte {
   width: 75%;
   text-align: left;
+  overflow: auto;
+}
+.apprconte::-webkit-scrollbar {
+  width: 0px;
+  background: none;
 }
 .app-box {
   margin: 20px;
+  margin-top: -50px;
 }
 .content h4 {
   text-align: center;
@@ -422,17 +494,23 @@ export default {
 .app-lists {
   display: flex;
   align-items: center;
-  /* padding: 10px; */
 }
 .app-listCard {
   display: flex;
   align-items: center;
 }
-.list-policy {
+.list-policy h4 {
   font-size: 18px;
   font-weight: 600;
 }
-.app-listss {
+.list-contr {
+  margin-left: -44px;
+}
+.first {
+  width: 200px;
+  background: cornflowerblue;
+  border-radius: 10px;
+  color: #fff;
 }
 .user-devep {
   margin-top: 10px;
@@ -455,31 +533,20 @@ export default {
   font-weight: 600;
 }
 .app-argent {
-  margin: 10px;
-  padding: 10px;
   display: flex;
   text-align: left;
 }
 .app-all {
   flex: 1;
 }
-.app-all {
-  flex: 2;
-}
 .app-conts {
   margin: 20px;
-}
-.el-card {
-  display: flex;
-}
-.el-card .user {
-  flex: 1;
 }
 .textarea {
   width: 300px;
   margin: 10px;
 }
-.app-argent .app-btn {
+.app-btn {
   text-align: left;
   margin: 10px;
 }

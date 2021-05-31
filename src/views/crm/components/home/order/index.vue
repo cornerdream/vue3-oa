@@ -61,7 +61,7 @@ export default {
   }
 }
 </script>
-<style scopted>
+<style scoped>
 .order {
   padding: 20px;
 }

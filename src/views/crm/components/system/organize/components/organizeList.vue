@@ -107,7 +107,7 @@ export default {
   }
 }
 </script>
-<style scopted>
+<style scoped>
 .organizeList {
   margin: 10px 0;
 }

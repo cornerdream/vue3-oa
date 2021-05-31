@@ -25,7 +25,7 @@ export function approve(data: any) {
 //获取当前用户的已审批任务
 export function approved(search: string,ordering: string,page: string,size: string) {
   return $axios({
-    url: '/api/user/workflowtask/approvedapproved?search='+search+'&ordering=_'+ordering+'&page='+page+'&size='+size,
+    url: '/api/user/workflowtask/approved?search='+search+'&ordering=_'+ordering+'&page='+page+'&size='+size,
     method: 'get'
   })
 }

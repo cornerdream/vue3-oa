@@ -62,7 +62,7 @@ created() {},
 mounted() {}
 }
 </script>
-<style scopted>
+<style scoped>
 .orderList {
   margin: 10px 0;
 }

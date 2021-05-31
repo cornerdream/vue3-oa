@@ -141,7 +141,7 @@ export default {
   }
 }
 </script>
-<style scopted>
+<style scoped>
 .consumerList .el-table {
   margin: 10px 0;
 }
