@@ -2,39 +2,47 @@
   <div class="list">
     <section id="section">
       <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{ path: '/' }" v-for="(item) in productTag" :key="item">{{item.name}}</el-breadcrumb-item>
+        <el-breadcrumb-item  v-for="item in productTag" :key="item" @click.native="onBread(item.id)">{{
+          item.name
+        }}</el-breadcrumb-item>
         <nav id="choose" v-if="tagShow">
           <el-tag
             :key="tag"
-            v-for="tag in dynamicTags"
+            v-for="tag in productNav"
             closable
             :disable-transitions="false"
-            @close="handleClose(tag)">
-            {{tag.name}}
+            @close="handleClose(tag)"
+          >
+            {{ tag.name }}
           </el-tag>
         </nav>
-        
       </el-breadcrumb>
-      
+
       <el-divider></el-divider>
-      <ul id="type">
-        <li v-for="(item) in productFilter" :key="item">
-          <span class="type-key"><strong>{{item.name}}：</strong></span>
-          <ul class="type-value" >
-            <li v-for="(o) in item.options" :key="o" :class="{'logoLi': item.params=='brand'}" @click="onAddItem(o.name,item.params,o.id)">
+      <ul id="type" v-if="listShow">
+        <li v-for="item in productFilter" :key="item">
+          <span class="type-key"
+            ><strong>{{ item.name }}：</strong></span
+          >
+          <ul class="type-value">
+            <li
+              v-for="o in item.options"
+              :key="o"
+              :class="{ logoLi: item.params == 'brand' }"
+              @click="onAddItem(o.name, item.params, o.id)"
+            >
               <a href="javascript:;">
-                <img :src="o.logo" alt="" v-if="o.logo">
+                <img :src="o.logo" alt="" v-if="o.logo" />
                 <!-- <span v-else>{{o.name}}</span> -->
-                <i>{{o.name}}</i>
-                
+                <i>{{ o.name }}</i>
               </a>
             </li>
           </ul>
           <el-divider></el-divider>
-        </li>       
+        </li>
       </ul>
     </section>
-    <section class="container">
+    <section class="container" v-if="listShow">
       <!-- <ul class="navbar">
         <li class="nav-item">
           <span class="nav-item-name">商城排序</span>
@@ -52,84 +60,175 @@
           <span class="nav-item-name">销量</span>
         </li>
       </ul> -->
-
-      <div class="productBox">
-        <el-card :body-style="{ padding: '10px',width:'180px'}" v-for="o in productList" :key="o" :id="o.id" @click="onClick(o.id)">
-          <img v-if="!o.default_image_url" :src="defaultImage" class="image" />
-          <img v-else :src="o.default_image_url" class="image" />
-          <div style="padding: 14px" class="productResult">
-            <p class="card-title">{{ o.name }}</p>
-            <div class="bottom">
-              <p class="price">{{ '¥' + o.price }}</p>
-            </div>
+      <el-row :gutter="10">
+      
+        <el-col 
+        :span="4"
+        v-for="o in productList"
+        :key="o"
+        :id="o.id"
+        >
+          <div class="grid-content">
+            <el-card @click="onClick(o.id)">
+              <div class="image-box">
+                <img v-if="!o.default_image_url" :src="defaultImage" class="image" />
+                <img v-else :src="o.default_image_url" class="image" />
+              </div>
+              
+              <div class="productResult">
+                <p class="card-title">{{ o.name }}</p>
+                <div class="bottom">
+                  <p class="price">{{ '¥' + o.price }}</p>
+                </div>
+              </div>
+            </el-card>
           </div>
-        </el-card>
-         
-      </div>
+        </el-col>
+      </el-row>
+    </section>
+    <section class="result" v-else>
+      <el-result title="404" subTitle="抱歉，请求没有数据">
+        <template #icon>
+          <el-image :src="defaultImage" class="result-image"></el-image>
+        </template>
+        <template #extra>
+          <el-button type="primary" size="medium" @click="onBack">返回</el-button>
+        </template>
+      </el-result>
     </section>
   </div>
 </template>
 
 <script lang="ts">
+import defaultImg from '../../../../assets/images/mouse.png'
 export default {
   name: 'list',
-  props:{
-    productTag:[],
-    productFilter:[],
-    productList:[]
+  props: {
+    productTag: [],
+    productNav:[],
+    productFilter: [],
+    productList: [],
   },
   data() {
     return {
-      tagShow:false,
-      dynamicTags: [],
-      tagData:this.productTag,
-      filterData:this.productFilter,
-      listData:this.productList,
-      query:[{
-        'category_id':this.$route.query.id
-      }]
+      tagShow: false,
+      listShow:true,
+      defaultImage: defaultImg,
+      dynamicTags: this.productNav,
+      tagData: this.productTag,
+      filterData: this.productFilter,
+      listData: this.productList,
+      query: [
+        {
+          category_id: this.$route.query.id
+        }
+      ]
     }
   },
-  created() {},
-  mounted() {},
-  methods: {
-    handleClose(tag) {
-      this.dynamicTags.splice(this.dynamicTags.indexOf(tag.name), 1);
-      const itemKey = tag.params;
-      const itemVal = tag.id;
-      const item = {};
-      item[itemKey]= itemVal;
-      this.query.splice(this.query.indexOf(item),1);
-      this.$emit('initProductTag',this.query);
-      this.$emit('initProductList',this.query);
-      if(this.query.length==1){
-        this.tagShow = false;
-      }
-    },
-    onAddItem(tag,params,id){
-      const obj = {
-        name:tag,
-        params,
-        id
-      }
-      this.dynamicTags.push(obj);
-      this.tagShow = true; 
-      if(params=='brand'){
-        this.query.push({
-          'brand':id
-        })
+  watch:{
+    productList(newVal,oldVal){
+      if(newVal.length==0){
+        this.listShow = false;
       }else{
-        this.query.push({
-          'option':id
-        })
+        this.listShow = true;
       }
-      this.$emit('initProductTag',this.query);
-      this.$emit('initProductList',this.query);     
-    },
-    onClick(id){
-      this.$router.push({name:'productDetail',query:{classifyId:this.$route.query.id,id}})
     }
+  },
+  created() {
     
+  },
+  mounted() {
+    
+  },
+ 
+  methods: {
+    onBread(id){
+      console.log({ name: 'productClassify', query: { id } });
+      this.$router.push({ name: 'productClassify', query: { id } });      
+      this.query[0]['category_id']=id;   
+      this.$emit('initProductTag', this.query);
+      this.$emit('initProductList', this.query);
+    },
+    handleClose(tag:any) {
+      console.log(tag);    
+      // this.dynamicTags.splice(this.dynamicTags.indexOf(tag.name), 1);
+      // const itemKey = tag.params;
+      // const itemVal = tag.id;
+      // const item = {};
+      // item[itemKey] = itemVal;
+      console.log(this.query);
+      let oItem = this.query.find((item)=>{
+          return item[tag.params]
+        });
+        console.log(oItem);
+      if(tag.params=='option'){
+        const option = oItem[tag.params];
+        console.log(option);
+        const str = String(option).indexOf(',');
+        console.log(str)
+        if(str>=0){
+          let optionArr = option.split(',');
+          console.log(optionArr);
+          let newArr = optionArr.filter(item=>item!=tag.id);
+          console.log(newArr);
+          let newOption;
+          if(newArr.length==1){
+            newOption = newArr.toString();
+          }else{
+            newOption =newArr.join(',');
+          }
+          console.log(newOption)       
+          oItem[tag.params]=newOption;
+          console.log(this.query)
+        }else{
+          this.query.splice(this.query.indexOf(oItem), 1);
+        }
+      }else{
+        this.query.splice(this.query.indexOf(oItem), 1);
+      } 
+    //  console.log(this.query.indexOf(oItem))  
+      console.log(this.query)
+      this.$emit('initProductTag', this.query);
+      this.$emit('initProductList', this.query);
+      if (this.query.length == 1) {
+        this.tagShow = false
+      }
+    },
+    onAddItem(tag:any, params:any, id:any) {
+      // const obj = {
+      //   name: tag,
+      //   params,
+      //   id
+      // };
+      // this.dynamicTags.push(obj);
+      this.tagShow = true;
+      
+      if (params == 'brand') {
+        this.query.push({
+          brand: id
+        });
+      } else {      
+        const oItem = this.query.find((item)=>{
+          return item['option']
+        })
+        console.log(oItem);
+        if(oItem){
+          oItem['option'] += ','+id
+        }else{
+          let o = {option:id};
+          this.query.push(o);
+        }
+      }
+      console.log(this.query);
+      this.$emit('initProductTag', this.query);
+      this.$emit('initProductList', this.query);
+    },
+    onClick(id:any) {
+      this.$router.push({ name: 'productDetail', query: { classifyId: this.$route.query.id, id } })
+    },
+    onBack(){
+      this.$router.back();
+    }
   }
 }
 </script>
@@ -137,7 +236,11 @@ export default {
 .list {
   padding: 20px;
 }
-#section .el-breadcrumb{
+.list img{
+  width: 100%;
+  height: 100%;
+}
+#section .el-breadcrumb {
   line-height: 34px;
 }
 .el-tag + .el-tag {
@@ -172,41 +275,41 @@ export default {
   zoom: 1;
   background: #fff;
 }
-.type-value li{
+.type-value li {
   float: left;
   margin-right: 50px;
   margin-bottom: 4px;
   height: 26px;
   line-height: 26px;
 }
-.type-value li a{
+.type-value li a {
   float: left;
   white-space: nowrap;
   zoom: 1;
   color: #005aa0;
 }
-.type-value li.logoLi{
+.type-value li.logoLi {
   float: left;
   width: 116px;
   height: 48px;
   padding: 0;
-  border: 1px solid #DDD;
-  margin:0 0 0 0;
-  background: #FFF;
+  border: 1px solid #ddd;
+  margin: 0 0 0 0;
+  background: #fff;
   text-align: center;
 }
-.type-value li.logoLi a i{
+.type-value li.logoLi a i {
   display: none;
 }
-.type-value li.logoLi:hover{
-  width:114px;
+.type-value li.logoLi:hover {
+  width: 114px;
   height: 46px;
   border: 2px solid red;
 }
-.type-value li.logoLi:hover a i{
+.type-value li.logoLi:hover a i {
   display: block;
 }
-.type-value li.logoLi:hover a img{
+.type-value li.logoLi:hover a img {
   display: none;
 }
 .logoLi a {
@@ -220,7 +323,7 @@ export default {
   color: #005aa0;
   line-height: 48px;
 }
-.logoLi a img{
+.logoLi a img {
   margin: 5px 6px;
   vertical-align: top;
 }
@@ -237,27 +340,33 @@ export default {
 .nav-item-name {
   padding: 10px;
 }
-
-.container .productBox {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 10px auto;
+.el-row {
+  margin-bottom: 20px;
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
-
-.container .productBox .el-card {
-  margin-right: 1%;
+.grid-content {
+  padding: 10px;
   margin-bottom: 10px;
-  width: 19.2%;
   text-align: center;
 }
-
-.container .productBox .el-card:nth-child(5n + 5) {
-  margin-right: 0;
+.grid-content .el-card .image-box{
+  width: 100%;
+  height: 100%;
 }
-
-.container .productBox .el-card .card-title {
+.grid-content .el-card .image{
+  width: 100%;
+  height: 100%;
+}
+.grid-content .el-card .card-title {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+}
+.result {
+  max-height: 500px;
+  max-width: 500px;
+  margin: 0 auto;
 }
 </style>

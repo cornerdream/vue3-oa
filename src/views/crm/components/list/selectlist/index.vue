@@ -1,8 +1,7 @@
 <template>
   <div class="selectlist">
     <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="选择分类" name="categories">
-        <categories></categories> </el-tab-pane
+      <el-tab-pane label="选择分类" name="categories"> <categories></categories> </el-tab-pane
       ><el-tab-pane label="基础信息" name="infortion">
         <infortion></infortion>
       </el-tab-pane>
@@ -10,7 +9,7 @@
         <release></release>
       </el-tab-pane>
     </el-tabs>
-    
+
     <!-- <router-link to="/categories" >
         <span>选择分类</span>
       </router-link> 
@@ -24,17 +23,17 @@
   </div>
 </template>
 
-<script  >
-import categories from "./components/categories/categories.vue";
-import infortion from "./components/infortion/infortion.vue";
-import release from "./components/release/release.vue";
+<script>
+import categories from './components/categories/categories.vue'
+import infortion from './components/infortion/infortion.vue'
+import release from './components/release/release.vue'
 export default {
-  name: "selectlist",
+  name: 'selectlist',
   components: { categories, infortion, release },
   data() {
     return {
-      activeName: "categories",
-    };
+      activeName: 'categories'
+    }
   },
   created() {
     console.log()
@@ -43,9 +42,9 @@ export default {
   methods: {
     handleClick(index) {
       this.activeName = index.props.name
-    },
-  },
-};
+    }
+  }
+}
 </script>
 
 <style scoped>

@@ -7,20 +7,18 @@
   </div>
 </template>
 
-<script  >
+<script>
 import fromtitle from './componetns/from-title.vue'
 import fromations from './componetns/from-ations.vue'
 import fromarelease from './componetns/from-release.vue'
 export default {
-  name: "infortion",
-  components:{fromtitle,fromations,fromarelease},
+  name: 'infortion',
+  components: { fromtitle, fromations, fromarelease },
   data() {
-    return {
-    };
+    return {}
   },
-  methods: {
-  },
-};
+  methods: {}
+}
 </script>
 
 <style scoped>
@@ -70,5 +68,4 @@ a {
 .jichu {
   margin: 20px;
 }
-
 </style>

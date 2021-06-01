@@ -65,8 +65,7 @@ export default {
       }
     },
     async loadMenus() {
-      const { data } = await getMenus(this.filterParams)
-      console.log(data)
+      const { data } = await getMenus(this.filterParams);
       if (data.code !== 200) {
         ElMessage.error(data.error)
       } else {
@@ -75,13 +74,11 @@ export default {
       }
     },
     onQuery() {
-      console.log('查询')
-      this.filterParams.page = 1
-      this.loadMenus()
+      this.filterParams.page = 1;
+      this.loadMenus();
     },
     onAdd() {
-      console.log(this.$refs.form)
-      this.$refs.form.dialogVisible = true
+      (this as any).$refs.form.dialogVisible = true
     }
   }
 }

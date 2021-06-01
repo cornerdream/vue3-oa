@@ -1,25 +1,34 @@
 <!-- -->
 <template>
   <div class="carousel">
-    <el-carousel :interval="5000" arrow="always">
-      <el-carousel-item v-for="item in 4" :key="item">
-        <h3>{{ item }}</h3>
+    <el-carousel :interval="5000" arrow="always" >
+      <el-carousel-item v-for="item in images" :key="item" >
+        
+        <img :src="item" >
+        
+        <!-- <h3>{{ item }}</h3> -->
       </el-carousel-item>
     </el-carousel>
   </div>
 </template>
 
 <script lang="ts">
+import img1 from '../../../../assets/images/1.jpg'
+import img2 from '../../../../assets/images/2.jpg'
+import img3 from '../../../../assets/images/3.jpg'
+import img4 from '../../../../assets/images/4.jpg'
 export default {
   name: 'carousel',
   data() {
-    return {}
+    return {
+      images:[img1,img2,img3,img4]
+    }
   },
   created() {},
   mounted() {}
 }
 </script>
-<style scoped>
+<style >
 .carousel {
   flex: 1;
 }
@@ -31,6 +40,10 @@ export default {
 }
 .el-carousel__item {
   height: 100%;
+}
+.el-carousel__item img{
+  width: 100%;
+  /* height: 100%; */
 }
 .el-carousel__item h3 {
   color: #475669;

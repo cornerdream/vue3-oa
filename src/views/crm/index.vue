@@ -31,7 +31,7 @@ export default {
   mounted() {},
   methods: {
     async loadUserMenu() {
-      this.$store.dispatch('GetUserMenu').then(() => {})
+      (this as any).$store.dispatch('GetUserMenu').then(() => {})
     }
   }
 }

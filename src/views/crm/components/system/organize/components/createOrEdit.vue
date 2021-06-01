@@ -91,51 +91,43 @@ export default {
       this.resetForm()
     },
     async onSubmit() {
-      await (this.$refs.form as any).validate()
-
-      this.loading = true
-      console.log(this.isAdd)
+      await (this.$refs.form as any).validate();
+      this.loading = true;
       if (this.isAdd) {
-        console.log('add')
         this.onAdd()
       } else {
-        console.log('edit')
         this.onEdit()
       }
     },
     onAdd() {
-      console.log(this.form)
       add(this.form)
         .then((res) => {
-          console.log(res)
-          this.resetForm()
-          this.$message({
+          this.resetForm();
+          (this as any).$message({
             showClose: true,
             type: 'success',
             message: '添加成功!',
             duration: 2500
           })
-          this.loading = false
-          this.sup_this.loadOrganize()
+          this.loading = false;
+          this.sup_this.loadOrganize();
         })
         .catch((err) => {
-          this.loading = false
-          console.log(err)
+          this.loading = false;
         })
     },
     onEdit() {
-      console.log(this.rowId)
       edit(this.rowId, this.form)
         .then((res) => {
-          this.resetForm()
-          this.$message({
+          this.resetForm();
+          (this as any).$message({
             showClose: true,
             type: 'success',
             message: '修改成功!',
             duration: 2500
           })
-          this.loading = false
-          this.$parent.$parent.loadOrganize()
+          this.loading = false;
+          (this as any).$parent.$parent.loadOrganize()
         })
         .catch((err) => {
           this.loading = false
@@ -143,12 +135,12 @@ export default {
         })
     },
     resetForm() {
-      this.dialogVisible = false
-      this.$refs.form.resetFields()
-      this.form = { name: '', type: '', pid: null }
+      this.dialogVisible = false;
+      (this as any).$refs.form.resetFields();
+      this.form = { name: '', type: '', pid: null };
     },
-    selected(name) {
-      this.form.icon = name
+    selected(name:any) {
+      (this.form as any).icon = name
     }
   }
 }

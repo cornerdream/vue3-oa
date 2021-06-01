@@ -49,14 +49,12 @@ export default {
     }
   },
   created() {
-    //     this.loadOrganizeTree();
-    this.loadAccess()
+    this.loadAccess();
   },
   mounted() {},
   methods: {
     async loadAccess() {
       const { data } = await getPermissionTree(this.filterParams)
-      console.log(data)
       if (data.code !== 200) {
         ElMessage.error(data.error)
       } else {
@@ -65,12 +63,10 @@ export default {
       }
     },
     onQuery() {
-      console.log('查询')
-      this.loadAccess()
+      this.loadAccess();
     },
     onAdd() {
-      console.log(this.$refs.form)
-      this.$refs.form.dialogVisible = true
+      (this as any).$refs.form.dialogVisible = true
     }
   }
 }

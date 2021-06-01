@@ -55,19 +55,16 @@ export default {
   mounted() {},
   methods: {
     async loadOrganizeTree() {
-      const { data } = await getOrganizationUserTree()
-      console.log(data)
+      const { data } = await getOrganizationUserTree();
       if (data.code !== 200) {
         ElMessage.error(data.error)
       } else {
         this.organizes = data.data
         this.total = data.data.count
       }
-      console.log(this.organizes)
     },
     async loadOrganize() {
-      const { data } = await getOrganizationTree(this.filterParams)
-      console.log(data)
+      const { data } = await getOrganizationTree(this.filterParams);
       if (data.code !== 200) {
         ElMessage.error(data.error)
       } else {
@@ -76,12 +73,10 @@ export default {
       }
     },
     onQuery() {
-      console.log('查询')
-      this.loadOrganize()
+      this.loadOrganize();
     },
     onAdd() {
-      console.log(this.$refs.form)
-      this.$refs.form.dialogVisible = true
+      (this as any).$refs.form.dialogVisible = true
     }
   }
 }

@@ -143,6 +143,7 @@ export default {
 </script>
 
 <style scoped>
+
 .pickdetail {
   width: 100%;
   min-height: 850px;

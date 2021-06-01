@@ -68,7 +68,7 @@
               v-if="treeShow"
               @node-click="nodeClick">
             </el-tree> -->
-              {{ form.department }}
+              <!-- {{ form.department }} -->
               <el-cascader
                 v-model="form.department"
                 :options="organizations"
@@ -235,59 +235,56 @@ export default {
       this.form.image = URL.createObjectURL(file.raw)
     },
     cancel() {
-      this.resetForm()
+      this.resetForm();
     },
     async onSubmit() {
       await (this.$refs.form as any).validate()
       this.loading = true
       if (this.isAdd) {
-        this.onAdd()
+        this.onAdd();
       } else {
-        this.onEdit()
+        this.onEdit();
       }
     },
     onAdd() {
       add(this.form)
         .then((res) => {
-          this.resetForm()
-          this.$message({
+          this.resetForm();
+          (this as any).$message({
             showClose: true,
             type: 'success',
             message: '添加成功!默认密码123456!',
             duration: 2500
-          })
-          this.loading = false
-          this.sup_this.loadUsers()
+          });
+          this.loading = false;
+          this.sup_this.loadUsers();
         })
         .catch((err) => {
-          this.loading = false
-          console.log(err)
+          this.loading = false;
         })
     },
     onEdit() {
-      console.log(this.form)
       edit(this.rowId, this.form)
         .then((res) => {
-          this.resetForm()
-          this.$message({
+          this.resetForm();
+          (this as any).$message({
             showClose: true,
             type: 'success',
             message: '修改成功!',
             duration: 2500
           })
-          this.loading = false
-          this.$parent.$parent.loadUsers()
+          this.loading = false;
+          (this as any).$parent.$parent.loadUsers();
         })
         .catch((err) => {
-          this.loading = false
-          console.log(err)
+          this.loading = false;
         })
     },
     resetForm() {
-      this.dialogVisible = false
-      ;(this.$refs.form as any).resetFields()
-      this.roleIds = []
-      this.form = {
+      this.dialogVisible = false;
+      (this.$refs.form as any).resetFields();
+      (this as any).roleIds = [];
+      (this as any).form = {
         username: '',
         name: '',
         mobile: '',

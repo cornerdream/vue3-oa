@@ -1,4 +1,3 @@
-<!-- -->
 <template>
   <div class="aside" style="height: 100%">
     <el-menu
@@ -47,8 +46,7 @@ export default {
       activeIndex: 'me'
     }
   },
-  created() {
-  },
+  created() {},
   mounted() {},
   methods: {
     handleSelect(key, keyPath) {
@@ -57,6 +55,4 @@ export default {
   }
 }
 </script>
-<style scoped>
-
-</style>
+<style scoped></style>

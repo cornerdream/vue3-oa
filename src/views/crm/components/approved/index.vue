@@ -160,7 +160,7 @@
 </template>
 
 <script >
-import { approved, worflowre, approve, approving } from '../../../../api/approval'
+import { approved, worflowre, approve } from '../../../../api/approval'
 import { transdate, timestampToTime } from '../../../../utils/index'
 export default {
   name: 'personal',
@@ -260,10 +260,8 @@ export default {
       this.order.create_time = timestampToTime(transdate(data.data.create_time))
       this.workflowtask = data.data.workflowtask
       this.task_id = data.data.task_id
-      if (this.workflowtask != []) {
-        for (let i in this.workflowtask) {
-          this.apply_comment = this.workflowtask[0].apply_comment
-        }
+      for (let i in this.workflowtask) {
+        this.apply_comment = data.data.workflowtask[0].apply_comment
       }
       this.show = true
     },
@@ -328,15 +326,17 @@ export default {
 </script>
 <style  scoped>
 .approved {
-  display: flex;
-  box-sizing: border-box;
   text-align: center;
   background: #fff;
-  height: 848px;
+  display: flex;
+}
+.approved::-webkit-scrollbar {
+  width: 0px;
+  background: none;
 }
 .appcontent {
   width: 25%;
-  border-right: 1px solid #000;
+  border-right: 1px solid #ccc;
 }
 .appcontent > h4 {
   font-size: 24px;
@@ -349,17 +349,15 @@ export default {
 .app-ul {
   display: flex;
   justify-content: space-around;
-  margin: 20px;
 }
 .app-ul li {
   flex: 1;
   width: 100px;
-  padding: 5px;
 }
 .flow-content {
-  height: 787px;
+  height:770px;
   overflow: auto;
-  margin-top: -34px;
+  margin-top:20px;
 }
 
 .flow-content::-webkit-scrollbar {
@@ -369,13 +367,13 @@ export default {
 .app-list {
   display: flex;
   border-bottom: 1px solid #ccc;
+  align-items: center;
 }
 .user {
   margin: 10px;
 }
 .list-cont {
   text-align: left;
-  margin-left: -40px;
 }
 .list-cont ul li span:nth-child(1) {
   width: 60px;
@@ -396,7 +394,7 @@ export default {
   text-align: center;
   border-radius: 10px;
   color: #fff;
-  background: cornflowerblue;
+  background: chocolate;
 }
 .code {
   margin-left: 10px;
@@ -428,7 +426,6 @@ export default {
 .app-lists {
   display: flex;
   align-items: center;
-  /* padding: 10px; */
 }
 .app-listCard {
   display: flex;
@@ -439,7 +436,7 @@ export default {
   font-weight: 600;
 }
 .list-contr {
-  margin-left: -44px;
+  /* margin-left: -44px; */
 }
 .first {
   width: 200px;
@@ -447,7 +444,6 @@ export default {
   border-radius: 10px;
   color: #fff;
 }
-
 .user-devep {
   margin-top: 10px;
   width: 400px;
@@ -469,28 +465,21 @@ export default {
   font-weight: 600;
 }
 .app-argent {
-  /* margin: 10px; */
-  /* padding: 10px; */
   display: flex;
   text-align: left;
 }
 .app-all {
   flex: 1;
 }
-.app-all {
-  flex: 2;
-}
 .app-conts {
   margin: 20px;
 }
-.el-card {
-  display: flex;
-}
-.el-card .user {
-  flex: 1;
-}
 .textarea {
   width: 300px;
+  margin: 10px;
+}
+.app-btn {
+  text-align: left;
   margin: 10px;
 }
 .hide {

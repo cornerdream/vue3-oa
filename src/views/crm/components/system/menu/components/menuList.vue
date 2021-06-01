@@ -3,6 +3,7 @@
   <div class="menuList">
     <el-table
       :data="menuList"
+      height="650"
       style="width: 100%"
       row-key="id"
       border
@@ -64,7 +65,7 @@ export default {
   props: {
     menuList: [],
     menus: [],
-    total: 0,
+    total: {type:Number},
     query: {}
   },
   data() {
@@ -76,7 +77,7 @@ export default {
   mounted() {},
   methods: {
     handleEdit(item: any) {
-      const _this = this.$refs.form
+      const _this = this.$refs.form;
       _this.form = {
         id: item.id,
         component: item.component,
@@ -87,11 +88,9 @@ export default {
         is_show: item.is_show.toString(),
         is_frame: item.is_frame.toString(),
         icon: item.icon
-      }
-      console.log(item.id)
-      console.log(this.$refs.form)
-      this.menuId = item.id
-      this.$refs.form.dialogVisible = true
+      };
+      this.menuId = item.id;
+      (this as any).$refs.form.dialogVisible = true;
     },
     handleDelete(item: any) {
       this.$confirm('确认删除吗？', '删除提示', {
@@ -101,21 +100,13 @@ export default {
         center: true
       })
         .then(async () => {
-          // 确认执行这里
-          // 请求删除操作
-          const { data } = await del(item.id)
-          console.log(data)
-          // if (data.code === '000000') {
-          this.$message.success('删除成功')
-          this.$emit('initList') // 更新数据列表
-          // this.$emit('initMenu'); // 更新侧边栏菜单列表
-          this.$store.dispatch('GetUserMenu').then(() => {})
-          // }
+          const { data } = await del(item.id);
+          (this as any).$message.success('删除成功');
+          this.$emit('initList');// 更新数据列表
+          (this as any).$store.dispatch('GetUserMenu').then(() => {});
         })
         .catch((err) => {
-          // 取消执行这里
-          console.log(err)
-          this.$message.info('已取消删除')
+          (this as any).$message.info('已取消删除');
         })
     }
   }

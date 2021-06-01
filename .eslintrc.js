@@ -3,7 +3,8 @@ module.exports = {
     browser: true,
     es2021: true,
     node: true,
-    jQuery:true
+    "$": true,
+    "jquery": true
   },
   extends: ['plugin:vue/essential', 'airbnb-base', 'plugin:prettier/recommended'],
   parserOptions: {

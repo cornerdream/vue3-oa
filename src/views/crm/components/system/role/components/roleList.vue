@@ -7,6 +7,7 @@
           :data="roleList"
           size="small"
           border
+          height="650"
           style="width: 100%"
           highlight-current-row="true"
           row-key="roleId"
@@ -180,7 +181,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .roleList {
   margin: 10px 0;
 }

@@ -67,39 +67,38 @@ export default {
   async created() {},
 
   methods: {
-    onSave(id) {
-      this.Loading = true
-
-      let form = { menus: this.$refs.menu.getCheckedKeys() }
-      save(this.row_data.id, form)
+    onSave(id:Number) {
+      this.Loading = true;
+      let form = { menus: (this as any).$refs.menu.getCheckedKeys() }
+      save((this as any).row_data.id, form)
         .then((res) => {
-          this.$message({
+          (this as any).$message({
             showClose: true,
             type: 'success',
             message: '保存成功!',
             duration: 2500
-          })
-          this.Loading = false
-          this.update(this.row_data.id)
+          });
+          this.Loading = false;
+          this.update((this as any).row_data.id);
         })
         .catch((err) => {
-          this.Loading = false
+          this.Loading = false;
           console.log(err)
         })
     },
     update(id) {
       // 刷新选中行数据
       retrieve(id).then((res) => {
-        for (let i = 0; i < this.roleList.length; i++) {
-          if (res.data.data.id === this.roleList[i].id) {
-            this.roleList[i] = res.data.data
+        for (let i = 0; i < (this as any).roleList.length; i++) {
+          if (res.data.data.id === (this as any).roleList[i].id) {
+            (this as any).roleList[i] = res.data.data;
             break
           }
         }
       })
     },
     resetChecked() {
-      ;(this.$refs['menu'] as ElTree).setCheckedKeys([])
+      ;(this.$refs['menu'] as any).setCheckedKeys([])
     }
   }
 }

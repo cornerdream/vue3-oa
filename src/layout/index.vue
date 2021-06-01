@@ -3,7 +3,7 @@
   <div class="layout">
     <el-container>
       <el-header height="auto"><app-header /></el-header>
-      <el-main><router-view /></el-main>
+      <el-main><router-view :key="$route.name"/></el-main>
     </el-container>
   </div>
 </template>
@@ -12,7 +12,7 @@
 import appHeader from './components/app-header.vue'
 export default {
   name: 'layout',
-  displayName:'default',
+  displayName: 'default',
   components: { appHeader },
   data() {
     return {}
@@ -21,7 +21,7 @@ export default {
   mounted() {}
 }
 </script>
-<style scopted>
+<style scoped>
 .layout {
   min-height: 100vh;
   min-width: 980px;
@@ -36,5 +36,6 @@ export default {
 }
 .layout .el-main {
   flex-grow: 1;
+  padding:0 20px;
 }
 </style>

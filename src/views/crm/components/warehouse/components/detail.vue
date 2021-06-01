@@ -558,6 +558,6 @@ export default {
   margin: 20px;
 }
 .list-contr {
-  margin-left: -30px;
+  margin-left: 20px;
 }
 </style>

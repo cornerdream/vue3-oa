@@ -12,7 +12,9 @@
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item icon="el-icon-plus">{{ username }}</el-dropdown-item>
-              <el-dropdown-item icon="el-icon-circle-plus" @click.native="onLoginOut">退出</el-dropdown-item>
+              <el-dropdown-item icon="el-icon-circle-plus" @click.native="onLoginOut"
+                >退出</el-dropdown-item
+              >
             </el-dropdown-menu>
           </template>
         </el-dropdown>
@@ -22,10 +24,10 @@
           <span class="el-dropdown-link"> 购物车<i class="el-icon-shopping-cart-2"></i> </span>
           <template #dropdown>
             <el-dropdown-menu max-height="200">
-              <el-dropdown-item v-show="cartList.length==0">购物车空空，快添加~</el-dropdown-item>
-              <el-dropdown-item v-for="item in cartList" :key="item" v-show="cartList.length>0">
-                {{item.name}} 
-                <span class="count">{{item.count}}</span>  
+              <el-dropdown-item v-show="cartList.length == 0">购物车空空，快添加~</el-dropdown-item>
+              <el-dropdown-item v-for="item in cartList" :key="item" v-show="cartList.length > 0">
+                {{ item.name }}
+                <span class="count">{{ item.count }}</span>
               </el-dropdown-item>
             </el-dropdown-menu>
           </template>
@@ -36,58 +38,52 @@
 </template>
 
 <script lang="ts">
-import { mapGetters} from 'vuex'
+import { mapGetters } from 'vuex'
 export default {
   name: 'app-top',
   computed: {
-    ...mapGetters([     
-      'id',
-      'username',
-      'email',
-      'image',
-      'cartList' 
-    ]),  
+    ...mapGetters(['id', 'username', 'email', 'image', 'cartList'])
   },
   data() {
-    return {
-    }
+    return {}
   },
   created() {
-    this.loadUserInfo();
-    this.loadCartInfo();
-    this.loadCartProject();
-    this.loadCartBuyer();
+    this.loadUserInfo()
+    this.loadCartInfo()
+    this.loadCartProject()
+    this.loadCartBuyer()
   },
   mounted() {},
   methods: {
-    async loadUserInfo() {     
-      this.$store.dispatch('GetUserInfo').then(() => {}); 
+    async loadUserInfo() {
+      (this as any).$store.dispatch('GetUserInfo').then(() => {})
     },
     async loadCartInfo() {
-      this.$store.dispatch('GetCart').then(() => {});
+      (this as any).$store.dispatch('GetCart').then(() => {})
     },
     async loadCartProject() {
-      this.$store.dispatch('GetProject').then(() => {});
+      (this as any).$store.dispatch('GetProject').then(() => {})
     },
     async loadCartBuyer() {
-      this.$store.dispatch('GetBuyer').then(() => {});
+      (this as any).$store.dispatch('GetBuyer').then(() => {})
     },
     onLoginOut() {
-      this.$confirm('确认退出吗？', '退出提示', {
+      (this as any).$confirm('确认退出吗？', '退出提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(() => {
-          this.$store.dispatch('LogOut').then(() => {
-            this.isLogin = false;
-            this.$router.push('/login');
+      })
+        .then(() => {
+          (this as any).$store.dispatch('LogOut').then(() => {
+            this.$router.push('/login')
           })
-          this.$message({
+          (this as any).$message({
             type: 'success',
             message: '退出成功!'
           })
-        }).catch(() => {
-          this.$message({
+        })
+        .catch(() => {
+          (this as any).$message({
             type: 'info',
             message: '已取消退出'
           })
@@ -96,7 +92,7 @@ export default {
   }
 }
 </script>
-<style scopted>
+<style scoped>
 .app-top {
   padding: 10px;
   display: flex;
@@ -121,7 +117,7 @@ a.active {
   align-items: center;
   margin-right: 20px;
 }
-.count{
+.count {
   display: inline-block;
   margin-left: 10px;
 }

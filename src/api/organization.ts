@@ -1,7 +1,7 @@
 import $axios from '../utils/axios'
 
 // 获取所有的organization
-export function getOrganizationTree(params) {
+export function getOrganizationTree(params:any) {
   return $axios({
     url: 'api/organization/tree/',
     method: 'get',
@@ -17,7 +17,7 @@ export function getOrganizationUserTree() {
   })
 }
 
-export function add(data) {
+export function add(data:any) {
   return $axios({
     url: 'api/organizations/',
     method: 'post',
@@ -25,14 +25,14 @@ export function add(data) {
   })
 }
 
-export function del(id) {
+export function del(id:Number) {
   return $axios({
     url: 'api/organizations/' + id + '/',
     method: 'delete'
   })
 }
 
-export function edit(id, data) {
+export function edit(id:Number, data:any) {
   return $axios({
     url: 'api/organizations/' + id + '/',
     method: 'put',
