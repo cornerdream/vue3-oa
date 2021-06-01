@@ -1,22 +1,20 @@
-/**
- * Created by jiachenpan on 16/11/18.
- */
- import $ from 'jquery'
- export function offset(ele){
-   // 可以获取到 ele 这个元素到body的偏移量
-   let l = ele.offsetLeft,
-       t = ele.offsetTop;// 获取当前元素到父级参照物的偏移量
-   let parent = ele.offsetParent;// 获取父级参照物 
-   while(parent){
-     // 若父级参照物存在；
-     l += (parent.clientLeft||0) + parent.offsetLeft;
-     t += (parent.clientTop||0) + parent.offsetTop;
-     parent = parent.offsetParent;
-   }  
-   return {
-     l,t
-   }
- }
+import $ from 'jquery'
+export function offset(ele){
+  // 可以获取到 ele 这个元素到body的偏移量
+  let l = ele.offsetLeft,
+      t = ele.offsetTop;// 获取当前元素到父级参照物的偏移量
+  let parent = ele.offsetParent;// 获取父级参照物 
+  while(parent){
+    // 若父级参照物存在；
+    l += (parent.clientLeft||0) + parent.offsetLeft;
+    t += (parent.clientTop||0) + parent.offsetTop;
+    parent = parent.offsetParent;
+  }  
+  return {
+    l,t
+  }
+}
+
 export function parseTime(time: string | number | Date) {
   if (time) {
     var date = new Date(time)

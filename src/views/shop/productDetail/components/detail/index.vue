@@ -56,9 +56,9 @@ export default {
       this.$nextTick(()=>{        
         $('.descript').html(this.descript);
         $('.param').html(this.param);
-        const src =  $('.descript').find('img').attr('src')
+        const src =  $('.descript').find('img').attr('src');
         console.log(src)
-        $('.descript').find('img').attr('src','http://192.168.1.218:8000'+src);
+        src.includes('http')?'':$('.descript').find('img').attr('src','http://192.168.1.218:8000'+src);
     })
     }
   },

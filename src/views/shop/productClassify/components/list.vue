@@ -2,13 +2,13 @@
   <div class="list">
     <section id="section">
       <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{ path: '/' }" v-for="item in productTag" :key="item">{{
+        <el-breadcrumb-item  v-for="item in productTag" :key="item" @click.native="onBread(item.id)">{{
           item.name
         }}</el-breadcrumb-item>
         <nav id="choose" v-if="tagShow">
           <el-tag
             :key="tag"
-            v-for="tag in dynamicTags"
+            v-for="tag in productNav"
             closable
             :disable-transitions="false"
             @close="handleClose(tag)"
@@ -105,6 +105,7 @@ export default {
   name: 'list',
   props: {
     productTag: [],
+    productNav:[],
     productFilter: [],
     productList: [],
   },
@@ -113,7 +114,7 @@ export default {
       tagShow: false,
       listShow:true,
       defaultImage: defaultImg,
-      dynamicTags: [],
+      dynamicTags: this.productNav,
       tagData: this.productTag,
       filterData: this.productFilter,
       listData: this.productList,
@@ -126,8 +127,6 @@ export default {
   },
   watch:{
     productList(newVal,oldVal){
-      console.log(newVal,oldVal);
-      console.log(newVal.length);
       if(newVal.length==0){
         this.listShow = false;
       }else{
@@ -143,35 +142,82 @@ export default {
   },
  
   methods: {
+    onBread(id){
+      console.log({ name: 'productClassify', query: { id } });
+      this.$router.push({ name: 'productClassify', query: { id } });      
+      this.query[0]['category_id']=id;   
+      this.$emit('initProductTag', this.query);
+      this.$emit('initProductList', this.query);
+    },
     handleClose(tag:any) {
-      this.dynamicTags.splice(this.dynamicTags.indexOf(tag.name), 1);
-      const itemKey = tag.params;
-      const itemVal = tag.id;
-      const item = {};
-      item[itemKey] = itemVal;
-      this.query.splice(this.query.indexOf(item), 1);
+      console.log(tag);    
+      // this.dynamicTags.splice(this.dynamicTags.indexOf(tag.name), 1);
+      // const itemKey = tag.params;
+      // const itemVal = tag.id;
+      // const item = {};
+      // item[itemKey] = itemVal;
+      console.log(this.query);
+      let oItem = this.query.find((item)=>{
+          return item[tag.params]
+        });
+        console.log(oItem);
+      if(tag.params=='option'){
+        const option = oItem[tag.params];
+        console.log(option);
+        const str = String(option).indexOf(',');
+        console.log(str)
+        if(str>=0){
+          let optionArr = option.split(',');
+          console.log(optionArr);
+          let newArr = optionArr.filter(item=>item!=tag.id);
+          console.log(newArr);
+          let newOption;
+          if(newArr.length==1){
+            newOption = newArr.toString();
+          }else{
+            newOption =newArr.join(',');
+          }
+          console.log(newOption)       
+          oItem[tag.params]=newOption;
+          console.log(this.query)
+        }else{
+          this.query.splice(this.query.indexOf(oItem), 1);
+        }
+      }else{
+        this.query.splice(this.query.indexOf(oItem), 1);
+      } 
+    //  console.log(this.query.indexOf(oItem))  
+      console.log(this.query)
       this.$emit('initProductTag', this.query);
       this.$emit('initProductList', this.query);
       if (this.query.length == 1) {
         this.tagShow = false
       }
     },
-    onAddItem(tag:any, params:any, id:Number) {
-      const obj = {
-        name: tag,
-        params,
-        id
-      };
-      this.dynamicTags.push(obj);
+    onAddItem(tag:any, params:any, id:any) {
+      // const obj = {
+      //   name: tag,
+      //   params,
+      //   id
+      // };
+      // this.dynamicTags.push(obj);
       this.tagShow = true;
+      
       if (params == 'brand') {
         this.query.push({
           brand: id
         });
-      } else {
-        this.query.push({
-          option: id
-        });
+      } else {      
+        const oItem = this.query.find((item)=>{
+          return item['option']
+        })
+        console.log(oItem);
+        if(oItem){
+          oItem['option'] += ','+id
+        }else{
+          let o = {option:id};
+          this.query.push(o);
+        }
       }
       console.log(this.query);
       this.$emit('initProductTag', this.query);

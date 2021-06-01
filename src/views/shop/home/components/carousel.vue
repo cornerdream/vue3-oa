@@ -1,8 +1,8 @@
 <!-- -->
 <template>
   <div class="carousel">
-    <el-carousel :interval="5000" arrow="always">
-      <el-carousel-item v-for="item in images" :key="item">
+    <el-carousel :interval="5000" arrow="always" >
+      <el-carousel-item v-for="item in images" :key="item" >
         
         <img :src="item" >
         
@@ -28,7 +28,7 @@ export default {
   mounted() {}
 }
 </script>
-<style scoped>
+<style >
 .carousel {
   flex: 1;
 }

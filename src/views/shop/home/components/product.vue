@@ -55,7 +55,7 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style lang="scss" scoped>
 .product {
   padding: 20px;
 }

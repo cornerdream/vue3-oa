@@ -3,7 +3,7 @@
   <div class="layout">
     <el-container>
       <el-header height="auto"><app-header /></el-header>
-      <el-main><router-view /></el-main>
+      <el-main><router-view :key="$route.name"/></el-main>
     </el-container>
   </div>
 </template>

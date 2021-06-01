@@ -93,7 +93,8 @@ $axios.interceptors.response.use(
       } else if (status == 403) {
         ElMessage.error('没有权限，请联系管理员')
       } else if (status == 404) {
-        ElMessage.error('请求资源不存在')
+        ElMessage.error('请求资源不存在');
+        this.$router.push('/404')
       } else if (status >= 500) {
         ElMessage.error('服务端错误，请联系管理员')
       } else if (error.request) {

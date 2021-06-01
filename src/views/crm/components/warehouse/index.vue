@@ -1,7 +1,7 @@
 <!--采购单列表 rengaoli 2021/5/18 -->
 <template>
   <div class="personal">
-    <el-table :data="tableData"  height="650" border style="width: 100%;" @row-click="tab">
+    <el-table :data="tableData" border style="width: 100%" height="650" @row-click="tab">
       <el-table-column prop="" type="index" label="序号" width="100"> </el-table-column>
       <el-table-column prop="name" label="名称" width="180">
         <template #default="scope">

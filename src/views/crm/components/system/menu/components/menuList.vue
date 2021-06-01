@@ -91,7 +91,6 @@ export default {
       };
       this.menuId = item.id;
       (this as any).$refs.form.dialogVisible = true;
-      console.log(this.$refs.form.dialogVisible,'fjdfjljklg')
     },
     handleDelete(item: any) {
       this.$confirm('确认删除吗？', '删除提示', {

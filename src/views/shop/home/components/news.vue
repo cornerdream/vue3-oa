@@ -70,6 +70,7 @@ export default {
       (this as any).$store.dispatch('GetProductTree').then(() => {})
     },
     onClick(id:any) {
+      console.log({ name: 'productClassify', query: { id } });
       this.$router.push({ name: 'productClassify', query: { id } })
     }
   }

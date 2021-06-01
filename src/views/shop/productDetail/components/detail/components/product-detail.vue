@@ -124,7 +124,8 @@ export default {
       dialogFormVisible: false,
       value1: '',
       value2: '',
-      value3: ''
+      value3: '',
+      selectQuery:this.$route.query
     }
   },
   created() {
@@ -193,8 +194,22 @@ export default {
       if($(aNode).attr('disabled') !== 'disabled') {
         $(aNode).addClass('select');
         $(aNode).siblings().removeClass('select');
+        // (this as any).$route.query.id = id;
+        // let selectQuery=this.$route.query
+        // console.log(selectQuery);
+        let newQuery= JSON.parse(JSON.stringify(this.$route.query));
+        newQuery.id = id;
+        // console.log({ name: 'productDetail', query:this.selectQuery });
+        this.$router.replace({
+          query: newQuery
+        })
+        // this.$router.push({ name: 'productDetail', query:this.selectQuery})
         this.$emit('initDetail',id);
-        (this as any).$route.query.id = id;
+       
+        
+       
+        
+        
       }  
     },
     onCart() {

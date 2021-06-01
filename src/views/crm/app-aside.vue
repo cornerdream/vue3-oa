@@ -1,4 +1,3 @@
-<!-- -->
 <template>
   <div class="aside" style="height: 100%">
     <el-menu
@@ -56,6 +55,4 @@ export default {
   }
 }
 </script>
-<style scoped>
-
-</style>
+<style scoped></style>

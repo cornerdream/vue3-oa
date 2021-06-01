@@ -9,6 +9,7 @@ import Layout from '../layout/index.vue'
 import crm from '../views/crm/index.vue'
 
 const Login = () => import(/*webpackChunkName:'login'*/ '../components/login/index.vue')
+const Page404 = () => import(/*webpackChunkName:'login'*/ '../components/404/index.vue')
 /*
  *商城
  */
@@ -72,6 +73,11 @@ const routes: Array<RouteRecordRaw> = [
         name: 'home',
         component: Home,
         meta: { title: '首页', icon: 'index', noCache: true }
+      },
+      {
+        path: '/404',
+        name: 'page404',
+        component: Page404,      
       },
       {
         path: '/productClassify',
