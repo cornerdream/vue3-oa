@@ -57,63 +57,56 @@ export default {
   mounted() {},
   methods: {
     cancel() {
-      this.resetForm()
+      this.resetForm();
     },
     async onSubmit() {
-      await (this.$refs.form as any).validate()
-
-      this.loading = true
-      console.log(this.isAdd)
+      await (this.$refs.form as any).validate();
+      this.loading = true;
       if (this.isAdd) {
-        console.log('add')
-        this.onAdd()
+        this.onAdd();
       } else {
-        console.log('edit')
-        this.onEdit()
+        this.onEdit();
       }
     },
     onAdd() {
-      console.log(this.form)
       add(this.form)
         .then((res) => {
-          console.log(res)
-          this.resetForm()
-          this.$message({
+          this.resetForm();
+          (this as any).$message({
             showClose: true,
             type: 'success',
             message: '添加成功!',
             duration: 2500
           })
-          this.loading = false
-          this.sup_this.loadRoles()
+          this.loading = false;
+          this.sup_this.loadRoles();
         })
         .catch((err) => {
-          this.loading = false
+          this.loading = false;
           console.log(err)
         })
     },
     onEdit() {
-      console.log(this.rowId)
       edit(this.rowId, this.form)
         .then((res) => {
-          this.resetForm()
-          this.$message({
+          this.resetForm();
+          (this as any).$message({
             showClose: true,
             type: 'success',
             message: '修改成功!',
             duration: 2500
           })
-          this.loading = false
-          this.$parent.$parent.loadRoles()
+          this.loading = false;
+          (this as any).$parent.$parent.loadRoles();
         })
         .catch((err) => {
-          this.loading = false
+          this.loading = false;
           console.log(err)
         })
     },
     resetForm() {
-      this.dialogVisible = false
-      this.$refs.form.resetFields()
+      this.dialogVisible = false;
+      (this as any).$refs.form.resetFields();
       this.form = {
         name: '',
         sort: 999,

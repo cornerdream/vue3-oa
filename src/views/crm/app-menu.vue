@@ -5,8 +5,8 @@
       <el-submenu
         v-if="item.children && item.children.length > 0"
         :key="item.id"
-        :index="item.path">
-        
+        :index="item.path"
+      >
         <template #title>
           <i :class="`iconfont icon-${item.meta.icon}`"></i>
           <span>{{ item.name }}</span>
@@ -24,9 +24,7 @@
 <script lang="ts">
 export default {
   name: 'appMenu',
-  components: {
-    
-  },
+  components: {},
   props: {
     menuList: {}
   },

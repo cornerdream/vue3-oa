@@ -3,68 +3,6 @@
   <div class="approving">
     <div class="appcontent">
       <h4>待我审批</h4>
-      <!-- <ul class="app-ul">
-        <li>
-          <span>提交时间</span>
-          <el-select size="mini" v-model="search" placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select>
-        </li>
-        <li>
-          <span>申请类型</span>
-          <el-select size="mini" v-model="ordering" placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select>
-        </li>
-        <li>
-          <span>申请人</span>
-          <el-select size="mini" v-model="page" placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select>
-        </li>
-        <li>
-          <span>详细筛选</span>
-          <el-select size="mini" v-model="size" placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select>
-        </li>
-        <li>
-          <span>是否已完成</span>
-          <el-select size="mini" v-model="value" placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select>
-        </li>
-      </ul> -->
       <div class="flow-content infinite-list-wrapper" style="overflow: auto">
         <div
           class="app-list"
@@ -100,7 +38,7 @@
           </div>
         </div>
         <p v-if="loading">加载中...</p>
-        <p v-if="noMore">没有更多了</p>
+        <p v-if="noMore">没有更多了</p> 
       </div>
     </div>
     <div class="apprconte">
@@ -196,25 +134,6 @@
                 </div>
               </div>
             </div>
-            <!-- <div class="app-alls">
-              <p class="font">审批意见：</p>
-              <el-input
-                class="textarea"
-                type="textarea"
-                :rows="4"
-                placeholder="请输入内容"
-                v-model="apply_comment"
-              >
-              </el-input>
-              <div class="app-btn">
-                <el-button type="success" size="mini" @click="agree"
-                  >同意</el-button
-                >
-                <el-button type="danger" size="mini" @click="refuse"
-                  >拒绝</el-button
-                >
-              </div>
-            </div> -->
           </div>
           <div class="app-alls">
             <p class="font">审批意见：</p>
@@ -394,15 +313,17 @@ export default {
 </script>
 <style scoped>
 .approving {
-  display: flex;
-  box-sizing: border-box;
   text-align: center;
   background: #fff;
-  height: 848px;
+  display: flex;
+}
+.approving::-webkit-scrollbar {
+  width: 0px;
+  background: none;
 }
 .appcontent {
   width: 25%;
-  border-right: 1px solid #000;
+  border-right: 1px solid #ccc;
 }
 .appcontent > h4 {
   font-size: 24px;
@@ -415,17 +336,15 @@ export default {
 .app-ul {
   display: flex;
   justify-content: space-around;
-  margin: 20px;
 }
 .app-ul li {
   flex: 1;
   width: 100px;
-  padding: 5px;
 }
 .flow-content {
-  height: 787px;
+  height:770px;
   overflow: auto;
-  margin-top: -34px;
+  margin-top:20px;
 }
 
 .flow-content::-webkit-scrollbar {
@@ -435,13 +354,13 @@ export default {
 .app-list {
   display: flex;
   border-bottom: 1px solid #ccc;
+  align-items: center;
 }
 .user {
   margin: 10px;
 }
 .list-cont {
   text-align: left;
-  margin-left: -40px;
 }
 .list-cont ul li span:nth-child(1) {
   width: 60px;
@@ -504,7 +423,7 @@ export default {
   font-weight: 600;
 }
 .list-contr {
-  margin-left: -44px;
+  /* margin-left: -44px; */
 }
 .first {
   width: 200px;

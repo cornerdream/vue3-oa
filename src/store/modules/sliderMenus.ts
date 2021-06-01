@@ -6,7 +6,7 @@ const user = {
   },
 
   mutations: {
-    SET_USERMENU: (state, userMenu) => {
+    SET_USERMENU: (state:any, userMenu:any) => {
       state.userMenu = userMenu
       // window.localStorage.setItem('userMenu',userMenu);
     }
@@ -14,7 +14,7 @@ const user = {
 
   actions: {
     // 获取菜單信息
-    GetUserMenu({ commit }) {
+    GetUserMenu({ commit }:any) {
       return new Promise((resolve, reject) => {
         getUserMenu()
           .then((res) => {

@@ -68,59 +68,57 @@
   </div>
 </template>
 
-<script  >
+<script>
 export default {
-  name: "infortion",
+  name: 'infortion',
   data() {
     return {
       ruleForm: {
-        name: "",
-        region: "",
+        name: '',
+        region: ''
       },
       rules: {
         name: [
-          { required: true, message: "请输入活动名称", trigger: "blur" },
-          { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" },
+          { required: true, message: '请输入活动名称', trigger: 'blur' },
+          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         ],
-        region: [
-          { required: true, message: "请选择活动区域", trigger: "change" },
-        ],
+        region: [{ required: true, message: '请选择活动区域', trigger: 'change' }]
       },
-      formInline: { region: "" },
-      imageUrl: "",
-    };
+      formInline: { region: '' },
+      imageUrl: ''
+    }
   },
   methods: {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert("submit!");
+          alert('submit!')
         } else {
-          console.log("error submit!!");
-          return false;
+          console.log('error submit!!')
+          return false
         }
-      });
+      })
     },
     resetForm(formName) {
-      this.$refs[formName].resetFields();
+      this.$refs[formName].resetFields()
     },
     handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
+      this.imageUrl = URL.createObjectURL(file.raw)
     },
     beforeAvatarUpload(file) {
-      const isJPG = file.type === "image/jpeg";
-      const isLt2M = file.size / 1024 / 1024 < 2;
+      const isJPG = file.type === 'image/jpeg'
+      const isLt2M = file.size / 1024 / 1024 < 2
 
       if (!isJPG) {
-        this.$message.error("上传头像图片只能是 JPG 格式!");
+        this.$message.error('上传头像图片只能是 JPG 格式!')
       }
       if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 2MB!");
+        this.$message.error('上传头像图片大小不能超过 2MB!')
       }
-      return isJPG && isLt2M;
-    },
-  },
-};
+      return isJPG && isLt2M
+    }
+  }
+}
 </script>
 
 <style scoped>

@@ -47,8 +47,7 @@ export default {
       activeIndex: 'me'
     }
   },
-  created() {
-  },
+  created() {},
   mounted() {},
   methods: {
     handleSelect(key, keyPath) {

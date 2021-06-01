@@ -1,7 +1,22 @@
 /**
  * Created by jiachenpan on 16/11/18.
  */
-
+ import $ from 'jquery'
+ export function offset(ele){
+   // 可以获取到 ele 这个元素到body的偏移量
+   let l = ele.offsetLeft,
+       t = ele.offsetTop;// 获取当前元素到父级参照物的偏移量
+   let parent = ele.offsetParent;// 获取父级参照物 
+   while(parent){
+     // 若父级参照物存在；
+     l += (parent.clientLeft||0) + parent.offsetLeft;
+     t += (parent.clientTop||0) + parent.offsetTop;
+     parent = parent.offsetParent;
+   }  
+   return {
+     l,t
+   }
+ }
 export function parseTime(time: string | number | Date) {
   if (time) {
     var date = new Date(time)
@@ -108,8 +123,8 @@ export function regMobile(mobile: string) {
   }
   return new_mobile
 }
-//日期转时间戳   2021/5/21
-export function transdate(time: any) {
+  //日期转时间戳   2021/5/21
+export function transdate(time:any){
   var date = new Date();
   date.setFullYear(time.substring(0, 4));
   date.setMonth(time.substring(5, 7) - 1);
@@ -121,24 +136,24 @@ export function transdate(time: any) {
 }
 // 转换时间戳，获取年月日-时分秒  2021/5/21
 export function timestampToTime(timestamp: any) {
-  var date = new Date(Number(timestamp) * 1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+  var date = new Date(Number(timestamp)*1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
   var Y = date.getFullYear() + '-';
-  var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
-  var D = (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) + ' ';
-  var h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
-  var m = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
-  var s = (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds());
-
-  var strDate = Y + M + D;
+  var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+  var D = (date.getDate() < 10 ? '0'+date.getDate() : date.getDate()) + ' ';
+  var h = (date.getHours() < 10 ? '0'+date.getHours() : date.getHours()) + ':';
+  var m = (date.getMinutes() < 10 ? '0'+date.getMinutes() : date.getMinutes()) + ':';
+  var s = (date.getSeconds() < 10 ? '0'+date.getSeconds() : date.getSeconds());
+  
+  var strDate = Y+M+D;
   return strDate;//2020-07-30 01:05:54  
 }
 //标准时间转为时间戳
-export function dateToMs(date: any) {
+export function dateToMs (date: any) {
   let result = new Date(date).getTime();
   return result;
 }
 //实现方法 @return 返回2个值，一个是带时分秒，另一个不带。
-export function msToDate(msec: any) {
+export function msToDate (msec: any) {
   let datetime = new Date(msec);
   let year = datetime.getFullYear();
   let month = datetime.getMonth();
@@ -147,42 +162,42 @@ export function msToDate(msec: any) {
   let minute = datetime.getMinutes();
   let second = datetime.getSeconds();
   let result1 = year +
-    '-' +
-    ((month + 1) >= 10 ? (month + 1) : '0' + (month + 1)) +
-    '-' +
-    ((date + 1) < 10 ? '0' + date : date) +
-    ' ' +
-    ((hour + 1) < 10 ? '0' + hour : hour) +
-    ':' +
-    ((minute + 1) < 10 ? '0' + minute : minute) +
-    ':' +
-    ((second + 1) < 10 ? '0' + second : second);
+               '-' +
+               ((month + 1) >= 10 ? (month + 1) : '0' + (month + 1)) +
+               '-' +
+               ((date + 1) < 10 ? '0' + date : date) +
+               ' ' +
+               ((hour + 1) < 10 ? '0' + hour : hour) +
+               ':' +
+               ((minute + 1) < 10 ? '0' + minute : minute) +
+               ':' +
+               ((second + 1) < 10 ? '0' + second : second);
   let result2 = year +
-    '-' +
-    ((month + 1) >= 10 ? (month + 1) : '0' + (month + 1)) +
-    '-' +
-    ((date + 1) < 10 ? '0' + date : date);
+               '-' +
+               ((month + 1) >= 10 ? (month + 1) : '0' + (month + 1)) +
+               '-' +
+               ((date + 1) < 10 ? '0' + date : date);
   let result = {
-    hasTime: result1,
-    withoutTime: result2
+      hasTime: result1,
+      withoutTime: result2
   };
   return result;
 }
 
-export function toDecimal2(x: any) {
+export function toDecimal2(x:any) {    
   var f = parseFloat(x);   //将字符串转换为浮点型    
   if (isNaN(f)) {       //isNaN() 函数用于检查其参数是否是非数字值。
-    return false;
-  }
-  var f = Math.round(x * 100) / 100;
-  var s = f.toString();
-  var rs = s.indexOf('.');
-  if (rs < 0) {
-    rs = s.length;
-    s += '.';
-  }
-  while (s.length <= rs + 2) {
-    s += '0';
-  }
-  return s;
-}
+      return false;    
+  }    
+  var f = Math.round(x*100)/100;    
+  var s = f.toString();    
+  var rs = s.indexOf('.');    
+  if (rs < 0) {    
+      rs = s.length;    
+      s += '.';    
+  }    
+  while (s.length <= rs + 2) {    
+      s += '0';    
+  }    
+  return s;    
+} 

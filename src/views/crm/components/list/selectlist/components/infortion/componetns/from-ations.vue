@@ -13,11 +13,7 @@
           <el-row>
             <el-col :span="8">
               <el-form-item label="规格" prop="color">
-                <el-select
-                  v-model="ruleForm.value"
-                  clearable
-                  placeholder="颜色"
-                >
+                <el-select v-model="ruleForm.value" clearable placeholder="颜色">
                   <el-option
                     v-for="item in options"
                     :key="item.value"
@@ -30,11 +26,7 @@
             </el-col>
             <el-col :span="8">
               <el-form-item label="规格" prop="colors">
-                <el-select
-                  v-model="ruleForm.value1"
-                  multiple
-                  placeholder="红色"
-                >
+                <el-select v-model="ruleForm.value1" multiple placeholder="红色">
                   <el-option
                     v-for="item in options"
                     :key="item.value"
@@ -74,57 +66,52 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-button type="primary" size="small" @click="fnadd"
-            >添加规格</el-button
-          >
+          <el-button type="primary" size="small" @click="fnadd">添加规格</el-button>
         </div>
       </el-form>
     </div>
   </div>
 </template>
 
-<script  >
+<script>
 export default {
-  name: "from-ations",
+  name: 'from-ations',
   data() {
     return {
       options: [
         {
-          value: "选项1",
-          label: "黄金糕",
+          value: '选项1',
+          label: '黄金糕'
         },
         {
-          value: "选项2",
-          label: "双皮奶",
+          value: '选项2',
+          label: '双皮奶'
         },
         {
-          value: "选项3",
-          label: "蚵仔煎",
+          value: '选项3',
+          label: '蚵仔煎'
         },
         {
-          value: "选项4",
-          label: "龙须面",
+          value: '选项4',
+          label: '龙须面'
         },
         {
-          value: "选项5",
-          label: "北京烤鸭",
-        },
+          value: '选项5',
+          label: '北京烤鸭'
+        }
       ],
       ruleForm: {
-        value: "",
-        value1: "",
-        rgb: "",
-        rgbs: "",
-        
-      },
-    };
+        value: '',
+        value1: '',
+        rgb: '',
+        rgbs: ''
+      }
+    }
   },
   methods: {
-    fnadd() {
-      
-    },
-  },
-};
+    fnadd() {}
+  }
+}
 </script>
 
 <style scoped>

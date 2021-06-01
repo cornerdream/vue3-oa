@@ -52,22 +52,25 @@ export default {
     async onLogin() {
       try {
         await (this.$refs.form as any).validate();
-        this.isLoginLoading = true;        
-        this.$store.dispatch('Login', this.form).then(() => {
-            this.isLoginLoading = false
-            this.$router.push((this.$route.query.redirect as string) || '/')
-        }).catch(() => {
-            this.isLoginLoading = false
+        this.isLoginLoading = true;
+        (this as any).$store
+          .dispatch('Login', this.form)
+          .then(() => {
+            this.isLoginLoading = false;
+            this.$router.push((this.$route.query.redirect as string) || '/');
           })
-      }catch (error) {
+          .catch(() => {
+            this.isLoginLoading = false;
+          })
+      } catch (error) {
         console.log(error);
       }
-      this.isLoginLoading = false
+      this.isLoginLoading = false;
     }
   }
 }
 </script>
-<style scopted>
+<style scoped>
 .login {
   height: 100vh;
   display: flex;
