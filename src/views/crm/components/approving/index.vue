@@ -85,7 +85,7 @@
                   <p>
                     <span>部门</span> ：<span>{{ order.department.name }}</span>
                   </p>
-                  <p><span>总价</span> ： <span>{{}}</span></p>
+                  <p><span>总价</span> ： <span>{{order.total_amount}}</span></p>
                 </div>
               </div>
             </div>

@@ -94,7 +94,7 @@
           <div class="app-argent">
             <div class="app-all">
               <div class="app-conts">
-                <div class="app-listCard" v-for="(item, index) in form.workflowtask" :key="index">
+                <div class="app-listCard" v-for="(item, index) in form.workflowtask" :key="index"  :class="[index == 0 ? 'first' : '']">
                   <div class="user">
                     <div class="block">
                       <el-avatar :size="50" :src="item.appro_user.image"></el-avatar>
@@ -118,43 +118,43 @@
         </div>
       </div>
       <el-table :data="form.line" border style="width: 100%; margin: 20px">
-        <el-table-column prop="" type="index" label="序号" width="50"> </el-table-column>
-        <el-table-column prop="sku" label="产品" width="180">
+        <el-table-column prop="" type="index" label="序号" width="80"> </el-table-column>
+        <el-table-column prop="sku" label="产品" width="330">
           <template #default="scope">
             <span>{{ scope.row.sku ? scope.row.sku.name : '' }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="count" label="订购数量">
+        <el-table-column prop="count" label="订购数量" width="100">
           <template #default="scope">
             {{ scope.row.count ? scope.row.count : '' }}
           </template>
         </el-table-column>
-        <el-table-column prop="price" label="单价" width="140">
+        <el-table-column prop="price" label="单价" width="100">
           <template #default="scope">
             <span>{{ scope.row.price ? scope.row.price : '' }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="uom" label="单位" width="50">
+        <el-table-column prop="uom" label="单位" width="100">
           <template #default="scope">
             {{ scope.row.uom ? scope.row.uom.name : '' }}
           </template></el-table-column
         >
-        <el-table-column prop="total_amount" label="合计">
+        <el-table-column prop="total_amount" label="合计" width="100">
           <template #default="scope">
             {{ scope.row.total_amount ? scope.row.total_amount : '' }}
           </template></el-table-column
         >
-        <el-table-column prop="freight" label="运费" width="140">
+        <el-table-column prop="freight" label="运费" width="150">
           <template #default="scope">
             <span> {{ scope.row.freight ? scope.row.freight : '' }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="real_total_amount" label="实际总价">
+        <el-table-column prop="real_total_amount" label="实际总价" width="150">
           <template #default="scope">
             {{ scope.row.real_total_amount ? scope.row.real_total_amount : '' }}
           </template>
         </el-table-column>
-        <el-table-column prop="estimated_arrival_date" label="预计到货日期" width="200">
+        <el-table-column prop="estimated_arrival_date" label="预计到货日期" >
           <template #default="scope">
             <span>
               {{ scope.row.estimated_arrival_date ? scope.row.estimated_arrival_date : '' }}
@@ -243,7 +243,6 @@ export default {
         this.form.states = data.data.states.slice(0, 5)
         this.form.state = data.data.state[0]
         this.form.name = data.data.name
-        console.log(data.data)
       }
     },
     async submit() {
@@ -256,7 +255,6 @@ export default {
         this.form.states = data.data.states.slice(0, 5)
         this.form.state = data.data.state[0]
         this.form.crumnNames = data.data.name
-        console.log(data.data)
       }
     },
     async roolback() {
@@ -269,7 +267,6 @@ export default {
         this.form.states = data.data.states.slice(0, 5)
         this.form.state = data.data.state[0]
         this.form.name = data.data.name
-        console.log(data.data)
       }
     },
     async draft() {
@@ -282,33 +279,27 @@ export default {
         this.form.states = data.data.states.slice(0, 5)
         this.form.state = data.data.state[0]
         this.form.crumnNames = data.data.name
-        console.log(data.data)
       }
     },
     handleEdit(item) {
       const vm = this.$refs.form
-      console.log(item, 'item')
       vm.form = {
-        line: {
-          id: item.id,
-          price: item.price,
-          freight: item.freight,
-          estimated_arrival_date: item.estimated_arrival_date,
-          sku: item.sku.name
-        },
+        id: item.id,
+        price: item.price,
+        freight: item.freight,
+        estimated_arrival_date: item.estimated_arrival_date,
+        sku: item.sku,
         department: this.form.department,
         project: this.form.project,
         supplier: this.form.supplier
       }
       this.$refs.form.is_deleted = true
-      console.log(this.flag, vm.form, this.form.department)
     },
     getMsgFormSon(data) {
       this.form = data
       this.form.states = data.states.slice(0, 5)
       this.form.state = data.state[0]
       this.form.crumnNames = data.name
-      console.log(this.form, '船只')
     }
   }
 }
@@ -326,7 +317,7 @@ export default {
   background: none;
 }
 .detail-box {
-  width: 1500px;
+  width: 1400px;
   margin: 0 auto;
 }
 .detail-head {
@@ -398,11 +389,19 @@ export default {
   display: flex;
   align-items: center;
   margin: 20px;
+  padding: 5px;
 }
 .app-conts {
   margin: 20px;
 }
 .list-contr {
   margin-left: 20px;
+}
+.first {
+  width: 200px;
+  height: 80px;
+  background: cornflowerblue;
+  border-radius: 10px;
+  color: #fff;
 }
 </style>

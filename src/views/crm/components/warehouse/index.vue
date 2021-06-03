@@ -70,12 +70,10 @@ export default {
         } else {
           this.tableData = res.data.data
         }
-        console.log('resssss', res.data.data)
       })
     },
       tab(item: { id: any }) {
         this.$router.push({ path: '/detail', query: { id: item.id } })
-        console.log('fjhf')
     }
   }
 }

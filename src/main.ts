@@ -10,8 +10,6 @@ import 'element-plus/lib/theme-chalk/index.css'
 import './styles/index.scss'
 import './icons/iconfont.css'
 // import './permission'
+import locale from 'element-plus/lib/locale/lang/zh-cn'  //DatePicker显示中文
 
-
-
-
-createApp(App).use(router).use(store).use(elementplus).mount('#app')
+createApp(App).use(router).use(store).use(elementplus, { locale }).mount('#app')
