@@ -13,13 +13,13 @@
     </div>
     <menuList
       :menuList="menus"
-      :menus="menusTree"
+      :menus="menus"
       :total="total"
       :query="filterParams"
       @initList="loadMenus"
     />
 
-    <createOrEdit ref="form" :menus="menusTree" :is-add="true" :sup_this="sup_this" />
+    <createOrEdit ref="form" :menus="menus" :is-add="true" :sup_this="sup_this" />
   </div>
 </template>
 
@@ -37,7 +37,6 @@ export default {
   data() {
     return {
       menus: [],
-      menusTree: [],
       total: '',
       sup_this: this,
       filterParams: {
@@ -49,22 +48,12 @@ export default {
     }
   },
   created() {
-    this.loadMenusTree()
     this.loadMenus()
   },
   mounted() {},
   methods: {
-    async loadMenusTree() {
-      const { data } = await getMenuTree()
-      console.log(data)
-      if (data.code !== 200) {
-        ElMessage.error(data.error)
-      } else {
-        this.menusTree = data.data.results
-        this.total = data.data.count
-      }
-    },
     async loadMenus() {
+      console.log('1');
       const { data } = await getMenus(this.filterParams);
       if (data.code !== 200) {
         ElMessage.error(data.error)

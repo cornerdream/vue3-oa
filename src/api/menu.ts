@@ -18,6 +18,7 @@ export function getMenus(params:any) {
 }
 //菜单新增
 export function add(data:any) {
+  console.log(data);
   return $axios({
     url: 'api/menus/',
     method: 'post',

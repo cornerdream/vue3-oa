@@ -41,7 +41,7 @@
       <div class="goods_num">
         <div class="num_name">数 量：</div>
         <div class="num_add">
-          <el-input-number size="mini" v-model="num"></el-input-number>
+          <el-input-number size="mini" v-model="num" :min="1"></el-input-number>
         </div>
       </div>
       <div class="type_select" v-for="(item, index) in productParam" :key="item.id">
@@ -96,6 +96,15 @@
         </span>
       </template>
     </el-dialog>
+    <el-dialog title="购物车加入错误" v-model="dialogErrorVisible">
+      <el-result icon="error" title="错误提示" :subTitle="error">
+        <template #extra>
+          <el-button type="primary" size="medium" @click="dialogErrorVisible = false"
+            >返回</el-button
+          >
+        </template>
+      </el-result>
+    </el-dialog>
   </div>
 </template>
 
@@ -122,6 +131,8 @@ export default {
       checked: false,
       num: 1,
       dialogFormVisible: false,
+      dialogErrorVisible: false,
+      error:'',
       value1: '',
       value2: '',
       value3: '',
@@ -216,13 +227,26 @@ export default {
       this.dialogFormVisible = true;
     },
     onSubmit() {
-      this.dialogFormVisible = false;
+      
       (this as any).$store.dispatch('Save', {
         sku_id: this.productInfo.id,
         count: this.num,
         buyer: this.value1,
         notes: this.value2,
         project: this.value3
+      }).then(()=>{
+        (this as any).$message({
+            showClose: true,
+            type: 'success',
+            message: '加入成功!',
+            duration: 2500
+          })
+          this.dialogFormVisible = false;
+      }).catch((err)=>{
+            this.dialogErrorVisible = true
+            this.error = err;
+            this.dialogFormVisible = false;
+            Promise.reject(err);      
       })
     }
   }

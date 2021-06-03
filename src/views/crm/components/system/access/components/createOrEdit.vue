@@ -18,7 +18,8 @@
         </el-form-item>
         <el-form-item style="margin-bottom: 0px" label="父级组织">
           <el-cascader
-            :options="access"
+            v-model="form.pid"
+            :options="menus"
             :props="defaultProps"
             :show-all-levels="false"
             style="width: 460px"
@@ -44,10 +45,6 @@ export default {
       type: Array,
       required: true
     },
-    access: {
-      type: Array,
-      required: true
-    },
     isAdd: {
       type: Boolean,
       required: true
@@ -66,6 +63,7 @@ export default {
       loading: false,
       dialogVisible: false,
       defaultProps: {
+        checkStrictly: true,
         children: 'children',
         label: 'name',
         value: 'id'
@@ -100,6 +98,11 @@ export default {
       }
     },
     onAdd() {
+      console.log(this.form.pid);
+      if(Array.isArray(this.form.pid)){  
+        this.form.pid=this.form.pid[this.form.pid.length-1].toString();   
+      };
+      console.log(this.form);
       add(this.form)
         .then((res) => {
           this.resetForm();
@@ -117,6 +120,13 @@ export default {
         })
     },
     onEdit() {
+       console.log(this.form.pid);
+      if(Array.isArray(this.form.pid)){      
+        this.form.pid=this.form.pid[this.form.pid.length-1].toString();  
+      }else{
+        this.form.pid = null;
+      }
+      console.log(this.form);    
       edit(this.rowId, this.form)
         .then((res) => {
           this.resetForm();

@@ -38,7 +38,6 @@
   </el-pagination> -->
     <createOrEdit
       ref="form"
-      :menus="organizeList"
       :organize="organize"
       :is-add="false"
       :row-id="organizeId"
@@ -62,13 +61,15 @@ export default {
   },
   data() {
     return {
-      organizeId: 0
+      organizeId: 0,
+      selectedOptions:[],
     }
   },
   created() {},
   mounted() {},
   methods: {
     handleEdit(item: any) {
+      console.log(item);
       const _this = (this as any).$refs.form;
       _this.form = {
         id: item.id,
@@ -86,10 +87,13 @@ export default {
         type: 'warning',
         center: true
       })
-        .then(async () => {
-          const { data } = await del(item.id);
-          (this as any).$message.success('删除成功')
-          (this as any).$emit('initList') // 更新数据列表
+        .then(() => {
+          del(item.id).then(()=>{
+            (this as any).$message.success('删除成功');
+            (this as any).$emit('initList') // 更新数据列表
+          });
+          
+          
         })
         .catch((err) => {
           (this as any).$message.info('已取消删除')

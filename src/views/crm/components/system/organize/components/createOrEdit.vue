@@ -18,11 +18,14 @@
         </el-form-item>
         <el-form-item style="margin-bottom: 0px" label="父级组织">
           <el-cascader
+            :key="refreshItem"
+            v-model="form.pid"
             :options="organize"
             :props="defaultProps"
             :show-all-levels="false"
             style="width: 460px"
             placeholder="请选择父级菜单"
+            @change="handleChange"
           ></el-cascader>
         </el-form-item>
       </el-form>
@@ -36,14 +39,10 @@
 
 <script lang="ts">
 import { add, edit } from '../../../../../../api/organization'
-
+import {toRaw} from 'vue'
 export default {
   name: 'createOrEdit',
   props: {
-    menus: {
-      type: Array,
-      required: true
-    },
     organize: {
       type: Array,
       required: true
@@ -63,9 +62,11 @@ export default {
   },
   data() {
     return {
+      refreshItem:0,
       loading: false,
       dialogVisible: false,
       defaultProps: {
+        checkStrictly: true,
         children: 'children',
         label: 'name',
         value: 'id'
@@ -87,6 +88,10 @@ export default {
   created() {},
   mounted() {},
   methods: {
+    handleChange(item:any){
+      console.log(item);      
+      console.log(this.form.pid);
+    },
     cancel() {
       this.resetForm()
     },
@@ -100,6 +105,11 @@ export default {
       }
     },
     onAdd() {
+      console.log(this.form.pid);
+      if(Array.isArray(this.form.pid)){  
+        this.form.pid=this.form.pid[this.form.pid.length-1].toString();   
+      };
+      console.log(this.form);
       add(this.form)
         .then((res) => {
           this.resetForm();
@@ -117,6 +127,13 @@ export default {
         })
     },
     onEdit() {
+      console.log(this.form.pid);
+      if(Array.isArray(this.form.pid)){      
+        this.form.pid=this.form.pid[this.form.pid.length-1].toString();  
+      }else{
+        this.form.pid = null;
+      }
+      console.log(this.form);     
       edit(this.rowId, this.form)
         .then((res) => {
           this.resetForm();
@@ -138,6 +155,7 @@ export default {
       this.dialogVisible = false;
       (this as any).$refs.form.resetFields();
       this.form = { name: '', type: '', pid: null };
+      this.refreshItem++;
     },
     selected(name:any) {
       (this.form as any).icon = name

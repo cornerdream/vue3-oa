@@ -59,7 +59,7 @@ export default {
       Loading: false,
       defaultProps: {
         children: 'children',
-        label: 'label'
+        label: 'name'
       }
     }
   },

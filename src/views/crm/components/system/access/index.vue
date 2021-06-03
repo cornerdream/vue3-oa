@@ -13,13 +13,13 @@
     </div>
     <accessList
       :accessList="accessList"
-      :access="access"
+      :menus="accessList"
       :total="total"
       :query="filterParams"
       @initList="loadAccess"
     />
 
-    <createOrEdit ref="form" :access="accesss" :is-add="true" :sup_this="sup_this" />
+    <createOrEdit ref="form" :menus="accessList" :is-add="true" :sup_this="sup_this" />
   </div>
 </template>
 
@@ -37,7 +37,7 @@ export default {
   data() {
     return {
       accessList: [],
-      access: [],
+      // access: [],
       total: '',
       sup_this: this,
       filterParams: {
@@ -58,7 +58,8 @@ export default {
       if (data.code !== 200) {
         ElMessage.error(data.error)
       } else {
-        this.accessList = data.data.results
+        this.accessList = data.data.results;
+        // this.access = data.data.results;
         this.total = data.data.count
       }
     },

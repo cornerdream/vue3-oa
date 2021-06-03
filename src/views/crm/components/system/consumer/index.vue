@@ -26,6 +26,7 @@
     />
     <createOrEdit
       ref="form"
+      :select="selectedOptions"
       :menus="userList"
       :roles="roles"
       :organizations="organizations"
@@ -51,6 +52,7 @@ export default {
   },
   data() {
     return {
+      selectedOptions:[],  
       roles: [], //角色
       organizations: [], //部门
       orgusers: [], //上级主管

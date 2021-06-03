@@ -37,7 +37,6 @@
     <createOrEdit
       ref="form"
       :menus="accessList"
-      :access="access"
       :is-add="false"
       :row-id="accessId"
     />
@@ -54,7 +53,7 @@ export default {
   },
   props: {
     accessList: [],
-    access: [],
+    // access: [],
     total: 0,
     query: {}
   },
@@ -67,10 +66,12 @@ export default {
   mounted() {},
   methods: {
     handleEdit(item: any) {
+      console.log(item);
       const _this = (this as any).$refs.form;
       _this.form = {
         id: item.id,
-        name: item.name
+        name: item.name,
+        pid: item.pid
       };
       (this as any).accessId = item.id;
       (this as any).$refs.form.dialogVisible = true;
@@ -82,10 +83,13 @@ export default {
         type: 'warning',
         center: true
       })
-        .then(async () => {          
-          const { data } = await del(item.id);
-          (this as any).$message.success('删除成功')
-          (this as any).$emit('initList') // 更新数据列表
+        .then(() => {   
+           del(item.id).then(()=>{
+            (this as any).$message.success('删除成功');
+            (this as any).$emit('initList') // 更新数据列表
+          });       
+         
+          
         })
         .catch((err:any) => {
           (this as any).$message.info('已取消删除')

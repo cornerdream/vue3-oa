@@ -34,6 +34,7 @@
     </el-pagination> -->
     <createOrEdit
       ref="form"
+      :select="selectOption"
       :menus="userList"
       :roles="roles"
       :organizations="organizations"
@@ -56,6 +57,7 @@ export default {
     password
   },
   props: {
+    select:{type:Array},
     userList:{type:Array},
     roles: {type:Array},
     organizations: {type:Array},
@@ -63,19 +65,21 @@ export default {
   },
   data() {
     return {
-      userId: 0
+      userId: 0,
+      selectOption:''
     }
   },
   created() {},
   mounted() {},
   methods: {
-    handleEdit(item: any) {    
+    handleEdit(item: any) {  
+      console.log(item);
+      // this.select.push(item.department.id)  
       let did: any[] = []
-      if (item.department.length !== 0) {
-        item.department.forEach((element: any) => {
-          did.push(element.name)
-        })
+      if(item.department !== null){
+        did=item.department.id
       }
+      this.selectOption =item.department?item.department.name:'';
       let uid = null
       if (item.superior !== null) {
         uid = item.superior.id
@@ -86,6 +90,9 @@ export default {
           rid.push(element.id)
         })
       }
+      console.log('部门'+did);
+      console.log('上级'+uid);
+      console.log('角色'+rid);
       const _this = this.$refs.form;
       _this.form = {
         name: item.name,
@@ -100,7 +107,7 @@ export default {
         is_active: item.is_active.toString(),
         roles: rid
       }
-
+      console.log( _this.form);
       this.userId = item.id;
       (this as any).$refs.form.dialogVisible = true
     },

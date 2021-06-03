@@ -49,42 +49,38 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="部门">
-              <!-- <el-input
-              placeholder="请选择部门"
-              suffix-icon="el-icon-arrow-right"
-              v-model="form.department"
-              @click="treeShow=!treeShow">
-            </el-input>
-            {{form.department}}
-            <el-tree
-              :data="organizations"
-              show-checkbox
-              default-expand-all
-              node-key="pid"
-              ref="tree"
-              highlight-current
-              :props="defaultProps"
-              default-expanded-keys="form.department"
-              v-if="treeShow"
-              @node-click="nodeClick">
-            </el-tree> -->
-              <!-- {{ form.department }} -->
-              <el-cascader
-                v-model="form.department"
+              
+                <el-input
+                class="input"
+                clearable
+                placeholder="请选择部门"
+                @click.native="handleClick"
+                v-model="selectDepartment">
+                <template #suffix>
+                  <i class="el-input__icon el-icon-arrow-down"></i>
+                </template>
+              </el-input>
+              <div class="mycascader">
+             <el-cascader-panel
+             ref="cascader"
+             :props="defaultProps"
+             @click.native="handleBlur"
+             @change="handleChange"
+             :options="organizations"></el-cascader-panel>
+              </div>
+              
+            
+              <!-- <el-cascader
+                :v-model="form.department"
                 :options="organizations"
                 :props="defaultProps"
+                :show-all-levels="false"
                 clearable
                 style="width: 300px"
                 placeholder="请选择部门"
-              ></el-cascader>
-              <!-- <el-select v-model="form.department" :options="organizations" clearable style="width: 300px;" placeholder="请选择部门">
-                <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-                </el-option> 
-            </el-select>             -->
+                @change="handleChange"
+              ></el-cascader> -->
+             
             </el-form-item>
           </el-col>
         </el-row>
@@ -155,9 +151,14 @@
 
 <script lang="ts">
 import { add, edit } from '../../../../../../api/user'
+import $ from 'jquery'
 export default {
   name: 'createOrEdit',
   props: {
+    select:{
+      type: String,
+      required: true
+    },
     organizations: {
       type: Array,
       required: true
@@ -187,10 +188,18 @@ export default {
       default: null
     }
   },
+  watch:{
+    select(newv){
+      this.selectDepartment = newv;
+    }
+  },
   data() {
     return {
       defaultProps: {
-        label: 'name'
+        checkStrictly: true,
+        children: 'children',
+        label: 'name',
+        value: 'id'
       },
       treeShow: false,
       loading: false,
@@ -201,14 +210,15 @@ export default {
         id: -1,
         image: '',
         mobile: '',
-        department: [],
+        department: null,
         superior: null,
         position: '',
         email: '',
         is_active: 'false',
         roles: []
       },
-
+      selectDepartment:'',
+      departmentId:null,
       rules: {
         image: [{ required: true, message: '请上传图片', trigger: 'blur' }],
         username: [
@@ -229,8 +239,41 @@ export default {
     }
   },
   created() {},
-  mounted() {},
+  mounted() {
+    this.$nextTick(()=>{
+      $('.cascader').hide();
+    })
+  },
   methods: {
+    handleBlur(){
+      $('.mycascader').hide();
+    },
+    handleClick(e){
+      console.log(e);
+      console.log(e.target);
+      console.log(e.target.nextSibling);
+      console.log('click');
+      console.log($('.mycascader'));
+      $('.mycascader').show();
+    },
+    handleChange(item:any){
+      console.log(item);      
+      console.log(this.form.department); 
+      // if(Array.isArray(item)){
+      //   this.form.department = item[item.length-1]
+      // }else{
+      //   this.form.department = item;
+      // }
+      let labels = this.$refs.cascader.getCheckedNodes()[0].pathLabels;
+      console.log(labels);
+      if(Array.isArray(item)){
+        this.selectDepartment = labels[labels.length-1];
+        this.form.department = item[item.length-1]
+      }else{
+        this.form.department = item;
+      }
+      $('.mycascader').hide();
+    },
     imgSuccess(res, file) {
       this.form.image = URL.createObjectURL(file.raw)
     },
@@ -247,6 +290,8 @@ export default {
       }
     },
     onAdd() {
+      
+      console.log(this.form);
       add(this.form)
         .then((res) => {
           this.resetForm();
@@ -264,6 +309,7 @@ export default {
         })
     },
     onEdit() {
+      
       edit(this.rowId, this.form)
         .then((res) => {
           this.resetForm();
@@ -288,7 +334,7 @@ export default {
         username: '',
         name: '',
         mobile: '',
-        department: [],
+        department: null,
         superior: null,
         position: '',
         email: '',
@@ -323,4 +369,14 @@ export default {
   height: 30px;
   display: block;
 }
+.mycascader{
+  position: absolute;
+  left: 0;
+  top:40px;
+  z-index: 999;
+  background: #fff;
+  display: none;
+}
+
+
 </style>

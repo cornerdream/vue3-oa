@@ -38,12 +38,14 @@
         </el-form-item>
         <el-form-item label="父级菜单">
           <el-cascader
+            :key="refreshItem"
             v-model="form.pid"
             :options="menus"
             :props="defaultProps"
             :show-all-levels="false"
             style="width: 460px"
             placeholder="请选择父级菜单"
+            @change="handleChange"
           ></el-cascader>
         </el-form-item>
       </el-form>
@@ -79,9 +81,12 @@ export default {
   },
   data() {
     return {
+      refreshItem:0,
       defaultProps: {
+        checkStrictly: true,
+        children: 'children',
         label: 'name',
-        vaule: 'pid'
+        value: 'id'
       },
       iconList: [
         {
@@ -140,14 +145,13 @@ export default {
       loading: false,
       dialogVisible: false,
       form: {
-        id: -1,
         name: '',
         sort: 999,
         path: '',
         component: '',
         is_show: 'true',
         is_frame: 'false',
-        pid: 0,
+        pid: null,
         icon: ''
       },
       rules: {
@@ -161,6 +165,10 @@ export default {
   created() {},
   mounted() {},
   methods: {
+    handleChange(item:any){
+      console.log(item);      
+      console.log(this.form.pid);
+    },
     cancel() {
       this.resetForm();
     },
@@ -174,6 +182,12 @@ export default {
       }
     },
     onAdd() {
+      console.log(this.form.pid);
+      if(Array.isArray(this.form.pid)){  
+        let id = this.form.pid[this.form.pid.length-1].toString();
+        this.form.pid=Number(id);   
+      };
+      console.log(this.form);
       add(this.form)
         .then((res) => {
           this.resetForm();
@@ -184,8 +198,8 @@ export default {
             duration: 2500
           })
           this.loading = false
-          this.sup_this.loadMenus()
-          (this as any).$store.dispatch('GetUserMenu').then(() => {})
+          this.sup_this.loadMenus();
+          (this as any).$store.dispatch('GetUserMenu');
         })
         .catch((err) => {
           this.loading = false
@@ -193,6 +207,13 @@ export default {
         })
     },
     onEdit() {
+      console.log(this.form.pid);
+      if(Array.isArray(this.form.pid)){      
+        this.form.pid=this.form.pid[this.form.pid.length-1].toString();  
+      }else{
+        this.form.pid = null;
+      }
+      console.log(this.form);  
       edit(this.rowId, this.form)
         .then((res) => {
           this.resetForm();
@@ -204,7 +225,7 @@ export default {
           })
           this.loading = false;
           (this as any).$parent.$parent.loadMenus();
-          (this as any).$store.dispatch('GetUserMenu').then(() => {})
+          (this as any).$store.dispatch('GetUserMenu');
         })
         .catch((err) => {
           this.loading = false
@@ -213,7 +234,7 @@ export default {
     },
     resetForm() {
       this.dialogVisible = false;
-      (this as any).$refs.form.resetFields()
+      (this as any).$refs.form.resetFields();
       (this as any).form = {
         name: '',
         sort: 999,
@@ -221,9 +242,10 @@ export default {
         component: '',
         is_show: 'true',
         is_frame: 'false',
-        pid: 0,
+        pid: null,
         icon: ''
       }
+      this.refreshItem++;
     }
   }
 }

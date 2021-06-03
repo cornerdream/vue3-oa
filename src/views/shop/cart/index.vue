@@ -39,9 +39,9 @@
           ></el-input-number>
         </template>
       </el-table-column>
-      <el-table-column prop="buyer" label="采购员" width="120">
+      <el-table-column prop="buyer" label="采购员" width="140">
         <template v-slot="scope">
-          <el-select v-model="value1" placeholder="请选择" class="input-box">
+          <el-select v-model="scope.row.buyer.name" placeholder="请选择" >
             <el-option
               v-for="item in buyer"
               :key="item.id"
@@ -52,9 +52,9 @@
             </el-option>
           </el-select>
 
-          <span @click="handleCellClick($event, scope.row, scope.column)">{{
+          <!-- <span @click="handleCellClick($event, scope.row, scope.column)">{{
             scope.row.buyer.name
-          }}</span>
+          }}</span> -->
         </template>
       </el-table-column>
       <el-table-column prop="notes" label="备注" width="120">
@@ -63,19 +63,18 @@
             type="textarea"
             :rows="2"
             placeholder="请输入内容"
-            v-model="value2"
-            class="input-box"
-            @blur.native="changeGateway(scope.row, scope.column, value2)"
+            v-model="scope.row.notes"
+            @blur.native="changeGateway(scope.row, scope.column, scope.row.notes)"
           >
           </el-input>
-          <span @click="handleCellClick($event, scope.row, scope.column)">{{
+          <!-- <span @click="handleCellClick($event, scope.row, scope.column)">{{
             scope.row.notes
-          }}</span>
+          }}</span> -->
         </template>
       </el-table-column>
       <el-table-column prop="project" label="项目" width="120">
         <template v-slot="scope">
-          <el-select v-model="value3" placeholder="请选择" class="input-box">
+          <el-select v-model="scope.row.project.name" placeholder="请选择" >
             <el-option
               v-for="item in project"
               :key="item.id"
@@ -85,9 +84,9 @@
             >
             </el-option>
           </el-select>
-          <span @click="handleCellClick($event, scope.row, scope.column)">{{
+          <!-- <span @click="handleCellClick($event, scope.row, scope.column)">{{
             scope.row.project.name
-          }}</span>
+          }}</span> -->
         </template>
       </el-table-column>
       <el-table-column prop="handle" label="操作" fixed="right">
@@ -177,6 +176,9 @@ export default {
       }
     },
     changeGateway(row, column, item) {
+      console.log(row);
+      console.log(column);
+      console.log(item);
       if (column.property == 'buyer') {
         row.buyer = item
       } else if (column.property == 'project') {
@@ -195,15 +197,16 @@ export default {
         buyer: buyer.id,
         notes: notes
       };
+      console.log(param);
       (this as any).$store.dispatch('Update', param);
-      if (
-        column.property == 'buyer' ||
-        column.property == 'project' ||
-        column.property == 'notes'
-      ) {
-        (this as any).span.classList.remove('input-box');
-        (this as any).select.classList.remove('current-cell');
-      }
+      // if (
+      //   column.property == 'buyer' ||
+      //   column.property == 'project' ||
+      //   column.property == 'notes'
+      // ) {
+      //   (this as any).span.classList.remove('input-box');
+      //   (this as any).select.classList.remove('current-cell');
+      // }
     },
     async loadCartInfo() {},
     formatPrice(row:any) {
@@ -245,7 +248,9 @@ export default {
       })
     },
     onOrder() {
-      if (this.multipleSelection.length > 0) {
+      console.log(this.cartList);
+      console.log(this.multipleSelection);
+      if (this.cartList.length > 0) {
         save(this.id)
           .then((res) => {
             this.dialogSuccessVisible = true

@@ -13,13 +13,13 @@
     </div>
     <organizeList
       :organizeList="organize"
-      :organize="organizes"
+      :organize="organize"
       :total="total"
       :query="filterParams"
       @initList="loadOrganize"
     />
 
-    <createOrEdit ref="form" :organize="organizes" :is-add="true" :sup_this="sup_this" />
+    <createOrEdit ref="form" :organize="organize"  :is-add="true" :sup_this="sup_this" />
   </div>
 </template>
 
@@ -36,8 +36,7 @@ export default {
   },
   data() {
     return {
-      organize: [],
-      organizes: [],
+      organize: [],  
       total: '',
       sup_this: this,
       filterParams: {
@@ -49,27 +48,19 @@ export default {
     }
   },
   created() {
-    this.loadOrganizeTree()
     this.loadOrganize()
   },
   mounted() {},
   methods: {
-    async loadOrganizeTree() {
-      const { data } = await getOrganizationUserTree();
-      if (data.code !== 200) {
-        ElMessage.error(data.error)
-      } else {
-        this.organizes = data.data
-        this.total = data.data.count
-      }
-    },
+    
     async loadOrganize() {
+      console.log('loadinit');
       const { data } = await getOrganizationTree(this.filterParams);
       if (data.code !== 200) {
         ElMessage.error(data.error)
       } else {
-        this.organize = data.data.results
-        this.total = data.data.count
+        this.organize = data.data.results;
+        this.total = data.data.count;
       }
     },
     onQuery() {

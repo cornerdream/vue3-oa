@@ -77,6 +77,7 @@ export default {
   mounted() {},
   methods: {
     handleEdit(item: any) {
+      console.log(item);
       const _this = this.$refs.form;
       _this.form = {
         id: item.id,
