@@ -12,7 +12,7 @@
       <el-button type="primary" icon="el-icon-search" size="small" @click="onQuery">搜索</el-button>
     </div>
     <el-table :data="tableData" border style="width: 100%; margin-top: 30px" @row-click="tab">
-      <el-table-column prop="date" label="序号" width="100"> </el-table-column>
+      <el-table-column prop="date" label="序号" type="index" width="100"> </el-table-column>
       <el-table-column prop="name" label="名称" width="180"> </el-table-column>
       <el-table-column prop="origin" label="原文档"> </el-table-column>
       <el-table-column prop="applicant" label="申请人"> </el-table-column>
@@ -21,17 +21,12 @@
       <el-table-column prop="receiver" label="操作人"> </el-table-column>
       <el-table-column prop="state" label="状态"> </el-table-column>
     </el-table>
-
-    <!-- <div class="content"> -->
-    <!-- <div class="title">RK20-04-24</div> -->
-    <!-- <information></information> -->
-    <!-- <detailed></detailed> -->
-    <!-- </div> -->
   </div>
 </template>
 
 <script lang="ts">
 import Bread from '../../../../../components/bread.vue'
+import { picktype } from '../../../../../api/picking'
 export default {
   name: 'picking',
   components: { Bread },
@@ -45,7 +40,7 @@ export default {
           path: 'picking' // 路由导航,自定
         }
       ], // 面包屑数据
-      crumnNames: '收货入库',
+      crumnNames: '',
       tableData: [
         {
           date: '1',
@@ -67,11 +62,26 @@ export default {
           receiver: 'receiver',
           state: 'state'
         }
-      ]
+      ],
+      picktype: ''
     }
   },
+  mounted() {
+    let a = sessionStorage.getItem('picking_type')
+    this.picktype = JSON.parse(a)
+    this.picktypes()
+    this.crumnNames = this.picktype.name
+  },
   methods: {
-    tab(item) {
+    async picktypes() {
+      await picktype(this.picktype.id).then((res) => {
+        if (res.data.code == 200) {
+          this.tableData = res.data.data.results
+          console.log(res.data)
+        }
+      })
+    },
+    tab(item:any) {
       this.$router.push({ path: '/pickdetail', query: { id: 1 } })
       console.log(item, 'item')
     },

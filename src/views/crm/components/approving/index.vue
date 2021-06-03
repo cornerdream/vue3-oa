@@ -85,7 +85,7 @@
                   <p>
                     <span>部门</span> ：<span>{{ order.department.name }}</span>
                   </p>
-                  <p><span>总价</span> ： <span>{{}}</span></p>
+                  <p><span>总价</span> ： <span>{{order.total_amount}}</span></p>
                 </div>
               </div>
             </div>
@@ -114,7 +114,7 @@
                   class="app-listCard"
                   v-for="(item, index) in workflowtask"
                   :key="index"
-                  :class="[index == 0 ? 'first' : 'stat']"
+                  :class="[item.is_approving_user == true ? 'first' : '']"
                 >
                   <div class="user">
                     <div class="block">

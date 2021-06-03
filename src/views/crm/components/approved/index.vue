@@ -20,7 +20,7 @@
           <div class="list-cont">
             <ul>
               <li>
-                <span>单号</span> ：<span>{{ item.req_id.name }}</span>
+                <span>单号</span>：<span class="req_name">{{ item.req_id.name }}</span>
                 <span :class="[item.state[0] == 'approving' ? 'flag' : 'code']">{{
                   item.state[1]
                 }}</span>
@@ -90,7 +90,7 @@
                   <p>
                     <span>部门</span> ：<span>{{ order.department.name }}</span>
                   </p>
-                  <p><span>总价</span> ： <span>{{}}</span></p>
+                  <p><span>总价</span> ： <span>{{order.total_amount}}</span></p>
                 </div>
               </div>
             </div>
@@ -119,7 +119,7 @@
                   class="app-listCard"
                   v-for="(item, index) in workflowtask"
                   :key="index"
-                  :class="[index == 0 ? 'first' : 'stat']"
+                  :class="[item.is_approving_user == true ? 'first' : '']"
                 >
                   <div class="user">
                     <div class="block">
@@ -336,6 +336,7 @@ export default {
   height:770px;
   overflow: auto;
   margin-top:20px;
+  /* position: relative; */
 }
 
 .flow-content::-webkit-scrollbar {
@@ -364,6 +365,10 @@ export default {
 .block img {
   width: 100%;
   height: 100%;
+}
+.req_name{
+  display: inline-block;
+  width: 110px;
 }
 .flag {
   margin-left: 10px;

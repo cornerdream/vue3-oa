@@ -74,8 +74,14 @@ export function projectList() {
 //部门列表
 export function departmentList() {
     return $axios({
-      url: 'api/organization/user/tree/',
+      url: '/api/organization/user/tree/',
       method: 'get'
     })
   }
-  
+// 产品名称列表
+export function infoList() {
+  return $axios({
+    url: '/api/skus/info/list',
+    method: 'get'
+  })
+}

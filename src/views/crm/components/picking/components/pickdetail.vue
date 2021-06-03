@@ -15,7 +15,7 @@
           </ul>
         </div>
       </div>
-      <div class="pickdetail-content">
+      <!-- <div class="pickdetail-content">
         <h4><span>名称：哈哈哈哈</span></h4>
         <div class="pickdetail-lefts">
           <el-form ref="form" :model="form" label-width="80px">
@@ -72,8 +72,8 @@
           </el-row>
           </el-form>
         </div>
-      </div>
-      <el-table :data="tableData" border style="width: 1127px; margin-top: 20px" @row-click="tab">
+      </div> -->
+      <!-- <el-table :data="tableData" border style="width: 1127px; margin-top: 20px" @row-click="tab">
         <el-table-column prop="date" label="序号" width="100"> </el-table-column>
         <el-table-column prop="sku" label="产品" width="180"> </el-table-column>
         <el-table-column prop="count" label="订购数量"> </el-table-column>
@@ -83,7 +83,7 @@
         <el-table-column prop="freight" label="运费"> </el-table-column>
         <el-table-column prop="real_total_amount" label="实际总价"> </el-table-column>
         <el-table-column prop="estimated_arrival_date" label="预计到货日期"> </el-table-column>
-      </el-table>
+      </el-table> -->
     </div>
   </div>
 </template>
