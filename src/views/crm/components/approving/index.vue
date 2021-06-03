@@ -114,7 +114,7 @@
                   class="app-listCard"
                   v-for="(item, index) in workflowtask"
                   :key="index"
-                  :class="[index == 0 ? 'first' : 'stat']"
+                  :class="[item.is_approving_user == true ? 'first' : '']"
                 >
                   <div class="user">
                     <div class="block">

@@ -94,7 +94,7 @@
           <div class="app-argent">
             <div class="app-all">
               <div class="app-conts">
-                <div class="app-listCard" v-for="(item, index) in form.workflowtask" :key="index"  :class="[index == 0 ? 'first' : '']">
+                <div class="app-listCard" v-for="(item, index) in form.workflowtask" :key="index"  :class="[item.is_approving_user == true ? 'first' : '']">
                   <div class="user">
                     <div class="block">
                       <el-avatar :size="50" :src="item.appro_user.image"></el-avatar>
