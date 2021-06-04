@@ -240,20 +240,12 @@ export default {
   },
   created() {},
   mounted() {
-    this.$nextTick(()=>{
-      $('.cascader').hide();
-    })
   },
   methods: {
     handleBlur(){
-      $('.mycascader').hide();
+      // $('.mycascader').hide();
     },
-    handleClick(e){
-      console.log(e);
-      console.log(e.target);
-      console.log(e.target.nextSibling);
-      console.log('click');
-      console.log($('.mycascader'));
+    handleClick(){
       $('.mycascader').show();
     },
     handleChange(item:any){

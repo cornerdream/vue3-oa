@@ -44,9 +44,8 @@
           <el-input-number size="mini" v-model="num" :min="1"></el-input-number>
         </div>
       </div>
-      <div class="type_select" v-for="(item, index) in productParam" :key="item.id">
+      <div class="type_select" v-for="(item) in productParam" :key="item.id">
         <label>{{ item.name }}:</label>
-        <!-- <el-check-tag @change="onChange" :checked="checked" size="medium">点我切换</el-check-tag> -->
         <a
           href="javascript:;"
           :class="{ select: o.sku_id == $route.query.id,select_null:o.sku_id == null }"
@@ -65,9 +64,9 @@
       </div>
     </div>
     <el-dialog title="采购信息" v-model="dialogFormVisible" width="600px">
-      <el-form :model="form" label-width="80px">
-        <el-form-item label="采购员">
-          <el-select v-model="value1" style="width: 360px" placeholder="请选择采购人员">
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+        <el-form-item label="采购员" prop="value1">
+          <el-select v-model="form.value1" style="width: 360px" placeholder="请选择采购人员">
             <el-option v-for="item in buyer" :key="item.id" :label="item.name" :value="item.id">
             </el-option>
           </el-select>
@@ -77,13 +76,13 @@
             type="textarea"
             :rows="2"
             placeholder="请输入内容"
-            v-model="value2"
+            v-model="form.value2"
             style="width: 360px"
           >
           </el-input>
         </el-form-item>
-        <el-form-item label="项目">
-          <el-select v-model="value3" style="width: 360px" placeholder="请选择项目">
+        <el-form-item label="项目" prop="value3">
+          <el-select v-model="form.value3" style="width: 360px" placeholder="请选择项目">
             <el-option v-for="item in project" :key="item.id" :label="item.name" :value="item.id">
             </el-option>
           </el-select>
@@ -128,15 +127,19 @@ export default {
         "hide":true
       },
       step:0,
-      checked: false,
       num: 1,
       dialogFormVisible: false,
       dialogErrorVisible: false,
       error:'',
-      value1: '',
-      value2: '',
-      value3: '',
-      selectQuery:this.$route.query
+      form:{
+        value1: '',
+        value2: '',
+        value3: '',
+      },
+      rules: {
+        value1: [{ required: true, message: '请选择采购员', trigger: 'change' }],
+        value3: [{ required: true, message: '请选择项目', trigger: 'change' }]
+      }
     }
   },
   created() {
@@ -205,49 +208,47 @@ export default {
       if($(aNode).attr('disabled') !== 'disabled') {
         $(aNode).addClass('select');
         $(aNode).siblings().removeClass('select');
-        // (this as any).$route.query.id = id;
-        // let selectQuery=this.$route.query
-        // console.log(selectQuery);
+        
         let newQuery= JSON.parse(JSON.stringify(this.$route.query));
-        newQuery.id = id;
-        // console.log({ name: 'productDetail', query:this.selectQuery });
+        newQuery.id = id;      
         this.$router.replace({
           query: newQuery
-        })
-        // this.$router.push({ name: 'productDetail', query:this.selectQuery})
+        })   
+
         this.$emit('initDetail',id);
-       
-        
-       
-        
-        
       }  
     },
     onCart() {
       this.dialogFormVisible = true;
     },
-    onSubmit() {
-      
+    async onSubmit() {
+      await (this.$refs.form as any).validate();
       (this as any).$store.dispatch('Save', {
         sku_id: this.productInfo.id,
         count: this.num,
-        buyer: this.value1,
-        notes: this.value2,
-        project: this.value3
+        buyer: this.form.value1,
+        notes: this.form.value2,
+        project: this.form.value3
       }).then(()=>{
+        this.resetForm();
         (this as any).$message({
             showClose: true,
             type: 'success',
             message: '加入成功!',
             duration: 2500
           })
-          this.dialogFormVisible = false;
-      }).catch((err)=>{
+          // this.dialogFormVisible = false;
+      }).catch((err:any)=>{
             this.dialogErrorVisible = true
             this.error = err;
             this.dialogFormVisible = false;
             Promise.reject(err);      
       })
+    },
+    resetForm() {
+      this.dialogFormVisible = false;
+      (this as any).$refs.form.resetFields()
+      this.form = { value1: '', value2: '', value3: '' }
     }
   }
 }

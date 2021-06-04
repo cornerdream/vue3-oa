@@ -18,7 +18,6 @@
         :data="menuList"
         :props="defaultProps"
         :default-checked-keys="menuIds"
-        :default-expanded-keys="menuIds"
         check-strictly
         show-checkbox
         accordion
@@ -98,7 +97,7 @@ export default {
       })
     },
     resetChecked() {
-      ;(this.$refs['menu'] as any).setCheckedKeys([])
+      (this.$refs['menu'] as any).setCheckedKeys([])
     }
   }
 }

@@ -12,4 +12,5 @@ import './icons/iconfont.css'
 // import './permission'
 import locale from 'element-plus/lib/locale/lang/zh-cn'  //DatePicker显示中文
 
+
 createApp(App).use(router).use(store).use(elementplus, { locale }).mount('#app')

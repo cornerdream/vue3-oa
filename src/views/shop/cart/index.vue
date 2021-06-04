@@ -103,7 +103,7 @@
       <el-button type="primary" size="medium" @click="onOrder" class="order">下单</el-button>
     </div>
     <!-- {{cartList}} -->
-    <el-dialog title="订单创建成功" v-model="dialogSuccessVisible">
+    <el-dialog title="订单创建成功" v-model="dialogSuccessVisible" @close="handleClose">
       <el-result icon="success" title="成功提示" subTitle="请根据提示进行操作">
         <template #extra>
           <el-button type="primary" size="medium" @click="onRetainCart">继续采购</el-button>
@@ -250,7 +250,7 @@ export default {
     onOrder() {
       console.log(this.cartList);
       console.log(this.multipleSelection);
-      if (this.cartList.length > 0) {
+      if (this.multipleSelection.length>0 && this.cartList.length > 0) {
         save(this.id)
           .then((res) => {
             this.dialogSuccessVisible = true
@@ -273,9 +273,14 @@ export default {
         })
       }
     },
+    handleClose(){
+      this.dialogSuccessVisible = false;
+      (this as any).$store.dispatch('GetCart').then(() => {});
+    },
     onRetainCart() {
       this.dialogSuccessVisible = false;
       (this as any).$store.dispatch('GetCart').then(() => {});
+      this.$router.push('/');
     },
     onPushOrder() {
       this.dialogSuccessVisible = false;

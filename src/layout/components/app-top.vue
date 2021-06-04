@@ -3,7 +3,7 @@
   <div class="app-top">
     <div class="helloMsg">您好，欢迎来到YICONMED商城</div>
     <div class="userManger">
-      <router-link :to="{ name: 'me' }" active-class="" exact-active-class="" class="userMe">
+      <router-link :to="{ name: 'me' }" active-class="" exact-active-class="" class="userMe" @click.native="handleReset('me')">
         <el-avatar size="small" :src="image" class="userImg"></el-avatar>
         <el-dropdown>
           <span class="el-dropdown-link">
@@ -55,6 +55,10 @@ export default {
   },
   mounted() {},
   methods: {
+    handleReset(name){
+      this.$store.dispatch('GetActiveNav',name);
+      this.$store.dispatch('GetActiveOpen',[name]);
+    },
     async loadUserInfo() {
       (this as any).$store.dispatch('GetUserInfo').then(() => {})
     },

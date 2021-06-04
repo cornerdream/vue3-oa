@@ -13,13 +13,15 @@ const user = {
       // window.localStorage.setItem('userMenu',userMenu);
     },
     SET_ACTIVENAV: (state:any, activeNav:any) => {
+      
       state.activeNav = activeNav
-      // window.localStorage.setItem('userMenu',userMenu);
+      
     },
-    SET_ACTIVEOPEN: (state:any, activeOpen:any) => {
+    SET_ACTIVEOPEN:function(state:any, activeOpen:any){
+      
       state.activeOpen = [];
       state.activeOpen=activeOpen
-      // window.localStorage.setItem('userMenu',userMenu);
+      
     },
   },
 

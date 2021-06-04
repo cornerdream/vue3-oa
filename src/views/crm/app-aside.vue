@@ -25,7 +25,7 @@
         </el-menu-item> -->
         <el-menu-item  index="order">
           <i class="iconfont icon-order"></i>
-          <span slot="title">我的订单</span>
+          <span>我的订单</span>
         </el-menu-item>
       </el-submenu>
       <app-menu :menuList="menus" />
@@ -49,14 +49,7 @@ export default {
     menus: []
   },
   watch: {     
-      // activeNav(newv){
-      //   console.log(newv);
-      //   this.activeIndex = newv
-      // },
-      // activeOpen(newv){
-      //   console.log(newv);
-      //   this.openeds = newv
-      // }
+     
   },
   data() {
     return {
@@ -64,32 +57,14 @@ export default {
       openeds:['me']
     }
   },
-  created() {},
+  created() {
+    
+  },
   mounted() {},
   methods: {
-    handleOpen(key, keyPath) {
-      this.activeIndex = key;
-      console.log(key, keyPath);
-    },
-    handleSelect(key,keyPath) {
-      console.log(this.activeNav);
-      console.log(this.activeOpen);
-      console.log(key);
-      console.log(keyPath);
-      // console.log(this.activeIndex);
-      // console.log(this.openeds);
-      this.$store.dispatch('GetActiveNav',key);
-      this.$store.dispatch('GetActiveOpen',keyPath)
-      // this.activeNav = key;
-      // this.activeOpen = keyPath;
-      // this.activeIndex = key;
-      // this.openeds = [];
-      // this.openeds=keyPath
-      // toRaw(this.openeds)
-      console.log(this.activeNav);
-      console.log(this.activeOpen);
-      // this.$refs.menu.open(key)
-      
+    handleSelect(key:any,keyPath:any) {     
+      (this as any).$store.dispatch('GetActiveNav',key);
+      (this as any).$store.dispatch('GetActiveOpen',keyPath)
     }
   }
 }

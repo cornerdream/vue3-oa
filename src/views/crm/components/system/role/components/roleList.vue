@@ -23,8 +23,8 @@
           <el-table-column label="操作" fixed="right" align="center" width="150px">
             <template #default="scope">
               <div>
-                <el-button type="text" @click="handleEdit(scope.row)">编辑</el-button>
-                <el-button size="mini" type="text" @click="handleDelete(scope.row)">删除</el-button>
+                <el-button type="text" @click.stop="handleEdit(scope.row)">编辑</el-button>
+                <el-button size="mini" type="text" @click.stop="handleDelete(scope.row)">删除</el-button>
               </div>
             </template>
           </el-table-column>
@@ -88,6 +88,7 @@ export default {
     return {
       span: 24,
       roleId: 0,
+      currentNum:0,
       table_show: true,
       show: false,
       row_data: null,
@@ -105,6 +106,14 @@ export default {
   },
   methods: {
     handleCurrentChange(item) {
+      this.currentNum++;
+      const flag = Number(this.currentNum)%2==0;
+      // if(flag){
+      //   this.span=24;
+
+      // }else{
+      //   this.sapn = 8;
+      // }
       if (item.id !== 1) {
         if (this.show) {
           // 清空选中状态
