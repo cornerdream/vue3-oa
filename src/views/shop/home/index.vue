@@ -6,7 +6,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import newsCarousel from './components/news-carousel.vue'
 import product from './components/product.vue'
 export default {

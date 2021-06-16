@@ -39,17 +39,14 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import { mapGetters } from 'vuex'
-import { getProductTree } from '../../../../api/product'
 export default {
   name: 'tab',
   computed: {
     ...mapGetters(['options'])
   },
-  props: {
-    menu: []
-  },
+  props: ['menu'],
   data() {
     return {
       activeIndex: 1,

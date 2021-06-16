@@ -1,9 +1,16 @@
 <!-- -->
 <template>
   <div class="cart">
+    <div class="productTitle">
+      <img :src="cartImg" alt="">
+      <span class="title">购物车({{totalNum}})</span>
+    </div>
+    
     <el-table
+      :header-cell-style="{background:'#0D2140',color:'#fff'}"
+      id="multipleTable"
       ref="multipleTable"
-      :data="$store.state.cart.cartList"
+      :data="cartList"
       tooltip-effect="dark"
       style="width: 100%"
       max-height="600"
@@ -12,10 +19,12 @@
           return row.id
         }
       "
+      :isAllSelect="isAllSelect"
       @select="handleSingleSelectionChange"
       @select-all="handleAllSelectionChange"
       @selection-change="handleSelectionChange"
-    >
+      >
+      
       <el-table-column type="selection" fixed="left" :reserve-selection="true" width="55">
       </el-table-column>
 
@@ -71,7 +80,7 @@
             scope.row.notes
           }}</span> -->
         </template>
-      </el-table-column>
+      </el-table-column> 
       <el-table-column prop="project" label="项目" width="120">
         <template v-slot="scope">
           <el-select v-model="scope.row.project.name" placeholder="请选择" >
@@ -97,12 +106,12 @@
     </el-table>
     
     <div class="cart-footer">
-      <div class="grid-content bg-purple">
-        商品总价格：<span class="totalPrice">{{ totalPrice }}</span>
+      <div class="grid-content bg-purple order-price">
+        合计：<span class="totalPrice">¥ {{ totalPrice }}</span>
       </div>
-      <el-button type="primary" size="medium" @click="onOrder" class="order">下单</el-button>
+      <el-button type="primary" size="medium" @click="onOrder" class="order">结算</el-button>
     </div>
-    <!-- {{cartList}} -->
+
     <el-dialog title="订单创建成功" v-model="dialogSuccessVisible" @close="handleClose">
       <el-result icon="success" title="成功提示" subTitle="请根据提示进行操作">
         <template #extra>
@@ -123,21 +132,25 @@
   </div>
 </template>
 
-<script lang="ts">
-import func from 'vue-editor-bridge'
+<script>
+import cartImg from '@/assets/images/cart-logo.png'
 import { mapGetters } from 'vuex'
-import { save } from '../../../api/order'
+import { save } from '@/api/order'
+import $ from 'jquery'
 export default {
   name: 'cart',
   computed: {
-    ...mapGetters(['cartList', 'totalPrice', 'project', 'buyer', 'id'])
+    ...mapGetters(['cartList', 'totalPrice','totalNum', 'project', 'buyer', 'id'])
   },
   data() {
     return {
+      
+      cartImg:cartImg,
       buyerShow: false,
       notesShow: false,
       projectShow: false,
       multipleSelection: [],
+      isAllSelect:true,
       value1: '',
       value2: '',
       value3: '',
@@ -148,21 +161,33 @@ export default {
       error: ''
     }
   },
+  watch:{
+    cartList(newv){
+      newv.forEach((row) => {
+        this.$refs.multipleTable.toggleRowSelection(row,row.selected);
+      })
+      const select = newv.every((item)=>item.selected)
+      console.log(select)
+      this.isAllSelect = select;
+    }
+  },
   created() {
     this.loadCartInfo()
   },
   mounted() {
     this.$nextTick(() => {
-      this.cartList.forEach((row:any) => {
+      this.cartList.forEach((row) => {
+        // this.$refs.multipleTable.toggleRowSelection(row,row.selected);
         if (row.selected) {
-          (this as any).$refs.multipleTable.toggleRowSelection(row);
+          this.$refs.multipleTable.toggleRowSelection(row);
         } else {
-          (this as any).$refs.multipleTable.toggleRowSelection(row, false);
+          this.$refs.multipleTable.toggleRowSelection(row, false);
         }
       })
     })
   },
   methods: {
+   
     handleCellClick(event, row, column) {
       this.span = event.target
       this.select = event.target.previousSibling
@@ -171,8 +196,8 @@ export default {
         column.property == 'project' ||
         column.property == 'notes'
       ) {
-        (this as any).span.classList.add('input-box');
-        (this as any).select.classList.add('current-cell');
+        this.span.classList.add('input-box');
+        this.select.classList.add('current-cell');
       }
     },
     changeGateway(row, column, item) {
@@ -198,7 +223,7 @@ export default {
         notes: notes
       };
       console.log(param);
-      (this as any).$store.dispatch('Update', param);
+      this.$store.dispatch('Update', param);
       // if (
       //   column.property == 'buyer' ||
       //   column.property == 'project' ||
@@ -208,8 +233,9 @@ export default {
       //   (this as any).select.classList.remove('current-cell');
       // }
     },
-    async loadCartInfo() {},
-    formatPrice(row:any) {
+    async loadCartInfo() {
+    },
+    formatPrice(row) {
       const price = Number(parseFloat(row.price));
       return '￥' + (isNaN(price) ? 0 : price.toFixed(2));
     },
@@ -227,24 +253,36 @@ export default {
         notes: notes,
         selected: selected
       };
-      (this as any).$store.dispatch('Update', param);
+      this.$store.dispatch('Update', param);
+    },
+    handleAllSelectionClick(){
+      console.log('全选');    
+      console.log(this.cartList);
+      console.log(this.multipleSelection)
+      console.log(this.isAllSelect)
+      if(this.isAllSelect){
+        this.$store.dispatch('Select', { selected: !this.isAllSelect });
+      }else{
+        this.$store.dispatch('Select', { selected: !this.isAllSelect });
+      }
+      this.$store.dispatch('GetCart');
     },
     handleAllSelectionChange(selection) {
-      console.log('全选', selection)
+       console.log('全选', selection)
       if (this.cartList.length == this.multipleSelection.length) {
-        (this as any).$store.dispatch('Select', { selected: true });
+        this.$store.dispatch('Select', { selected: true });
       } else {
-        (this as any).$store.dispatch('Select', { selected: false });
+        this.$store.dispatch('Select', { selected: false });
       }
-      (this as any).$store.dispatch('GetCart');
+      this.$store.dispatch('GetCart');
     },
     handleSelectionChange(val) {
       console.log('选择', val)
       this.multipleSelection = val;
     },
     handleDel(id) {
-      (this as any).$store.dispatch('Delete', { sku_id: id }).then(() => {
-        (this as any).$store.dispatch('GetCart');
+      this.$store.dispatch('Delete', { sku_id: id }).then(() => {
+        this.$store.dispatch('GetCart');
       })
     },
     onOrder() {
@@ -262,10 +300,10 @@ export default {
             Promise.reject(err)
           })
       } else {
-        (this as any).$alert('还没有商品，添加后再来下单', '温馨提示', {
+        this.$alert('还没有商品，添加后再来下单', '温馨提示', {
           confirmButtonText: '确定',
           callback: (action) => {
-            (this as any).$message({
+            this.$message({
               type: 'info',
               message: `已取消`
             })
@@ -275,30 +313,59 @@ export default {
     },
     handleClose(){
       this.dialogSuccessVisible = false;
-      (this as any).$store.dispatch('GetCart').then(() => {});
+      this.$store.dispatch('GetCart').then(() => {});
     },
     onRetainCart() {
       this.dialogSuccessVisible = false;
-      (this as any).$store.dispatch('GetCart').then(() => {});
+      this.$store.dispatch('GetCart').then(() => {});
       this.$router.push('/');
     },
     onPushOrder() {
       this.dialogSuccessVisible = false;
-      (this as any).$store.dispatch('GetCart').then(() => {});
+      this.$store.dispatch('GetCart').then(() => {});
       this.$router.push('/order');
     }
   }
 }
 </script>
+
 <style scoped>
+.cart{
+  padding:3rem 10rem;
+}
+.productTitle {
+  display: flex;
+  align-items: center;
+  margin-bottom: 3rem;
+}
+.title{
+  font-size: 1.6rem;
+  margin-left:1.5rem
+}
+#multipleTable{
+  border-radius: 10px;
+  box-shadow: 2px 2px 5px #0D2140;
+}
 
 .cart-footer{
   position: absolute;
   bottom: 20px;
   right: 20px;
 }
+.order-price{
+  margin-left: -4rem;
+}
+.totalPrice{
+  color: #EF7854;
+  font-size: 2.5rem;
+}
 .order {
+  width:112px;
+  height: 43px;
+  border: none;
   margin-top: 20px;
+  background: url('@/assets/images/cart-logo1.png') no-repeat;
+  background-size: 100% 100%;
 }
 .input-box {
   display: none;

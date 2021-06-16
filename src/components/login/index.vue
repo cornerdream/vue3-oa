@@ -24,7 +24,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 export default {
   name: 'login',
   data() {
@@ -51,13 +51,13 @@ export default {
   methods: {
     async onLogin() {
       try {
-        await (this.$refs.form as any).validate();
+        await this.$refs.form .validate();
         this.isLoginLoading = true;
-        (this as any).$store
+        this.$store
           .dispatch('Login', this.form)
           .then(() => {
             this.isLoginLoading = false;
-            this.$router.push((this.$route.query.redirect as string) || '/');
+            this.$router.push(this.$route.query.redirect || '/');
           })
           .catch(() => {
             this.isLoginLoading = false;

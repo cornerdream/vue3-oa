@@ -1,12 +1,20 @@
 <!-- -->
 <template>
+
   <div class="product-detail">
-    <div class="goods_detail_pic">
-      
+    <div class="productTitle">
+      <img :src="detailImg" alt="">
+      <span class="title">商品详情</span>
+    </div>
+    <div class="productGoods">
+      <div class="goods_detail_pic">
+        
         <div class="lit_box"  @mousemove="move($event)" @mouseover="display(true)" @mouseout="display(false)">
           <div class="mask"  :class="mask_hide"></div>
           <img :src="productInfo.default_image_url" class="lit_img"/>
-
+          <div class="big_box" :class="mask_hide">
+          <img :src="productInfo.default_image_url" />
+          </div>
         </div>
         <div class="images_list">
           <i class="el-icon-arrow-left arrow-prev" @click="tabClick(true)"></i>
@@ -19,50 +27,59 @@
             </ul>
           </div>
         </div>
-        <div class="big_box" :class="mask_hide">
-          <img :src="productInfo.default_image_url" />
-        </div>
+        
+
       
-      
-      
-      
-      
-    </div>
+      </div>
     
-    <div class="goods_detail_list">
-      <h3>{{ productInfo.name }}</h3>
-      <p></p>
-      <div class="prize_bar">
-        <span class="show_pirze"
-          >¥<em>{{ productInfo.price }}</em></span
-        >
-        <a href="javascript:;" class="goods_judge"></a>
-      </div>
-      <div class="goods_num">
-        <div class="num_name">数 量：</div>
-        <div class="num_add">
-          <el-input-number size="mini" v-model="num" :min="1"></el-input-number>
+      <div class="goods_detail_list">
+        <h3 class="goods_name">{{ productInfo.name }}</h3>
+        
+        <!-- <div class="prize_bar">
+          <span class="show_pirze">¥<em>{{ productInfo.price }}</em></span>
+          <a href="javascript:;" class="goods_judge"></a>
+        </div> -->
+        <div class="goods_detail">
+          <div class="goods_price">
+            <div class="num_name">价格：</div> 
+            <div class="num_price">
+              ¥<em>{{ productInfo.price }}</em>
+            </div>
+          </div>
+          
+          <div class="type_select" v-for="(item) in productParam" :key="item.id">
+            <label>{{ item.name }}:</label>
+            <a
+              href="javascript:;"
+              :class="{ select: o.sku_id == $route.query.id,select_null:o.sku_id == null }"
+              v-for="(o) in item.options"
+              :key="o.sku_id"
+              @click="onSelect(o.sku_id, $event)"
+              >{{ o.value }}</a
+            >
+          </div>
+          <div class="goods_num">
+            <div class="num_name">数 量：</div>
+            <div class="num_add">
+              <el-input-number size="mini" v-model="num" :min="1"></el-input-number>
+            </div>
+          </div>
+          <div class="goods_total">
+            <div class="num_name">总价：</div> 
+            <div class="num_price">
+              ¥<em>{{ productInfo.price * num }}</em>
+            </div>
+           
+          </div>
+          <div class="operate_btn">
+            <!-- <a href="javascript:;" class="buy_btn">立即购买</a> -->
+            <a href="javascript:;" class="add_cart" id="add_cart" @click="onCart">加入购物车</a>
+          </div>
         </div>
-      </div>
-      <div class="type_select" v-for="(item) in productParam" :key="item.id">
-        <label>{{ item.name }}:</label>
-        <a
-          href="javascript:;"
-          :class="{ select: o.sku_id == $route.query.id,select_null:o.sku_id == null }"
-          v-for="(o) in item.options"
-          :key="o.sku_id"
-          @click="onSelect(o.sku_id, $event)"
-          >{{ o.value }}</a
-        >
-      </div>
-      <div class="total">
-        总价：<em>{{ productInfo.price * num }}元</em>
-      </div>
-      <div class="operate_btn">
-        <!-- <a href="javascript:;" class="buy_btn">立即购买</a> -->
-        <a href="javascript:;" class="add_cart" id="add_cart" @click="onCart">加入购物车</a>
+        
       </div>
     </div>
+   
     <el-dialog title="采购信息" v-model="dialogFormVisible" width="600px">
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="采购员" prop="value1">
@@ -107,22 +124,20 @@
   </div>
 </template>
 
-<script lang="ts">
-import {offset} from '../../../../../../utils'
+<script>
+import detailImg from '@/assets/images/detail-logo.png'
+import {offset} from '@/utils'
 import { mapGetters } from 'vuex'
 import $ from 'jquery'
-import func from 'vue-editor-bridge'
-import { off } from 'node:process'
 export default {
   name: 'product-detail',
   computed: {
     ...mapGetters(['project', 'buyer'])
   },
-  props:[
-    'productInfo','productParam','images'
-  ],
+  props:['productInfo','productParam','images'],
   data() {
     return {
+      detailImg:detailImg,
       mask_hide:{
         "hide":true
       },
@@ -148,7 +163,7 @@ export default {
   mounted() {
   },
   methods: {
-    tabClick(bool:boolean){     
+    tabClick(bool){     
       const wrapper = $('.images_list_ul');
       const len = $('.images_list_li').length-4;
       if(len<=0){return}
@@ -158,22 +173,24 @@ export default {
         }
         this.step--;
         wrapper.css({'transitionDuration':'0.3s'});
-        wrapper.css({'left':-this.step* 64+ 'px'});   
+        wrapper.css({'left':-this.step* 104+ 'px'});
+        //  wrapper.css({'left':-this.step* 9+ 'rem'});     
       }else{
         if (this.step === len) {
           return
         }
         this.step++;
         wrapper.css({'transitionDuration':'0.3s'});
-        wrapper.css({'left':-this.step * 64 + 'px'});     
+        wrapper.css({'left':-this.step * 104 + 'px'});     
+        // wrapper.css({'left':-this.step * 9 + 'rem'})
       }
     },
-    liHover(image:any,e:any){
+    liHover(image,e){
       this.productInfo.default_image_url = image;
       $(e.target).parent().addClass('hover_images_list_li')
       $(e.target).parent().siblings().removeClass('hover_images_list_li');
     },
-    move(e:any){
+    move(e){
       let lit = document.querySelector('.lit_box'),
       mask = document.querySelector('.mask'),
       big = document.querySelector('.big_box'),
@@ -197,10 +214,10 @@ export default {
       bigImg.style.left = -l*n +'px';
       bigImg.style.top = -t*n +'px';
     },
-    display(bool:boolean){
+    display(bool){
       this.mask_hide.hide=!bool;
     },
-    onSelect(id:number, e:any) {
+    onSelect(id, e) {
       const aNode = e.target;
       if(id==null){        
         $(aNode).attr('disabled',"disabled");
@@ -222,8 +239,8 @@ export default {
       this.dialogFormVisible = true;
     },
     async onSubmit() {
-      await (this.$refs.form as any).validate();
-      (this as any).$store.dispatch('Save', {
+      await this.$refs.form.validate();
+      this.$store.dispatch('Save', {
         sku_id: this.productInfo.id,
         count: this.num,
         buyer: this.form.value1,
@@ -231,14 +248,14 @@ export default {
         project: this.form.value3
       }).then(()=>{
         this.resetForm();
-        (this as any).$message({
+        this.$message({
             showClose: true,
             type: 'success',
             message: '加入成功!',
             duration: 2500
           })
           // this.dialogFormVisible = false;
-      }).catch((err:any)=>{
+      }).catch((err)=>{
             this.dialogErrorVisible = true
             this.error = err;
             this.dialogFormVisible = false;
@@ -247,7 +264,7 @@ export default {
     },
     resetForm() {
       this.dialogFormVisible = false;
-      (this as any).$refs.form.resetFields()
+      this.$refs.form.resetFields()
       this.form = { value1: '', value2: '', value3: '' }
     }
   }
@@ -256,27 +273,40 @@ export default {
 <style scoped>
 .product-detail {
   display: flex;
+  flex-direction: column;
   /* justify-content: center;
   align-content: center; */
 }
-
-.goods_detail_pic {
-  width: 350px;
-  height: 350px;
-  margin: 24px 10px 0 24px;
-  border: 1px solid #ededed;
+.productTitle {
+  display: flex;
+  align-items: center;
+  margin-bottom: 3rem;
 }
-.goods_detail_pic img {
-  width: 350px;
-  height: 350px;
+.title{
+  font-size: 1.6rem;
+  margin-left:1.5rem
+}
+.productGoods{
+  display: flex;
+}
+.goods_detail_pic {
+  /* width: 350px;
+  height: 350px; */
+  margin-right: 5rem;
+  /* margin: 24px 10px 0 24px; */
+  /* border: 1px solid #ededed; */
+  flex: 0 0 52rem;
 }
 .hide{
   display:none;
 }
 .lit_box{
-  width: 300px;
-  height: 300px;
-  border: 1px solid #ccc;
+  /* width: 300px;
+  height: 300px; */
+  width: 52rem;
+  height: 45rem;
+  border-radius: 6px;
+  box-shadow:2px 2px 5px #333333;
   position: relative;
 }
 .lit_box .mask{
@@ -284,8 +314,10 @@ export default {
   cursor: move;
   left: 0;
   top:0;
-  width:100px;
-  height: 100px;
+  /* width:100px;
+  height: 100px; */
+  width: 10rem;
+  height: 10rem;
   background: rgba(0, 0, 0, 0.5);
 }
 .lit_box img{
@@ -293,51 +325,66 @@ export default {
   height: 100%;
 }
 .big_box{
-  width: 400px;
-  height: 400px;
+  /* width: 600px;
+  height: 520px; */
+  width: 60rem;
+  height: 52rem;
   border:1px solid #ccc;
   position: relative;
-  left: 300px;
-  top:-400px;
+  /* left: 300px;
+  top:-400px; */
+  left: 52rem;
+  top:-42rem;
   overflow: hidden;
   z-index: 999;
 }
 .big_box img{
-  width: 1200px;
-  height: 1200px;
+  /* width: 3120px;
+  height: 2340px; */
+  width: 312rem;
+  height: 234rem;
   position: absolute;
 }
 .images_list{
-  width: 300px;
+  /* width: 520px; */
+  width: 52rem;
   position: relative;
 }
 .images_list_box{
   position: relative;
-  width: 256px;
-  height: 70px;
+  /* width: 500px;
+  height: 90px; */
   overflow: hidden;
-  margin: 10px 15px;
+  /* margin: 10px; */
+  width: 50rem;
+  height: 9rem;
+  margin: 1rem;
 }
 .images_list_box .images_list_ul{
   position: absolute;
-  width: 406px;
-  height: 70px;
-  top: 0px;
-  left: 0px;
+  /* width: 500px;
+  height: 90px; */
+  top: 0;
+  left: 0;
+  width: 50rem;
+  height: 9rem;
 }
 .images_list_box .images_list_ul .images_list_li {
   float: left;
-  margin: 0 5px;
-  width: 50px;
-  height: 64px;
+  /* margin: 0 5px;
+  width: 90px;
+  height: 90px; */
   border: 2px solid #fff;
+  margin: 0 .5rem;
+  width: 9rem;
+  height: 8.6rem;
 }
 .images_list_box .images_list_ul .images_list_li .images_list_img {
   width: 100%;
   height: 100%;  
 }
 .images_list_box .images_list_ul .hover_images_list_li{
-  border: 2px solid red;
+  border: 2px solid #EF7854;
 }
 .arrow-prev ,.arrow-next{
   display: block;
@@ -354,21 +401,24 @@ export default {
 }
 .arrow-next {
   right: 0;
+  text-align: right;
 }
 
 .goods_detail_list {
   flex: 1;
   min-width: 450px;
-  margin: 24px 24px 0 0;
+  color:#0D2140;
+  /* margin: 24px 24px 0 0; */
 }
-.goods_detail_list h3 {
-  font-size: 24px;
+.goods_detail_list .goods_name {
+  font-size: 2.4rem;
   line-height: 24px;
-  color: #666;
+  /* color:#0D2140; */
   font-weight: normal;
+  margin: 1.4rem 0 5rem 0;
 }
 .goods_detail_list p {
-  color: #666;
+  /* color: #666; */
   line-height: 40px;
 }
 .prize_bar {
@@ -402,14 +452,18 @@ export default {
   text-decoration: underline;
 } */
 
-.goods_num {
+.goods_price,.goods_num,.goods_total {
   display: flex;
   align-items: center;
 }
-.goods_num .num_name {
+.goods_price .num_name,.goods_num .num_name ,.goods_total .num_name{
   width: 70px;
   height: 52px;
   line-height: 52px;
+}
+.goods_price .num_price,.goods_total .num_price{
+  color: #F1835B;
+  font-size: 2rem;
 }
 /* .goods_num .num_add{width:75px;height:50px;border:1px solid #dddddd}
 .goods_num .num_add input{width:49px;height:50px;text-align:center;line-height:50px;border:0px;outline:none;font-size:14px;color:#666}
@@ -421,10 +475,10 @@ export default {
   line-height: 35px;
   margin-top: 25px;
 }
-.total em {
+em {
+  margin-left:1rem;
   font-style: normal;
-  color: #ff3e3e;
-  font-size: 18px;
+  color: #F1835B;
 }
 
 .operate_btn {
@@ -437,19 +491,24 @@ export default {
 .operate_btn .buy_btn,
 .operate_btn .add_cart {
   display: inline-block;
-  width: 178px;
-  height: 38px;
-  border: 1px solid #c40000;
-  font-size: 14px;
-  color: #c40000;
-  line-height: 38px;
+  /* width: 178px;
+  height: 38px; */
+  width: 30rem;
+  height: 6rem;
+  border: 1px solid #EF7854;
+  font-size: 1.4rem;
+  color: #EF7854;
+  /* line-height: 38px; */
+  line-height: 6rem;
   text-align: center;
   background-color: #ffeded;
+  border-radius: 6px;
+  box-shadow: 2px 2px 5px #EF7854;
 }
 .operate_btn .add_cart {
-  background-color: #c40000;
+  background-color: #EF7854;
   color: #fff;
-  margin-left: 10px;
+  /* margin-left: 10px; */
   position: relative;
   z-index: 10;
 }
@@ -468,17 +527,17 @@ export default {
   line-height: 40px;
   border: 1px solid #ccc;
   padding: 0px 10px;
-  color: #5e5e5e;
+  color: #0D2140;
   margin-right: 10px;
   margin-bottom: 10px;
 }
 .type_select a:hover {
-  border: 1px solid #e3101e;
-  color: #e3101e;
+  border: 1px solid #EF7854;
+  /* color: #e3101e; */
 }
 .type_select .select {
-  border: 1px solid #e3101e;
-  background: url('src/assets/images/selected.png') right bottom no-repeat;
+  border: 1px solid #EF7854;
+  /* background: url('src/assets/images/selected.png') right bottom no-repeat; */
 }
 .type_select .select_null{
   border:1px dashed #ccc;

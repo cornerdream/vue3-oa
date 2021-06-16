@@ -14,7 +14,7 @@ export default {
   name: 'bread',
   props:{
      crumnName: {},
-     crumnNames:'',
+     crumnNames:{ type: String },
   },
   data() {
     return {
