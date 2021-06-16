@@ -158,8 +158,8 @@
 </template>
 
 <script >
-import { sworkflowtask, worflowre, approve, approving } from '../../../../api/approval'
-import { transdate, timestampToTime } from '../../../../utils/index'
+import { sworkflowtask, worflowre, approve, approving } from '../../../../../api/approval'
+import { transdate, timestampToTime } from '../../../../../utils/index'
 export default {
   name: 'personal',
   data() {

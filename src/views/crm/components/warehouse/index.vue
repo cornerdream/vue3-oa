@@ -1,97 +1,97 @@
-<!--采购单列表 rengaoli 2021/5/18 -->
 <template>
-  <div class="personal">
-    <el-table :data="tableData" border style="width: 100%" height="650" @row-click="tab">
-      <el-table-column prop="" type="index" label="序号" width="100"> </el-table-column>
-      <el-table-column prop="name" label="名称" width="180">
-        <template #default="scope">
-          {{ scope.row.name ? scope.row.name : '' }}
-        </template>
-      </el-table-column>
-      <el-table-column prop="department" label="部门">
-        <template #default="scope">
-          {{ scope.row.department ? scope.row.department.name : '' }}
-        </template>
-      </el-table-column>
-      <el-table-column prop="porject" label="项目">
-        <template #default="scope">
-          {{ scope.row.project ? scope.row.project.name : '' }}
-        </template>
-      </el-table-column>
-      <el-table-column prop="create_uid" label="申请人">
-        <template #default="scope">
-          {{ scope.row.id ? scope.row.create_uid.name : '' }}
-        </template>
-      </el-table-column>
-      <el-table-column prop="supplier" label="供应商">
-        <template #default="scope">
-          {{ scope.row.supplier ? scope.row.supplier.name : '' }}
-        </template>
-      </el-table-column>
-      <el-table-column prop="buyer" label="采购员">
-        <template #default="scope"> {{ scope.row.buyer ? scope.row.buyer.name : '' }} </template>
-      </el-table-column>
-      <el-table-column prop="total_amount" label="合计">
-        <template #default="scope"> {{ scope.row.buyer ? scope.row.buyer.name : '' }} </template>
-      </el-table-column>
-      <el-table-column prop="state" label="状态">
-        <template #default="scope">
-          <el-tag :type="scope.row.state[0] === 'orders' ? 'danger' :scope.row.state[0] === 'sent'|| scope.row.state[0] === 'draft'? ' ': 'success'">{{
-            scope.row.state[1]
-          }}</el-tag>
-        </template>
-      </el-table-column>
-    </el-table>
+  <div class="picking">
+    <div class="picking-content">
+      <ul v-for="item in list" :key="item" @click="pickDetail(item)">
+        <li>{{ item.name }}</li>
+        <li>
+          <el-button class="el-button" type="primary" size="small"
+            >待处理：{{ item.pending }}</el-button
+          >
+        </li>
+        <li>
+          <el-button class="el-button" size="small">总数：{{ item.count }}</el-button>
+        </li>
+      </ul>
+      <!-- <ul>
+        <li>交货入库</li>
+        <li><el-button class="el-button" type="primary" size="small">待处理：4</el-button></li>
+        <li><el-button class="el-button" size="small">总数：530</el-button></li>
+      </ul>
+      <ul>
+        <li>内部调拨</li>
+        <li><el-button class="el-button" type="primary" size="small">待处理：4</el-button></li>
+        <li><el-button class="el-button" size="small">总数：540</el-button></li>
+      </ul> -->
+    </div>
   </div>
 </template>
 
-<script lang="ts">
-import { ElMessage } from 'element-plus'
+<script>
 import Bread from '../../../../components/bread.vue'
-import { buyerlist } from '../../../../api/buyer'
+import { pickist } from '../../../../api/picking'
 export default {
-  name: 'personal',
+  name: 'picking',
   components: { Bread },
   data() {
     return {
-      active: 0,
-      tableData: []
+      list: [],
+      page: '',
+      page_size: ''
     }
   },
-  created() {
-    this.buyer()
+  created() {},
+  mounted() {
+    this.fnPick()
   },
-  mounred() {},
   methods: {
-    async buyer() {
-      await buyerlist().then((res) => {
-        if (res.data.code !== 200) {
-          ElMessage.error(res.data.error)
-        } else {
-          this.tableData = res.data.data
+    pickDetail(item) {
+      let id = sessionStorage.setItem('picking_type', JSON.stringify(item))
+      console.log(id,'id',item)
+      this.$router.push({ path: '/picklist' })
+    },
+    async fnPick() {
+      await pickist(this.page, this.page_size).then((res) => {
+        if (res.data.code == 200) {
+          this.list = res.data.data.results
         }
       })
-    },
-      tab(item: { id: any }) {
-        this.$router.push({ path: '/detail', query: { id: item.id } })
     }
   }
 }
 </script>
+
 <style scoped>
-.personal {
+.picking {
+  min-height: 800px;
+  background: #fff;
+  text-align: center;
+}
+.picking-content {
+  width: 1200px;
+  height: 200px;
   padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 0 auto;
   background: #fff;
 }
-.title {
-  font-size: 20px;
-  font-weight: 600;
-  padding: 20px;
+.picking-content ul {
+  width: 240px;
+  height: 160px;
+  line-height: 40px;
+  border: 1px solid #ccc;
+  box-shadow: 1px 2px 4px #bababa;
+  border-radius: 10px;
+  margin: 20px;
+  text-align: left;
 }
-.content-head {
-  margin: 30px 60px;
-}
-h4 {
+.picking-content ul li {
   margin: 10px;
+}
+.el-button {
+  width: 100px;
+  height: 20px;
+  border-radius: 10px;
 }
 </style>

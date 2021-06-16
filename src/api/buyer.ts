@@ -1,5 +1,6 @@
 //采购员订单
 import $axios from '../utils/axios'
+import qs from 'qs'
 //采购员订单列表
 export function buyerlist() {
     return $axios({
@@ -74,7 +75,7 @@ export function projectList() {
 //部门列表
 export function departmentList() {
     return $axios({
-      url: '/api/organization/user/tree/',
+      url: '/api/organizations/',
       method: 'get'
     })
   }
@@ -83,5 +84,34 @@ export function infoList() {
   return $axios({
     url: '/api/skus/info/list',
     method: 'get'
+  })
+}
+//待采购接口
+export function purchase() {
+  return $axios({
+    url: '/api/orders/buyer/purchase/',
+    method: 'get'
+  })
+}
+//已完成
+export function done() {
+  return $axios({
+    url: '/api/orders/buyer/done/',
+    method: 'get'
+  })
+}
+//到货单	
+export function arrival() {
+  return $axios({
+    url: '/api/orders/buyer/arrival/',
+    method: 'get'
+  })
+}
+// 按钮：到货入库/api/orders/action-arrival/
+export function actionval(data:any){
+  return $axios({
+    url: '/api/orders/action-arrival/',
+    method: 'post',
+    data
   })
 }

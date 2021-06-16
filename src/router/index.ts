@@ -22,22 +22,25 @@ const Cart = () => import(/*webpackChunkName:'shop'*/ '../views/shop/cart/index.
  *后台我的
  */
 const Me = () => import(/*webpackChunkName:'home'*/ '../views/crm/components/home/me/index.vue')
-const Order = () =>
+const Orders = () =>
   import(/*webpackChunkName:'home'*/ '../views/crm/components/home/order/index.vue')
-//入库单
-const personal = () => import(/*webpackChunkName:'home'*/'../views/crm/components/warehouse/index.vue');
-const publish = () => import(/*webpackChunkName:'home'*/'../views/crm/components/list/selectlist/index.vue');
-const detail = () => import(/*webpackChunkName:'home'*/'../views/crm/components/warehouse/components/detail.vue');
-const categories = () => import(/*webpackChunkName:'home'*/'../views/crm/components/list/selectlist/components/categories/categories.vue');
-const infortion = () => import(/*webpackChunkName:'home'*/'../views/crm/components/list/selectlist/components/infortion/infortion.vue');
-const release = () => import(/*webpackChunkName:'home'*/'../views/crm/components/list/selectlist/components/release/release.vue');
+//采购订单
+const personal = () => import(/*webpackChunkName:'home'*/'../views/crm/components/order/index.vue');
+const unhandle = () => import(/*webpackChunkName:'home'*/'../views/crm/components/order/unhandle.vue');
+const handled = () => import(/*webpackChunkName:'home'*/'../views/crm/components/order/handled.vue');
+const order = () => import(/*webpackChunkName:'home'*/'../views/crm/components/order/order.vue');
+const detail = () => import(/*webpackChunkName:'home'*/'../views/crm/components/order/components/detail.vue');
+const publish = () => import(/*webpackChunkName:'home'*/'../views/crm/components/order/publish/index.vue');
+const categories = () => import(/*webpackChunkName:'home'*/'../views/crm/components/order/publish/components/categories/categories.vue');
+const infortion = () => import(/*webpackChunkName:'home'*/'../views/crm/components/order/publish/components/infortion/infortion.vue');
+const release = () => import(/*webpackChunkName:'home'*/'../views/crm/components/order/publish/components/release/release.vue');
 // 审批管理
-
-const approving = () => import(/*webpackChunkName:'home'*/'../views/crm/components/approving/index.vue');
-const approved = () => import(/*webpackChunkName:'home'*/'../views/crm/components/approved/index.vue');
-const picking = () => import(/*webpackChunkName:'home'*/'../views/crm/components/picking/index.vue');
-const picklist = () => import(/*webpackChunkName:'home'*/'../views/crm/components/picking/components/picklist.vue');
-const pickdetail = () => import(/*webpackChunkName:'home'*/'../views/crm/components/picking/components/pickdetail.vue');
+const approving = () => import(/*webpackChunkName:'home'*/'../views/crm/components/workflows/approving/index.vue');
+const approved = () => import(/*webpackChunkName:'home'*/'../views/crm/components/workflows/approved/index.vue');
+//仓库管理
+const picking = () => import(/*webpackChunkName:'home'*/'../views/crm/components/warehouse/index.vue');
+const picklist = () => import(/*webpackChunkName:'home'*/'../views/crm/components/warehouse/components/picklist.vue');
+const pickdetail = () => import(/*webpackChunkName:'home'*/'../views/crm/components/warehouse/components/pickdetail.vue');
 
 /*
  *系统设置
@@ -112,9 +115,9 @@ const routes: Array<RouteRecordRaw> = [
             }
           },
           {
-            path: '/order',
-            name: 'order',
-            component: Order,
+            path: '/orders',
+            name: 'orders',
+            component: Orders,
             meta: {
               title: '我的订单'
             }
@@ -174,6 +177,30 @@ const routes: Array<RouteRecordRaw> = [
             component: detail,
             meta: {
               title: '采购订单详情'
+            }
+          },
+          {
+            path: '/unhandle',
+            name: 'unhandle',
+            component: unhandle,
+            meta: {
+              title: '待采购'
+            }
+          },
+          {
+            path: '/handled',
+            name: 'handled',
+            component: handled,
+            meta: {
+              title: '已完成'
+            }
+          },
+          {
+            path: '/order',
+            name: 'order',
+            component: order,
+            meta: {
+              title: '到货单'
             }
           },
           {

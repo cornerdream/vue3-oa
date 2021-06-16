@@ -160,8 +160,8 @@
 </template>
 
 <script >
-import { approved, worflowre, approve } from '../../../../api/approval'
-import { transdate, timestampToTime } from '../../../../utils/index'
+import { approved, worflowre, approve } from '../../../../../api/approval'
+import { transdate, timestampToTime } from '../../../../../utils/index'
 export default {
   name: 'personal',
   data() {
