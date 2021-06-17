@@ -24,15 +24,13 @@
   </div>
 </template>
 
-<script lang="ts">
-import productBig from './components/product-big.vue'
+<script>
 import productDetail from './components/product-detail.vue'
-import { getProductDetail} from '../../../../../api/product'
+import { getProductDetail} from '@/api/product'
 import $ from 'jquery'
 export default {
   name: 'detail',
   components: {
-    productBig,
     productDetail
   },
   data() {
@@ -52,21 +50,12 @@ export default {
     }
   },
   watch:{
-    descript(){
-      this.$nextTick(()=>{        
-        $('.descript').html(this.descript);
-        $('.param').html(this.param);
-        const src =  $('.descript').find('img').attr('src');
-        console.log(src)
-        src.includes('http')?'':$('.descript').find('img').attr('src','http://192.168.1.218:8000'+src);
-    })
-    }
+
   },
   created() {
     this.loadProductDetail(this.id);
   },
   mounted() {
-   
   },
   methods:{
     async loadProductDetail(cData) {
@@ -76,11 +65,43 @@ export default {
       this.param = data.data.sku.desc_pack;
       this.images = data.data.sku.images;
       this.productParam = data.data.specs;
-    }
+      this.loadhtml()
+    },
+    loadhtml(){
+      console.log('jinlai')
+      $('.el-tabs__content').show()
+      $('.descript').html('');        
+      $('.param').html('');   
+      $('.descript').html(this.descript);
+      $('.param').html(this.param);
+      const srcdescript =  $('.descript').find('img').attr('src');
+      srcdescript?(srcdescript.includes('http')?null:$('.descript').find('img').attr('src','http://192.168.1.218:8000'+srcdescript)):null;
+      const srcparam =  $('.param').find('img').attr('src');
+      srcparam?(srcparam.includes('http')?null:$('.param').find('img').attr('src','http://192.168.1.218:8000'+srcparam)):null;
+  }
   }
 }
 </script>
-<style scoped>
-.detail {
+<style >
+.tabBox{
+  margin-top: 7rem;
+}
+.tabBox > .el-tabs--card>.el-tabs__header {
+  border-bottom: 1px solid #0D2140;
+ 
+}
+.tabBox > .el-tabs--card>.el-tabs__header .el-tabs__nav {
+  border: 1px solid #0D2140;
+  background: #0D2140;
+  
+}
+.tabBox > .el-tabs--card>.el-tabs__header .el-tabs__item.is-active {
+    border-bottom-color: #0D2140;
+}
+.tabBox .el-tabs__item {
+  color: #fff;
+}
+.tabBox  .el-tabs__item.is-active {
+    color: #409EFF;
 }
 </style>

@@ -1,10 +1,26 @@
 <template>
   <div class="list">
+    <section id="search">
+
+    </section>
     <section id="section">
       <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item  v-for="item in productTag" :key="item" @click.native="onBread(item.id)">{{
-          item.name
-        }}</el-breadcrumb-item>
+        <el-breadcrumb-item  v-for="(item,index) in productTag" :key="item">
+          <span v-if="index==0">{{item}}</span>
+          <span v-else style="margin-left:10px">{{'"'+item+'"'}}</span>
+          <!-- <span v-if="index==0">{{item}}</span>
+          <span  v-else>
+            <el-tag 
+            closable
+            :disable-transitions="false"
+            @close="handleClose(item)"
+          >
+            {{ item }}
+          </el-tag>
+          <span style="margin-left:10px">{{'"'+item+'"'}}</span>
+          </span> -->
+          
+        </el-breadcrumb-item>
         <nav id="choose" v-if="tagShow">
           <el-tag
             :key="tag"
@@ -20,12 +36,11 @@
 
       <el-divider></el-divider>
       <ul id="type" v-if="listShow">
-        <li v-for="item in productFilter" :key="item">
-          <span class="type-key"
-            ><strong>{{ item.name }}：</strong></span
-          >
+        <li v-for="item in productFilter" :key="item" class="typeli">
+          <span class="type-key"><strong>{{ item.name }}：</strong></span>
           <ul class="type-value">
             <li
+              class="valueli" 
               v-for="o in item.options"
               :key="o"
               :class="{ logoLi: item.params == 'brand' }"
@@ -38,7 +53,7 @@
               </a>
             </li>
           </ul>
-          <el-divider></el-divider>
+          <!-- <el-divider></el-divider> -->
         </li>
       </ul>
     </section>
@@ -60,10 +75,16 @@
           <span class="nav-item-name">销量</span>
         </li>
       </ul> -->
-      <el-row :gutter="10">
+      <!-- <el-row :gutter="10"> -->
       
         <el-col 
-        :span="4"
+        :xs="8" 
+        :sm="8" 
+        :md="6" 
+        :lg="6" 
+        :xl="4"
+      
+        
         v-for="o in productList"
         :key="o"
         :id="o.id"
@@ -84,7 +105,7 @@
             </el-card>
           </div>
         </el-col>
-      </el-row>
+      <!-- </el-row> -->
     </section>
     <section class="result" v-else>
       <el-result title="404" subTitle="抱歉，请求没有数据">
@@ -99,16 +120,11 @@
   </div>
 </template>
 
-<script lang="ts">
-import defaultImg from '../../../../assets/images/mouse.png'
+<script>
+import defaultImg from '@/assets/images/mouse.png'
 export default {
-  name: 'list',
-  props: {
-    productTag: [],
-    productNav:[],
-    productFilter: [],
-    productList: [],
-  },
+  name: 'list', 
+  props:['productTag','productNav','productFilter','productList'],
   data() {
     return {
       tagShow: false,
@@ -120,7 +136,7 @@ export default {
       listData: this.productList,
       query: [
         {
-          category_id: this.$route.query.id
+          text: this.$route.query.text
         }
       ]
     }
@@ -147,9 +163,8 @@ export default {
       this.$router.push({ name: 'productClassify', query: { id } });      
       this.query[0]['category_id']=id;   
       this.$emit('initProductTag', this.query);
-      this.$emit('initProductList', this.query);
     },
-    handleClose(tag:any) {
+    handleClose(tag) {
       console.log(tag);    
       // this.dynamicTags.splice(this.dynamicTags.indexOf(tag.name), 1);
       // const itemKey = tag.params;
@@ -189,12 +204,12 @@ export default {
     //  console.log(this.query.indexOf(oItem))  
       console.log(this.query)
       this.$emit('initProductTag', this.query);
-      this.$emit('initProductList', this.query);
+    
       if (this.query.length == 1) {
         this.tagShow = false
       }
     },
-    onAddItem(tag:any, params:any, id:any) {
+    onAddItem(tag, params, id) {
       // const obj = {
       //   name: tag,
       //   params,
@@ -221,10 +236,10 @@ export default {
       }
       console.log(this.query);
       this.$emit('initProductTag', this.query);
-      this.$emit('initProductList', this.query);
+      
     },
-    onClick(id:any) {
-      this.$router.push({ name: 'productDetail', query: { classifyId: this.$route.query.id, id } })
+    onClick(id) {
+      this.$router.push({ name: 'productDetail', query: {  id } })
     },
     onBack(){
       this.$router.back();
@@ -232,7 +247,7 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style lang="scss" scoped>
 .list {
   padding: 20px;
 }
@@ -251,13 +266,35 @@ export default {
 }
 #type {
   background: #fff;
-  margin-bottom: 10px;
+  margin: 2rem 0 5rem 0;
+  border-radius: 10px;
+  box-shadow: 2px 2px 5px #0D2140;
 }
 
-#type li {
-  position: relative;
-  line-height: 34px;
-  background: #f3f3f3;
+#type .typeli {
+  // position: relative;
+  // line-height: 34px;
+  // background: #f3f3f3;
+  display: flex;
+  // align-items:center;
+  border-bottom: 1px solid #0D2140;
+  &:last-child{
+    border-bottom:0;
+  }
+}
+#type .typeli:nth-of-type(odd) ul{ background: #fff;}
+#type .typeli:nth-of-type(even) ul{background: #B6BDC9;}
+#type .typeli:first-of-type .type-key{
+   border-radius:10px 0 0 0;
+}
+#type .typeli:last-of-type .type-key{
+  border-radius:0 0 0 10px;
+}
+#type .typeli:first-of-type .type-value {
+  border-radius: 0 10px 0 0;
+}
+#type .typeli:last-of-type .type-value {
+  border-radius: 0 0 10px 0;
 }
 .type-key {
   float: left;
@@ -265,66 +302,88 @@ export default {
   padding-left: 10px;
   white-space: nowrap;
   overflow: hidden;
+  background: #0D2140;
+  text-align: center;
+  color: #fff;
+  flex: 0 0 18rem;
+  // height: 5rem;
+  line-height: 5rem;
 }
+
+
 .type-value {
+  flex: 1;
   display: flex;
-  margin-left: 110px;
-  padding-right: 130px;
-  padding-left: 10px;
+  align-items: center;
+  // margin-left: 110px;
+  // padding-right: 130px;
+  // padding-left: 10px;
   overflow: hidden;
   zoom: 1;
   background: #fff;
 }
-.type-value li {
-  float: left;
-  margin-right: 50px;
-  margin-bottom: 4px;
-  height: 26px;
-  line-height: 26px;
+
+.type-value .valueli {
+  // float: left;
+  // margin-right: 50px;
+  // margin-bottom: 4px;
+  // height: 26px;
+  // line-height: 26px;
+  padding: .8rem 1.2rem;
+  margin: 0 5rem;
 }
-.type-value li a {
-  float: left;
-  white-space: nowrap;
-  zoom: 1;
-  color: #005aa0;
+.type-value .valueli a {
+  // float: left;
+  // white-space: nowrap;
+  // zoom: 1;
+  color: #0D2140;
+  width: 10rem;
+  height: 3rem;
 }
-.type-value li.logoLi {
-  float: left;
-  width: 116px;
-  height: 48px;
-  padding: 0;
-  border: 1px solid #ddd;
-  margin: 0 0 0 0;
-  background: #fff;
+.type-value .logoLi {
+  // float: left;
+  // width: 116px;
+  // height: 48px;
+  // padding: 0;
+  border: 1px solid #0D2140;
+  border-radius: 10px;
+  // margin: 0 0 0 0;
+  // background: #fff;
   text-align: center;
+  width: 10rem;
+  height: 3rem;
+  padding: .4rem 1rem;
 }
-.type-value li.logoLi a i {
+.type-value .logoLi a i {
   display: none;
 }
-.type-value li.logoLi:hover {
-  width: 114px;
-  height: 46px;
-  border: 2px solid red;
+.type-value .logoLi:hover {
+  // width: 114px;
+  // height: 46px;
+  border: 1px solid #EF7854;
 }
-.type-value li.logoLi:hover a i {
+.type-value .logoLi:hover a i {
   display: block;
 }
-.type-value li.logoLi:hover a img {
+.type-value .logoLi:hover a img {
   display: none;
 }
 .logoLi a {
-  display: block;
-  height: 46px;
-  width: 114px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  zoom: 1;
-  color: #005aa0;
-  line-height: 48px;
+  width: 10rem;
+  height: 3rem;
+  line-height: 3rem;
+  // display: block;
+  // height: 46px;
+  // width: 114px;
+  // overflow: hidden;
+  // text-overflow: ellipsis;
+  // white-space: nowrap;
+  // zoom: 1;
+  // color: #005aa0;
+  // line-height: 48px;
 }
 .logoLi a img {
-  margin: 5px 6px;
+  // margin: 5px 6px;
   vertical-align: top;
 }
 .navbar {

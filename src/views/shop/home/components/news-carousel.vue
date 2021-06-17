@@ -6,7 +6,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import news from './news.vue'
 import carousel from './carousel.vue'
 export default {
@@ -22,5 +22,7 @@ export default {
 <style scoped>
 .news-carousel {
   display: flex;
+  padding-left:10rem;
+  /* height: 53rem; */
 }
 </style>

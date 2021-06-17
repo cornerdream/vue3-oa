@@ -12,8 +12,8 @@
         </section>
     </div>
 </template>
-<script lang="ts">
-import defaultImg from '../../assets/images/mouse.png'
+<script>
+import defaultImg from '@/assets/images/mouse.png'
 export default {
     name: 'list',
     data() {

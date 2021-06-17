@@ -2,7 +2,7 @@
 
 ---
 
-- 编程语言：TypeScript 4.x + JavaScript
+- 编程语言：JavaScript
 - 构建工具：Vite 2.x
 - 前端框架：Vue 3.x
 - 路由工具：Vue Router 4.x
@@ -16,7 +16,7 @@
 - 单元测试：vue-test-utils + jest + vue-jest + ts-jest
 - 自动部署：GitHub Actions
 
-# Vue 3 + Typescript + Vite
+# Vue 3  + Vite
 
 This template should help get you started developing with Vue 3 and Typescript in Vite.
 
@@ -48,7 +48,7 @@ npm run dev
 ```
 
 - Vite 配置文件
-  vite.config.ts ,vite 官网 vitejs.dev/config/
+  vite.config.js ,vite 官网 vitejs.dev/config/
 
 # 集成路由 vue router
 
@@ -79,7 +79,7 @@ const router = createRouter({
 export default router
 ```
 
-- 在 main.ts 文件中挂载路由配置
+- 在 main.js 文件中挂载路由配置
 
 ```
 import {createApp} from 'vue'
@@ -96,7 +96,7 @@ createApp(App).use(router).mount('#app)
 npm i vuex@next
 ```
 
-- 状态配置文件 src/store/index.ts
+- 状态配置文件 src/store/index.js
 
 ```
 import {createStore} from 'vuex'
@@ -116,7 +116,7 @@ export default createStore({
 })
 ```
 
-- 在 main.ts 文件中挂载状态配置
+- 在 main.js 文件中挂载状态配置
 
 ```
 import {}
@@ -145,7 +145,7 @@ import 'element-plus/lib/theme-chalk/index.css'
 npm i axios
 ```
 
-- 配置文件 src/utils/axios.ts
+- 配置文件 src/utils/axios.js
 
 ```
 import Axios from 'axios'
