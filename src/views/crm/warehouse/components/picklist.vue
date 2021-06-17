@@ -77,7 +77,7 @@
 <script >
 import Bread from '@/components/bread.vue'
 import Pagenation from '@/components/pageNation.vue'
-import { picktype, search } from '@/api/picking'
+import { picktype, search,state } from '@/api/picking'
 import { transdate, timestampToTime } from '@/utils/index'
 export default {
   name: 'picking',
