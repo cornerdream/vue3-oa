@@ -82,7 +82,7 @@ export function reserved(data) {
   })
 }
 //状态筛选
-export function state(id: string) {
+export function state(id) {
   return $axios({
     url: '/api/pickings/state/list/',
     method: 'get'

@@ -29,12 +29,30 @@ const Cart = () => import(/*webpackChunkName:'shop'*/ '@/views/shop/cart/index.v
 const Me = () => import(/*webpackChunkName:'home'*/ '@/views/crm/home/me/index.vue')
 const Orders = () =>
   import(/*webpackChunkName:'home'*/ '@/views/crm/home/order/index.vue')
+// //入库单
+// const personal = () => import(/*webpackChunkName:'warehouse'*/'@/views/crm/warehouse/index.vue');
+// const publish = () => import(/*webpackChunkName:'list'*/'@/views/crm/list/selectlist/index.vue');
+// const detail = () => import(/*webpackChunkName:'warehouse'*/'@/views/crm/warehouse/components/detail.vue');
+// const categories = () => import(/*webpackChunkName:'list'*/'@/views/crm/list/selectlist/components/categories/categories.vue');
+// const infortion = () => import(/*webpackChunkName:'list'*/'@/views/crm/list/selectlist/components/infortion/infortion.vue');
+// const release = () => import(/*webpackChunkName:'list'*/'@/views/crm/list/selectlist/components/release/release.vue');
+// // 审批管理
+
+// const approving = () => import(/*webpackChunkName:'approving'*/'@/views/crm/approving/index.vue');
+// const approved = () => import(/*webpackChunkName:'approved'*/'@/views/crm/approved/index.vue');
+// const picking = () => import(/*webpackChunkName:'picking'*/'@/views/crm/picking/index.vue');
+// const picklist = () => import(/*webpackChunkName:'picking'*/'@/views/crm/picking/components/picklist.vue');
+// const pickdetail = () => import(/*webpackChunkName:'picking'*/'@/views/crm/picking/components/pickdetail.vue');
 //采购订单
 const personal = () => import(/*webpackChunkName:'home'*/'@/views/crm/order/index.vue');
 const unhandle = () => import(/*webpackChunkName:'home'*/'@/views/crm/order/unhandle.vue');
 const handled = () => import(/*webpackChunkName:'home'*/'@/views/crm/order/handled.vue');
 const order = () => import(/*webpackChunkName:'home'*/'@/views/crm/order/order.vue');
 const detail = () => import(/*webpackChunkName:'home'*/'@/views/crm/order/components/detail.vue');
+const publish = () => import(/*webpackChunkName:'home'*/'@/views/crm/order/publish/index.vue');
+const categories = () => import(/*webpackChunkName:'home'*/'@/views/crm/order/publish/components/categories/categories.vue');
+const infortion = () => import(/*webpackChunkName:'home'*/'@/views/crm/order/publish/components/infortion/infortion.vue');
+const release = () => import(/*webpackChunkName:'home'*/'@/views/crm/order/publish/components/release/release.vue');
 // 审批管理
 const approving = () => import(/*webpackChunkName:'workflows'*/'@/views/crm/workflows/approving/index.vue');
 const approved = () => import(/*webpackChunkName:'workflows'*/'@/views/crm/workflows/approved/index.vue');
@@ -202,6 +220,33 @@ const routes= [
         meta: {
           title: '到货单'
         }
+      },
+      {
+        path: '/publish',
+        name: 'publish',
+        component: publish,
+        children: [
+          {
+            path: '',        //如果只写 / 则说明默认打开一个页面
+            redirect: 'categories'//默认指向页面
+          },
+          {
+            path: '/categories',
+            name: 'categories',
+            component: categories
+          },
+          {
+            path: '/infortion',
+            name: 'infortion',
+            component: infortion
+          },
+          {
+            path: '/release',
+            name: 'release',
+            component: release
+          }
+
+        ]
       },
       {
         path: '/approving',
