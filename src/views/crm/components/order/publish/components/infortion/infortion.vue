@@ -13,7 +13,7 @@ import fromations from './componetns/from-ations.vue'
 import fromarelease from './componetns/from-release.vue'
 export default {
   name: 'infortion',
-  components: { fromtitle, fromations, fromarelease },
+  components: { fromtitle, fromations, fromarelease},
   data() {
     return {
       infoText: ' '

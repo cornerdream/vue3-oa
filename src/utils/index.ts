@@ -1,5 +1,5 @@
 import $ from 'jquery'
-export function offset(ele){
+export function offset(ele: { offsetLeft: any; offsetTop: any; offsetParent: any; }){
   // 可以获取到 ele 这个元素到body的偏移量
   let l = ele.offsetLeft,
       t = ele.offsetTop;// 获取当前元素到父级参照物的偏移量
@@ -199,3 +199,21 @@ export function toDecimal2(x:any) {
   }    
   return s;    
 } 
+
+export function time(str:any){
+ let time = new Date(str).getTime()
+}
+export function formatting(time:any){
+  var time = new Date(time);
+  var y = time.getFullYear();
+  var m = time.getMonth()+1;
+  var d = time.getDate();
+  var h = time.getHours();
+  var mm = time.getMinutes();
+  var s = time.getSeconds();
+  return y+'-'+repair0(m)+'-'+repair0(d)+' '+repair0(h);
+}
+
+export function repair0(m: string | number){
+	return m<10?'0'+m:m 
+}

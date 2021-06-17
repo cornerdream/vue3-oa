@@ -8,9 +8,9 @@ export function pickist() {
     })
 }
 //拣货入库列表
-export function picktype(picking_type: string,page:string) {
+export function picktype(picking_type: string,page:string,size:string) {
     return $axios({
-      url: '/api/picking/'+picking_type+'/list/?page='+page,
+      url: '/api/picking/'+picking_type+'/list/?page='+page+'&page_size='+size,
       method: 'get'
     })
 }
@@ -79,5 +79,12 @@ export function reserved(data:any) {
     url: '/api/pickings/action-reserved/',
     method: 'post',
     data
+  })
+}
+//状态筛选
+export function state(id: string) {
+  return $axios({
+    url: '/api/pickings/state/list/',
+    method: 'get'
   })
 }

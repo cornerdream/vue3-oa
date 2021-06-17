@@ -8,14 +8,16 @@
         :rules="rules"
         size="small"
         label-width="110px"
-        style="text-align: initial">
-         <el-form-item label="申请人：" prop="applicant" v-if="state != 'assigned'">
+        style="text-align: initial"
+      >
+        <el-form-item label="申请人：" prop="applicant" v-if="state != 'assigned'">
           <el-select v-model="form.applicant" filterable placeholder="请选择申请人">
             <el-option
               v-for="(item, index) in userlist"
               :key="index"
               :label="item.name"
-              :value="item.id">
+              :value="item.id"
+            >
             </el-option>
           </el-select>
         </el-form-item>
@@ -25,7 +27,8 @@
               v-for="(item, index) in typelist"
               :key="index"
               :label="item.name"
-              :value="item.id">
+              :value="item.id"
+            >
             </el-option>
           </el-select>
         </el-form-item>
@@ -35,24 +38,27 @@
               v-for="(item, index) in infolist"
               :key="index"
               :label="item.name"
-              :value="item.id">
+              :value="item.id"
+            >
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="需求数量：" prop="product_qty" >
+        <el-form-item label="需求数量：" prop="product_qty">
           <el-input
             oninput="value=value.replace(/[^0-9.]/g,'')"
             v-model="form.product_qty"
             placeholder="请选择需求数量"
-            style="width:210px"/>
+            style="width: 210px"
+          />
         </el-form-item>
-         <el-form-item label="仓库：" prop="warahouse" v-if="state != 'assigned'">
+        <el-form-item label="仓库：" prop="warahouse" v-if="state != 'assigned'">
           <el-select v-model="form.warahouse" filterable placeholder="请选择仓库">
             <el-option
               v-for="(item, index) in wareList"
               :key="index"
               :label="item.name"
-              :value="item.id">
+              :value="item.id"
+            >
             </el-option>
           </el-select>
         </el-form-item>
@@ -66,9 +72,8 @@
 </template>
 
 <script >
-import {wareList,userlist,typelist,save} from '../../../../../api/picking'
-import {infoList } from '../../../../../api/buyer'
-import { dateToMs, msToDate } from '../../../../../utils/index'
+import { wareList, userlist, typelist, save } from '../../../../../api/picking'
+import { infoList } from '../../../../../api/buyer'
 export default {
   name: 'createOrEdit',
   props: {
@@ -109,14 +114,14 @@ export default {
         applicant: [{ required: true, message: '请选择申请人', trigger: 'change' }],
         picking_type: [{ required: true, message: '请选择类型', trigger: 'change' }],
         sku: [{ required: true, message: '请选择产品名称', trigger: 'blur' }],
-        product_qty: [{ required: true, message: '请输入需求数量', trigger: 'blur', validator: validateMoney }],
-        warahouse: [{ required: true, message: '请选择仓库', trigger: 'blur',}],
+        product_qty: [
+          { required: true, message: '请输入需求数量', trigger: 'blur', validator: validateMoney }
+        ],
+        warahouse: [{ required: true, message: '请选择仓库', trigger: 'blur' }]
       }
     }
   },
-  created() {
-    
-  },
+  created() {},
   mounted() {
     this.wareLists()
     this.userlists()
@@ -124,7 +129,8 @@ export default {
     this.infomag()
   },
   methods: {
-    wareLists() {// 仓库
+    wareLists() {
+      // 仓库
       wareList().then((res) => {
         if (res.data.code == 200) {
           console.log(res.data.data.results)
@@ -132,29 +138,33 @@ export default {
         }
       })
     },
-    userlists() {//申请人
+    userlists() {
+      //申请人
       userlist().then((res) => {
         if (res.data.code == 200) {
           this.userlist = res.data.data.results
         }
       })
     },
-    typelists() {//类型
+    typelists() {
+      //类型
       typelist().then((res) => {
         if (res.data.code == 200) {
           this.typelist = res.data.data.results
         }
-        console.log( this.typelist,' this.typelist')
+        console.log(this.typelist, ' this.typelist')
       })
     },
-    infomag() { //产品名称
+    infomag() {
+      //产品名称
       infoList().then((res) => {
         if (res.data.code == 200) {
           this.infolist = res.data.data.results
         }
       })
     },
-    cancel() { //取消
+    cancel() {
+      //取消
       this.resetForm()
     },
     async onSubmit() {
@@ -167,18 +177,27 @@ export default {
     },
     onEdit() {
       let form = {
-         applicant: this.form.applicant?this.form.applicant.id||this.form.applicant:this.form.applicant.id,
-         picking_type: this.form.picking_type ? this.form.picking_type.id || this.form.picking_type : this.form.picking_type,
-         lines: {
-          sku: this.form.sku ? this.form.sku.id || this.form.sku : this.form.sku,
-          product_qty:this.form.product_qty?this.form.product_qty:'',
-          warahouse: this.form.warahouse ? this.form.warahouse.id || this.form.warahouse : this.form.warahouse,
-          lot_id: ''
-           }
+        applicant: this.form.applicant
+          ? this.form.applicant.id || this.form.applicant
+          : this.form.applicant.id,
+        picking_type: this.form.picking_type
+          ? this.form.picking_type.id || this.form.picking_type
+          : this.form.picking_type,
+        lines: [
+          {
+            id: this.form.id,
+            sku: this.form.sku ? this.form.sku.id || this.form.sku : this.form.sku,
+            product_qty: this.form.product_qty ? this.form.product_qty : '',
+            warahouse: this.form.warahouse
+              ? this.form.warahouse.id || this.form.warahouse
+              : this.form.warahouse,
+            lot_id: ''
+          }
+        ]
       }
       save(this.id, form)
         .then((res) => {
-          this.resetForm();
+          this.resetForm()
           this.$message({
             showClose: true,
             type: 'success',
@@ -187,25 +206,15 @@ export default {
           })
           this.loading = false
           this.form = res.data.data
-          this.$emit('func', this.form)
+          this.$emit('funcs', this.form)
         })
         .catch((err) => {
           this.loading = false
         })
     },
     resetForm() {
-      this.is_deleted = false;
+      this.is_deleted = false
       this.form = ''
-      // this.form = {
-      //   applicant: '',
-      //   picking_type: '',
-      //   lines: {
-      //     sku:'',
-      //     product_qty: '',
-      //     warahouse: '',
-      //     lot_id: ''
-      //      }
-      // }
     }
   }
 }

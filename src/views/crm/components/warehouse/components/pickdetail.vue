@@ -124,7 +124,12 @@
                 {{ scope.row.lot_id ? scope.row.lot_id : '' }}
               </template>
             </el-table-column>
-            <el-table-column label="操作" fixed="right" width="100">
+            <el-table-column
+              label="操作"
+              fixed="right"
+              width="100"
+              v-if="form.state == 'draft' || form.state == 'assigned'"
+            >
               <template #default="scope">
                 <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
               </template>
@@ -135,7 +140,7 @@
             :is-add="false"
             :id="id"
             :state="form.state"
-            @func="getMsgFormSon"
+            @funcs="getMsgFormSon"
           ></deitlist>
         </div>
       </div>
@@ -146,7 +151,6 @@
 <script>
 import Bread from '../../../../../components/bread.vue'
 import { pickid, check, commit, reserved } from '../../../../../api/picking'
-import { transdate, timestampToTime } from '../../../../../utils/index'
 import deitlist from './detailed.vue'
 export default {
   name: 'personal',
@@ -157,13 +161,13 @@ export default {
       crumnName: [
         {
           name: '', // 名称,自定
-          path: 'picklist' // 路由导航,自定
+          path: '' // 路由导航,自定
         }
       ], // 面包屑数据
       crumnNames: '',
       form: {},
       tableData: [],
-      id: '',
+      id: ''
     }
   },
   created() {
@@ -172,72 +176,70 @@ export default {
     let type = JSON.parse(a)
     for (let i in this.crumnName) {
       this.crumnName[i].name = type.name + '列表'
+      this.crumnName[i].path = 'picklist?id=' + type.id
     }
   },
   mounted() {
     pickid(this.$route.query.id).then((res) => {
       if (res.data.code == 200) {
-        this.form = res.data.data
-        this.form.state = res.data.data.state[0]
-        this.form.states = res.data.data.states.reverse()
-        this.form.create_time = timestampToTime(transdate(res.data.data.create_time))
-        this.crumnNames = this.form.name
-        this.tableData = this.form.lines
+        this.list(res.data.data)
       }
     })
   },
   methods: {
-    check() {  //检查
+    list(data) {
+      this.form = data
+      this.form.state = data.state[0]
+      this.form.states = data.states.reverse()
+      this.form.create_time = data.create_time.slice(0, 10)
+      // this.form.date_done = data.date_done.slice(0,10)
+      this.crumnNames = this.form.name
+      let id = sessionStorage.setItem('picking_type', JSON.stringify(data.picking_type))
+      for (let i in this.crumnName) {
+        this.crumnName[i].name = this.form.picking_type.name + '列表'
+        this.crumnName[i].path = 'picklist?id=' + this.form.picking_type.id
+      }
+      this.tableData = this.form.lines
+    },
+    check() {
+      //检查
       let obj = {
         id: this.$route.query.id
       }
       check(obj).then((res) => {
         if (res.data.code == 200) {
-          this.form = res.data.data
-          this.form.state = res.data.data.state[0]
-          this.form.states = res.data.data.states.reverse()
-          this.form.create_time = timestampToTime(transdate(res.data.data.create_time))
-          this.crumnNames = this.form.name
-          this.tableData = this.form.lines
+          this.list(res.data.data)
         }
         console.log(res, res.data)
       })
     },
-    commit() {   //提交
+    commit() {
+      //提交
       let obj = {
         id: this.$route.query.id
       }
       commit(obj).then((res) => {
         if (res.data.code == 200) {
-          this.form = res.data.data
-          this.form.state = res.data.data.state[0]
-          this.form.states = res.data.data.states.reverse()
-          this.form.create_time = timestampToTime(transdate(res.data.data.create_time))
-          this.crumnNames = this.form.name
-          this.tableData = this.form.lines
+          this.list(res.data.data)
         }
         console.log(res, res.data)
       })
     },
-    reserved() {  //撤销
+    reserved() {
+      //撤销
       let obj = {
         id: this.$route.query.id
       }
       reserved(obj).then((res) => {
         if (res.data.code == 200) {
-          this.form = res.data.data
-          this.form.state = res.data.data.state[0]
-          this.form.states = res.data.data.states.reverse()
-          this.form.create_time = timestampToTime(transdate(res.data.data.create_time))
-          this.crumnNames = this.form.name
-          this.tableData = this.form.lines
+          this.list(res.data.data)
         }
         console.log(res, res.data)
       })
     },
     handleEdit(item) {
       const vm = this.$refs.form
-      console.log(item.id,'idddd')
+      console.log(item.id, 'idddd')
       vm.form = {
         id: item.id,
         applicant: this.form.applicant ? this.form.applicant.id : '',
@@ -250,10 +252,8 @@ export default {
       this.$refs.form.is_deleted = true
     },
     getMsgFormSon(data) {
-      this.form = data
-      this.form.states = data.states
-      this.form.state = data.state[0]
-      this.form.crumnNames = data.name
+      console.log(data, 'fdd')
+      this.list(data)
     }
   }
 }

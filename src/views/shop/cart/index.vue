@@ -123,8 +123,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import func from 'vue-editor-bridge'
+<script >
+// import func from 'vue-editor-bridge'
 import { mapGetters } from 'vuex'
 import { save } from '../../../api/order'
 export default {
@@ -153,11 +153,11 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      this.cartList.forEach((row:any) => {
+      this.cartList.forEach((row) => {
         if (row.selected) {
-          (this as any).$refs.multipleTable.toggleRowSelection(row);
+          this.$refs.multipleTable.toggleRowSelection(row);
         } else {
-          (this as any).$refs.multipleTable.toggleRowSelection(row, false);
+          this.$refs.multipleTable.toggleRowSelection(row, false);
         }
       })
     })
@@ -171,8 +171,8 @@ export default {
         column.property == 'project' ||
         column.property == 'notes'
       ) {
-        (this as any).span.classList.add('input-box');
-        (this as any).select.classList.add('current-cell');
+        this.span.classList.add('input-box');
+        this.select.classList.add('current-cell');
       }
     },
     changeGateway(row, column, item) {
@@ -198,18 +198,18 @@ export default {
         notes: notes
       };
       console.log(param);
-      (this as any).$store.dispatch('Update', param);
+      this.$store.dispatch('Update', param);
       // if (
       //   column.property == 'buyer' ||
       //   column.property == 'project' ||
       //   column.property == 'notes'
       // ) {
-      //   (this as any).span.classList.remove('input-box');
-      //   (this as any).select.classList.remove('current-cell');
+      //   this.span.classList.remove('input-box');
+      //   this.select.classList.remove('current-cell');
       // }
     },
     async loadCartInfo() {},
-    formatPrice(row:any) {
+    formatPrice(row) {
       const price = Number(parseFloat(row.price));
       return '￥' + (isNaN(price) ? 0 : price.toFixed(2));
     },
@@ -227,24 +227,24 @@ export default {
         notes: notes,
         selected: selected
       };
-      (this as any).$store.dispatch('Update', param);
+      this.$store.dispatch('Update', param);
     },
     handleAllSelectionChange(selection) {
       console.log('全选', selection)
       if (this.cartList.length == this.multipleSelection.length) {
-        (this as any).$store.dispatch('Select', { selected: true });
+        this.$store.dispatch('Select', { selected: true });
       } else {
-        (this as any).$store.dispatch('Select', { selected: false });
+        this.$store.dispatch('Select', { selected: false });
       }
-      (this as any).$store.dispatch('GetCart');
+      this.$store.dispatch('GetCart');
     },
     handleSelectionChange(val) {
       console.log('选择', val)
       this.multipleSelection = val;
     },
     handleDel(id) {
-      (this as any).$store.dispatch('Delete', { sku_id: id }).then(() => {
-        (this as any).$store.dispatch('GetCart');
+      this.$store.dispatch('Delete', { sku_id: id }).then(() => {
+        this.$store.dispatch('GetCart');
       })
     },
     onOrder() {
@@ -262,10 +262,10 @@ export default {
             Promise.reject(err)
           })
       } else {
-        (this as any).$alert('还没有商品，添加后再来下单', '温馨提示', {
+        this.$alert('还没有商品，添加后再来下单', '温馨提示', {
           confirmButtonText: '确定',
           callback: (action) => {
-            (this as any).$message({
+            this.$message({
               type: 'info',
               message: `已取消`
             })
@@ -275,16 +275,16 @@ export default {
     },
     handleClose(){
       this.dialogSuccessVisible = false;
-      (this as any).$store.dispatch('GetCart').then(() => {});
+      this.$store.dispatch('GetCart').then(() => {});
     },
     onRetainCart() {
       this.dialogSuccessVisible = false;
-      (this as any).$store.dispatch('GetCart').then(() => {});
+      this.$store.dispatch('GetCart').then(() => {});
       this.$router.push('/');
     },
     onPushOrder() {
       this.dialogSuccessVisible = false;
-      (this as any).$store.dispatch('GetCart').then(() => {});
+      this.$store.dispatch('GetCart').then(() => {});
       this.$router.push('/order');
     }
   }

@@ -32,13 +32,22 @@
         <template #default="scope"> {{ scope.row.buyer ? scope.row.buyer.name : '' }} </template>
       </el-table-column>
       <el-table-column prop="total_amount" label="合计">
-        <template #default="scope"> {{ scope.row.total_amount ? scope.row.total_amount: '' }} </template>
+        <template #default="scope">
+          {{ scope.row.total_amount ? scope.row.total_amount : '' }}
+        </template>
       </el-table-column>
       <el-table-column prop="state" label="状态">
         <template #default="scope">
-          <el-tag :type="scope.row.state[0] === 'orders' ? 'danger' :scope.row.state[0] === 'sent'|| scope.row.state[0] === 'draft'? ' ': 'success'">{{
-            scope.row.state[1]
-          }}</el-tag>
+          <el-tag
+            :type="
+              scope.row.state[0] === 'orders'
+                ? 'danger'
+                : scope.row.state[0] === 'sent' || scope.row.state[0] === 'draft'
+                ? ' '
+                : 'success'
+            "
+            >{{ scope.row.state[1] }}</el-tag
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -61,7 +70,7 @@ export default {
     this.buyer()
   },
   mounted() {
-    sessionStorage.setItem('path',this.$route.name)
+    sessionStorage.setItem('path', this.$route.name)
   },
   methods: {
     async buyer() {
@@ -73,11 +82,15 @@ export default {
         }
       })
     },
-      tab(item) {
-        this.$router.push({ path: '/detail', query: { id: item.id } })
+    tab(item) {
+      this.$router.push({ name: 'detail', query: { id: item.id } })
     }
   }
 }
 </script>
 <style scoped>
+.order {
+  padding: 20px;
+  background: #fff;
+}
 </style>

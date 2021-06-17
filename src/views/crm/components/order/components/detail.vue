@@ -240,9 +240,7 @@ export default {
     }
   },
   methods: {
-    async buyerdetail() {
-      let vm = this
-      const { data } = await buyerid(vm.$route.query.id)
+    arry(data) {
       if (data.code !== 200) {
         ElMessage.error(data.error)
       } else {
@@ -251,54 +249,31 @@ export default {
         this.form.state = data.data.state[0]
         this.form.name = data.data.name
       }
+    },
+    async buyerdetail() {
+      let vm = this
+      const { data } = await buyerid(vm.$route.query.id)
+      this.arry(data)
     },
     async sent() {
       //草稿状态：询价
       const { data } = await sent(this.$route.query.id)
-      if (data.code !== 200) {
-        ElMessage.error(data.error)
-      } else {
-        this.form = data.data
-        this.form.states = data.data.states.slice(0, 5).reverse()
-        this.form.state = data.data.state[0]
-        this.form.name = data.data.name
-      }
+      this.arry(data.data)
     },
     async submit() {
       //询价提交
       const { data } = await roolcommit(this.$route.query.id)
-      if (data.code !== 200) {
-        ElMessage.error(data.error)
-      } else {
-        this.form = data.data
-        this.form.states = data.data.states.slice(0, 5).reverse()
-        this.form.state = data.data.state[0]
-        this.form.crumnNames = data.data.name
-      }
+      this.arry(data.data)
     },
     async roolback() {
       //审批撤销
       const { data } = await roolback(this.$route.query.id)
-      if (data.code !== 200) {
-        ElMessage.error(data.error)
-      } else {
-        this.form = data.data
-        this.form.states = data.data.states.slice(0, 5).reverse()
-        this.form.state = data.data.state[0]
-        this.form.name = data.data.name
-      }
+      this.arry(data.data)
     },
     async draft() {
       //询价撤销
       const { data } = await draft(this.$route.query.id)
-      if (data.code !== 200) {
-        ElMessage.error(data.error)
-      } else {
-        this.form = data.data
-        this.form.states = data.data.states.slice(0, 5).reverse()
-        this.form.state = data.data.state[0]
-        this.form.crumnNames = data.data.name
-      }
+      this.arry(data.data)
     },
     actionval() {
       console.log(this.form, 'id')
@@ -306,12 +281,7 @@ export default {
         id: this.form.id
       }
       actionval(obj).then((res) => {
-        if (res.data.code == 200) {
-          this.form = res.data.data
-          this.form.states = data.data.states.slice(0, 5).reverse()
-          this.form.state = data.data.state[0]
-          this.form.crumnNames = data.data.name
-        }
+        this.arry(res.data)
       })
     },
     handleEdit(item) {

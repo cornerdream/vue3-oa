@@ -8,7 +8,8 @@
         :rules="rules"
         size="small"
         label-width="140px"
-        style="text-align: initial">
+        style="text-align: initial"
+      >
         <el-form-item label="部门：" prop="department" v-if="state != 'sent'">
           <el-input
             style="width: 210px"
@@ -16,7 +17,8 @@
             clearable
             placeholder="请选择部门"
             @click.native="handleClick"
-            v-model="selectDepartment">
+            v-model="selectDepartment"
+          >
             <template #suffix>
               <i class="el-input__icon el-icon-arrow-down"></i>
             </template>
@@ -37,7 +39,8 @@
               v-for="(item, index) in projectlist"
               :key="index"
               :label="item.name"
-              :value="item.id">
+              :value="item.id"
+            >
             </el-option>
           </el-select>
         </el-form-item>
@@ -47,7 +50,8 @@
               v-for="(item, index) in supplist"
               :key="index"
               :label="item.name"
-              :value="item.id">
+              :value="item.id"
+            >
             </el-option>
           </el-select>
         </el-form-item>
@@ -57,7 +61,8 @@
               v-for="(item, index) in infolist"
               :key="index"
               :label="item.name"
-              :value="item.id">
+              :value="item.id"
+            >
             </el-option>
           </el-select>
         </el-form-item>
@@ -66,22 +71,25 @@
             oninput="value=value.replace(/[^0-9.]/g,'')"
             v-model="form.price"
             placeholder="请输入单价"
-            style="width: 210px"/>
+            style="width: 210px"
+          />
         </el-form-item>
         <el-form-item label="运费：" prop="freight">
           <el-input
             oninput="value=value.replace(/[^0-9.]/g,'')"
             v-model="form.freight"
             placeholder="请输入运费"
-            style="width: 210px"/>
+            style="width: 210px"
+          />
         </el-form-item>
         <el-form-item label="预计到货日期：" prop="estimated_arrival_date">
           <el-date-picker
             type="date"
             placeholder="请选择到货日期"
             v-model="form.estimated_arrival_date"
-            value-format="yyyy-MM-dd">
-            </el-date-picker>
+            value-format="yyyy-MM-dd"
+          >
+          </el-date-picker>
         </el-form-item>
       </el-form>
       <template #footer class="dialog-footer">
@@ -114,7 +122,7 @@ export default {
     select: {
       type: String,
       required: true
-    },
+    }
   },
   watch: {
     select(newv) {
@@ -148,13 +156,13 @@ export default {
       }
     }
     return {
-       expireTimeOption:{
-          disabledDate(time) {
+      expireTimeOption: {
+        disabledDate(time) {
           let vm = this
           let endTime = new Date().setFullYear(new Date().getFullYear() + 1)
-          console.log(time,'tiem')
+          console.log(time, 'tiem')
           return time.getTime() < Date.now() || time.getTime() > endTime
-        },
+        }
       },
       selectDepartment: '',
       defaultProps: {
@@ -201,7 +209,8 @@ export default {
     handleClick() {
       $('.mycascader').show()
     },
-    suppliermag() { // 供应商
+    suppliermag() {
+      // 供应商
       supplierList().then((res) => {
         if (res.data.code == 200) {
           console.log(res.data.data.results)
@@ -209,28 +218,32 @@ export default {
         }
       })
     },
-    projectmag() {//项目
+    projectmag() {
+      //项目
       projectList().then((res) => {
         if (res.data.code == 200) {
           this.projectlist = res.data.data.results
         }
       })
     },
-    departmentmag() { //部门
+    departmentmag() {
+      //部门
       departmentList().then((res) => {
         if (res.data.code == 200) {
           this.treelist = res.data.data.results
         }
       })
     },
-    infomag() { //产品名称
+    infomag() {
+      //产品名称
       infoList().then((res) => {
         if (res.data.code == 200) {
           this.infolist = res.data.data.results
         }
       })
     },
-    cancel() {//取消
+    cancel() {
+      //取消
       this.resetForm()
     },
     async onSubmit() {
@@ -248,17 +261,23 @@ export default {
             id: this.form.id,
             price: this.form.price,
             freight: this.form.freight,
-            estimated_arrival_date: this.form.estimated_arrival_date? msToDate(dateToMs(this.form.estimated_arrival_date)).withoutTime: '',
+            estimated_arrival_date: this.form.estimated_arrival_date
+              ? msToDate(dateToMs(this.form.estimated_arrival_date)).withoutTime
+              : '',
             sku: this.form.sku ? this.form.sku.id || this.form.sku : this.form.sku
           }
         ],
-        department: this.form.department?this.form.department.id ||this.form.department: this.form.department,
-        project:this.form.project? this.form.project.id ||this.form.project:this.form.project,
-        supplier: this.form.supplier? this.form.supplier.id || this.form.supplier: this.form.supplier
+        department: this.form.department
+          ? this.form.department.id || this.form.department
+          : this.form.department,
+        project: this.form.project ? this.form.project.id || this.form.project : this.form.project,
+        supplier: this.form.supplier
+          ? this.form.supplier.id || this.form.supplier
+          : this.form.supplier
       }
       save(this.id, form)
         .then((res) => {
-          this.resetForm();
+          this.resetForm()
           this.$message({
             showClose: true,
             type: 'success',
@@ -274,7 +293,7 @@ export default {
         })
     },
     resetForm() {
-      this.is_deleted = false;
+      this.is_deleted = false
       this.form = {
         line: {
           id: '',
