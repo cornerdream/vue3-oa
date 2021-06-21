@@ -80,6 +80,12 @@ export function departmentList() {
     })
   }
 // 产品名称列表
+export function infoLists(search) {
+  return $axios({
+    url: '/api/skus/info/list?search='+search,
+    method: 'get'
+  })
+}
 export function infoList() {
   return $axios({
     url: '/api/skus/info/list',

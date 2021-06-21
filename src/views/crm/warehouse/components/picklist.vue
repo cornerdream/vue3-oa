@@ -114,7 +114,7 @@ export default {
   },
   methods: {
     initData() {
-      picktype(this.picktype.id, this.page_index, this.page_size).then((res) => {
+      picktype(this.picktype.id,this.search, this.value2,this.page_index, this.page_size).then((res) => {
         if (res.data.code == 200) {
           this.tableData = res.data.data.results
           this.page_total = res.data.data.count
@@ -126,13 +126,16 @@ export default {
       this.$router.push({ name: 'pickdetail', query: { id: item.id } })
     },
     onQuery() {
-      search(this.picktype.id, this.search, this.page_index).then((res) => {
+      console.log(this.value2,'zhuangtai')
+      search(this.picktype.id,this.search, this.value2,this.page_index, this.page_size).then((res) => {
         if (res.data.code == 200) {
           this.tableData = res.data.data.results
           this.page_total = res.data.data.count
+          console.log(this.page_total,'高房价')
           this.table(this.tableData)
         }
       })
+
     },
     table(tableData) {
       for (let i = 0; i < tableData.length; i++) {
@@ -154,6 +157,8 @@ export default {
       this.page_index = item.page_index
       this.page_size = item.page_limit
       this.initData() //改变页码，重新渲染页面
+      this.onQuery()
+      console.log(item)
     },
     state(){
        state().then((res)=>{

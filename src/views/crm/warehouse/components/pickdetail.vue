@@ -87,6 +87,7 @@
           </el-form>
         </div>
         <div class="eltable">
+          <el-button @click="fnadd">添加产品</el-button>
           <el-table
             :data="tableData"
             border
@@ -137,8 +138,8 @@
           </el-table>
           <deitlist
             ref="form"
-            :is-add="false"
             :id="id"
+            :isbsy="isbsy"
             :state="form.state"
             @funcs="getMsgFormSon"
           ></deitlist>
@@ -168,7 +169,8 @@ export default {
       crumnNames: '',
       form: {},
       tableData: [],
-      id: ''
+      id: '',
+      isbsy:false
     }
   },
   created() {
@@ -188,6 +190,22 @@ export default {
     })
   },
   methods: {
+    fnadd(item) {
+         const vm = this.$refs.form
+      // console.log(item.id, 'idddd')
+      vm.form = {
+        id: '',
+        quantity_done:item.quantity_done,
+        product_qty:'',
+        warahouse: '',
+        sku:  '',
+        uom:item.uom,
+        lot_id: ''
+      }
+      this.isbsy =false
+       this.$refs.form.is_deleted = true
+      // this.tableData.push(row)
+    },
     list(data) {
       this.form = data
       this.form.state = data.state[0]
@@ -248,8 +266,10 @@ export default {
         product_qty: item.product_qty,
         warahouse: item.warahouse ? item.warahouse.id : '',
         sku: item.sku ? item.sku.id : '',
-        lot_id: item.lot_id
+        lot_id: item.lot_id,
+        // quantity_done:item.quantity_done
       }
+      this.isbsy =true
       this.$refs.form.is_deleted = true
     },
     getMsgFormSon(data) {

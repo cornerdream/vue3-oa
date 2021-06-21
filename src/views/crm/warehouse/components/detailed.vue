@@ -1,7 +1,7 @@
 <!-- -->
 <template>
   <div class="createOrEdits">
-    <el-dialog v-model="is_deleted" title="编辑菜单" width="600px">
+    <el-dialog v-model="is_deleted" :title="isbsy ? '编辑产品' : '新增产品'" width="600px">
       <el-form
         ref="form"
         :model="form"
@@ -10,7 +10,7 @@
         label-width="110px"
         style="text-align: initial"
       >
-        <el-form-item label="申请人：" prop="applicant" v-if="state != 'assigned'">
+        <el-form-item label="申请人："  prop="applicant" v-if="state != 'assigned' &&isbsy ==true">
           <el-select v-model="form.applicant" filterable placeholder="请选择申请人">
             <el-option
               v-for="(item, index) in userlist"
@@ -21,7 +21,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="类型：" prop="picking_type" v-if="state != 'assigned'">
+        <el-form-item label="类型：" prop="picking_type" v-if="state != 'assigned' &&isbsy ==true">
           <el-select v-model="form.picking_type" filterable placeholder="请选择类型">
             <el-option
               v-for="(item, index) in typelist"
@@ -48,8 +48,19 @@
             oninput="value=value.replace(/[^0-9.]/g,'')"
             v-model="form.product_qty"
             placeholder="请选择需求数量"
-            style="width: 210px"
-          />
+            style="width: 210px"/>
+        </el-form-item>
+        <el-form-item label="完成数量：" prop="quantity_done" v-if="isbsy ==false">
+          <el-input
+            v-model="form.quantity_done"
+            placeholder="0.00"
+            style="width: 210px"/>
+        </el-form-item>
+        <el-form-item label="单位：" prop="quantity_done" v-if="isbsy ==false">
+          <el-input
+            v-model="form.uom"
+            placeholder="个"
+            style="width: 210px"/>
         </el-form-item>
         <el-form-item label="仓库：" prop="warahouse" v-if="state != 'assigned'">
           <el-select v-model="form.warahouse" filterable placeholder="请选择仓库">
@@ -62,6 +73,12 @@
             </el-option>
           </el-select>
         </el-form-item>
+         <el-form-item label="批次号：" prop="quantity_done" v-if="isbsy ==false">
+          <el-input
+            v-model="form.lot_id"
+            placeholder=""
+            style="width: 210px"/>
+        </el-form-item>
       </el-form>
       <template #footer class="dialog-footer">
         <el-button type="text" @click="cancel">取消</el-button>
@@ -72,8 +89,8 @@
 </template>
 
 <script >
-import {wareList,userlist,typelist,save} from '@/api/picking'
-import {infoList } from '@/api/buyer'
+import {wareList,userlist,typelist,save,add} from '@/api/picking'
+import {infoList ,infoLists} from '@/api/buyer'
 import { dateToMs, msToDate } from '@/utils/index'
 export default {
   name: 'createOrEdit',
@@ -88,6 +105,10 @@ export default {
     },
     state: {
       type: String,
+      required: true
+    },
+    isbsy:{
+      type: Boolean,
       required: true
     }
   },
@@ -104,7 +125,9 @@ export default {
         callback()
       }
     }
-    return {
+    return { 
+      input:'',
+      dropDownValue:'',
       loading: false,
       is_deleted: false,
       form: {},
@@ -128,8 +151,25 @@ export default {
     this.userlists()
     this.typelists()
     this.infomag()
+    console.log(this.id,'bianji')
   },
   methods: {
+    dropSerch(val){
+      this.input =val
+      if(this.input){
+         infoLists(this.input).then((res) => {
+        if (res.data.code == 200) {
+          this.infolist = res.data.data.results
+        }
+      })
+        console.log('val','bval',val)
+      }
+ 
+    },
+    search(e){
+        console.log(e,'hfkghsfhk')
+    },
+    fnserch(val){console.log(val,'blur')},
     wareLists() {
       // 仓库
       wareList().then((res) => {
@@ -171,10 +211,40 @@ export default {
     async onSubmit() {
       await this.$refs.form.validate()
       this.loading = true
-      if (this.isAdd) {
+      console.log(this.isbsy,'this.isbsythis.isbsythis.isbsy')
+      if (this.isbsy ==false) {
+        this. onAdd()
       } else {
         this.onEdit()
       }
+    },
+        onAdd() {
+       let form = {
+        lines: [
+          {
+            sku:this.form.sku,
+            product_qty: this.form.product_qty ,
+            warahouse:this.form.warahouse,
+            lot_id: ''
+          }
+        ]
+      }
+      save(this.id, form)
+        .then((res) => {
+          this.resetForm()
+          this.$message({
+            showClose: true,
+            type: 'success',
+            message: '修改成功!',
+            duration: 2500
+          })
+          this.loading = false
+          this.form = res.data.data
+          this.$emit('funcs', this.form)
+        })
+        .catch((err) => {
+          this.loading = false
+        })
     },
     onEdit() {
       let form = {
