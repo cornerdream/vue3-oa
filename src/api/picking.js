@@ -8,16 +8,16 @@ export function pickist() {
     })
 }
 //拣货入库列表
-export function picktype(picking_type,page) {
-    return $axios({
-      url: '/api/picking/'+picking_type+'/list/?page='+page,
-      method: 'get'
-    })
+export function picktype(picking_type,search,state,page,size) {
+  return $axios({
+    url: '/api/picking/'+picking_type+'/list/?search='+search+'&state='+state+'&page='+page+'&page_size='+size,
+    method: 'get'
+  })
 }
 //查询
-export function search(picking_type,search) {
+export function search(picking_type,search,state,page,size) {
     return $axios({
-      url: '/api/picking/'+picking_type+'/list/?search='+search,
+      url: '/api/picking/'+picking_type+'/list/?search='+search+'&state='+state+'&page='+page+'&page_size='+size,
       method: 'get'
     })
 }
@@ -77,6 +77,21 @@ export function commit(data) {
 export function reserved(data) {
   return $axios({
     url: '/api/pickings/action-reserved/',
+    method: 'post',
+    data
+  })
+}
+//状态筛选
+export function state(id) {
+  return $axios({
+    url: '/api/pickings/state/list/',
+    method: 'get'
+  })
+}
+//创建一个拣货信息
+export function add(data) {
+  return $axios({
+    url: '/api/picking/',
     method: 'post',
     data
   })

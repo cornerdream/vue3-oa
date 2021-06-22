@@ -198,3 +198,21 @@ export function toDecimal2(x) {
   }    
   return s;    
 } 
+
+export function time(str){
+ let time = new Date(str).getTime()
+}
+export function formatting(time){
+  var time = new Date(time);
+  var y = time.getFullYear();
+  var m = time.getMonth()+1;
+  var d = time.getDate();
+  var h = time.getHours();
+  var mm = time.getMinutes();
+  var s = time.getSeconds();
+  return y+'-'+repair0(m)+'-'+repair0(d)+' '+repair0(h);
+}
+
+export function repair0(m){
+	return m<10?'0'+m:m 
+}

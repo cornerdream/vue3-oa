@@ -89,4 +89,8 @@ export default {
 }
 </script>
 <style scoped>
+.unhandle {
+  padding: 20px;
+  background: #fff;
+}
 </style>

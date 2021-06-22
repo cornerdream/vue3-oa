@@ -1,27 +1,17 @@
 <template>
   <div class="picking">
     <div class="picking-content">
-      <ul v-for="item in list" :key="item" @click="pickDetail(item)">
+      <ul v-for="item in list" :key="item" >
         <li>{{ item.name }}</li>
         <li>
-          <el-button class="el-button" type="primary" size="small"
+          <el-button class="el-button" type="primary" size="small" @click="pickPend(item)"
             >待处理：{{ item.pending }}</el-button
           >
         </li>
         <li>
-          <el-button class="el-button" size="small">总数：{{ item.count }}</el-button>
+          <el-button class="el-button" size="small" @click="pickDetail(item)">总数：{{ item.count }}</el-button>
         </li>
       </ul>
-      <!-- <ul>
-        <li>交货入库</li>
-        <li><el-button class="el-button" type="primary" size="small">待处理：4</el-button></li>
-        <li><el-button class="el-button" size="small">总数：530</el-button></li>
-      </ul>
-      <ul>
-        <li>内部调拨</li>
-        <li><el-button class="el-button" type="primary" size="small">待处理：4</el-button></li>
-        <li><el-button class="el-button" size="small">总数：540</el-button></li>
-      </ul> -->
     </div>
   </div>
 </template>
@@ -46,8 +36,14 @@ export default {
   methods: {
     pickDetail(item) {
       let id = sessionStorage.setItem('picking_type', JSON.stringify(item))
-      console.log(id,'id',item)
-      this.$router.push({ path: '/picklist' })
+      console.log(id, 'id', item)
+      this.$router.push({ name: 'picklist', query: { id: item.id,count:item.count } })
+    },
+    pickPend(item){
+      console.log(item,'待')
+       let id = sessionStorage.setItem('picking_type', JSON.stringify(item))
+      console.log(id, 'id', item)
+      this.$router.push({ name: 'picklist', query: { id: item.id,count:item.pending } })
     },
     async fnPick() {
       await pickist(this.page, this.page_size).then((res) => {

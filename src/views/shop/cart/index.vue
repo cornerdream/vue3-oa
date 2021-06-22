@@ -227,8 +227,8 @@ export default {
       //   column.property == 'project' ||
       //   column.property == 'notes'
       // ) {
-      //   (this as any).span.classList.remove('input-box');
-      //   (this as any).select.classList.remove('current-cell');
+      //   this.span.classList.remove('input-box');
+      //   this.select.classList.remove('current-cell');
       // }
     },
     async loadCartInfo() {

@@ -2,16 +2,16 @@
   <div class="from-ations">
     <div class="jichu">
       <h4>规格明细</h4>
-      <el-table
+      <!-- <el-table
         :data="tableData"
         :span-method="objectSpanMethod"
         border
-        style="width: 20%; margin-top: 20px; margin-left: 50px"
+        style="width: 40%; margin-top: 20px; margin-left: 50px"
       >
         <el-table-column prop="id" label="颜色"> </el-table-column>
         <el-table-column prop="name" label="内存"> </el-table-column>
         <el-table-column prop="amount1" label="单价"> </el-table-column>
-      </el-table>
+      </el-table> -->
     </div>
   </div>
 </template>

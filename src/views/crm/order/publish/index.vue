@@ -19,7 +19,6 @@
             <el-tab-pane label="发布商品" name="release"> <release @func="handleClicks"></release></el-tab-pane>
         </el-tabs>
         <!--:is 的作用：会将div标签转换成 currentView 变量绑定的这个组件-->
-        <div :is="currentView" keep-alive></div>
     </div>
     </div>
 

@@ -2,7 +2,7 @@
 <template>
   <div class="approved">
     <div class="appcontent">
-      <h4>已审批</h4>
+      <h4>待我审批</h4>
       <div class="flow-content infinite-list-wrapper" style="overflow: auto">
         <div
           class="app-list"
@@ -12,18 +12,13 @@
           :key="index"
           @click="detail(item, index)"
         >
-          <div class="user">
-            <div class="block">
-              <el-avatar :size="60" :src="item.user_id.image"></el-avatar>
-            </div>
+          <div class="block">
+            <el-avatar :size="50" :src="item.user_id.image"></el-avatar>
           </div>
           <div class="list-cont">
             <ul>
               <li>
-                <span>单号</span>：<span class="req_name">{{ item.req_id.name }}</span>
-                <span :class="[item.state[0] == 'approving' ? 'flag' : 'code']">{{
-                  item.state[1]
-                }}</span>
+                <span>单号</span>：<span>{{ item.req_id.name }}</span>
               </li>
               <li>
                 <span>申请人</span>：<span>{{ item.user_id.name }}</span>
@@ -36,6 +31,9 @@
               </li>
             </ul>
           </div>
+          <p class="app-right">
+            <span :class="[item.state[0] == 'approved' ? 'flag' : ' ']">{{ item.state[1] }}</span>
+          </p>
         </div>
         <p v-if="loading">加载中...</p>
         <p v-if="noMore">没有更多了</p>
@@ -45,112 +43,90 @@
       <div class="content" v-if="show">
         <h4>{{ mag }}</h4>
         <div class="app-box">
-          <div class="app-lists">
-            <div class="list-policy">
-              <h4>单号：{{ order.name }}</h4>
-              <!-- <ul>
-                <li>
-                  <span>单号</span> ：<span>{{ order.name }}</span>
-                </li>
-              </ul> -->
-            </div>
-          </div>
-          <div class="app-lists">
-            <div class="user">
-              <div class="block">
-                <el-avatar :size="50" :src="order.create_uid.image"></el-avatar>
+          <div class="box-lefts">
+            <div class="app-lists">
+              <h3>单号：{{ order.name }}</h3>
+              <div class="list-conts">
+                <div class="block">
+                  <el-avatar :size="50" :src="order.create_uid.image"></el-avatar>
+                </div>
+                <ul>
+                  <li>
+                    <span>申请人</span>：<span>{{ order.create_uid.name }}</span>
+                  </li>
+                  <li>
+                    <span>创建时间</span>：<span>{{ order.create_time }}</span>
+                  </li>
+                </ul>
               </div>
             </div>
-            <div class="list-contr">
-              <ul>
-                <li>
-                  <span>申请人</span>：<span>{{ order.create_uid.name }}</span>
-                </li>
-                <li>
-                  <span>创建时间</span>：<span>{{ order.create_time }}</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="app-listss">
-            <div class="list-conts">
+            <div class="app-listss">
               <p class="font">基础信息：</p>
               <div class="user-devep">
                 <div>
                   <p>
-                    <span>项目</span> ： <span>{{ order.project.name }}</span>
+                    <span class="project">项目</span> ： <span>{{ order.project.name }}</span>
                   </p>
                   <p>
-                    <span>供应商</span> ：<span v-if="order.supplier != null">{{
+                    <span class="project">供应商</span> ：<span v-if="order.supplier != null">{{
                       order.supplier.name
                     }}</span>
                   </p>
                 </div>
                 <div>
                   <p>
-                    <span>部门</span> ：<span>{{ order.department.name }}</span>
+                    <span class="project">部门</span> ：<span>{{ order.department.name }}</span>
                   </p>
-                  <p><span>总价</span> ： <span>{{order.total_amount}}</span></p>
+                  <p>
+                    <span class="project">总价</span> ： <span>{{ order.total_amount }}</span>
+                  </p>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="app-listss">
-            <div class="list-conts">
+            <div class="app-listss">
               <p class="font">物品信息：</p>
               <el-table
                 :data="tableData"
                 border
                 style="width: 600px; text-align: center; margin: 10px"
               >
-                <el-table-column prop="skuname" width="180" label="物品"> </el-table-column>
-                <el-table-column prop="count" label="数量"> </el-table-column>
-                <el-table-column prop="uom" label="单位"> </el-table-column>
-                <el-table-column prop="price" label="单价"> </el-table-column>
-                <el-table-column prop="total_amount" label="合计"> </el-table-column>
+                <el-table-column prop="skuname" label="物品"> </el-table-column>
+                <el-table-column prop="count" label="数量" width="100px"> </el-table-column>
+                <el-table-column prop="uom" label="单位" width="100px"> </el-table-column>
+                <el-table-column prop="price" label="单价" width="100px"> </el-table-column>
+                <el-table-column prop="total_amount" label="合计" width="100px"> </el-table-column>
               </el-table>
             </div>
           </div>
-          <div class="app-argent">
-            <div class="app-all">
+          <div class="box-right">
+            <div class="app-listss">
               <p class="font">审批详情：</p>
-              <div class="app-conts">
-                <div
-                  class="app-listCard"
-                  v-for="(item, index) in workflowtask"
-                  :key="index"
-                  :class="[item.is_approving_user == true ? 'first' : '']"
-                >
-                  <div class="user">
-                    <div class="block">
-                      <el-avatar :size="50" :src="item.appro_user.image"></el-avatar>
-                    </div>
-                  </div>
-                  <div class="list-contr">
-                    <ul>
-                      <li>
-                        <span>{{ item.state[1] }}</span>
-                      </li>
-                      <li>
-                        <span>用户</span>：<span>{{ item.appro_user.name }}</span>
-                      </li>
-                    </ul>
-                  </div>
+              <div class="list-contss" v-for="(item, index) in workflowtask" :key="index">
+                <div class="block">
+                  <el-avatar :size="50" :src="item.appro_user.image"></el-avatar>
                 </div>
+                <ul>
+                  <li>
+                    <span>审批状态</span>：<span>{{ item.state[1] }}</span>
+                  </li>
+                  <li>
+                    <span>用户</span>：<span>{{ item.appro_user.name }}</span>
+                  </li>
+                </ul>
               </div>
             </div>
-          </div>
-          <div class="app-alls">
-            <p class="font">审批意见：</p>
-            <el-input
-              class="textarea"
-              type="textarea"
-              :rows="4"
-              placeholder="请输入内容"
-              :disabled="true"
-              v-model="apply_comment"
-            >
-            </el-input>
+            <div class="app-listss">
+              <p class="font">审批意见：</p>
+              <el-input
+                class="textarea"
+                type="textarea"
+                :rows="4"
+                placeholder="请输入内容"
+                :disabled="true"
+                v-model="apply_comment"
+              >
+              </el-input>
+            </div>
           </div>
         </div>
       </div>
@@ -201,7 +177,7 @@ export default {
       await approved(this.search, this.ordering, this.page, this.size).then((res) => {
         this.arrlist = res.data.data.results
         this.is_approve = res.data.data.results[0].is_approved
-        this.create_time = timestampToTime(transdate(res.data.data.results[0].create_time))
+        this.create_time = res.data.data.results[0].create_time.slice(0, 10)
 
         console.log(res.data.data, 'res.data.data')
       })
@@ -235,7 +211,7 @@ export default {
       }
       this.tableData = datalist
 
-      this.order.create_time = timestampToTime(transdate(data.data.create_time))
+      this.order.create_time = data.data.create_time.slice(0, 10)
       this.workflowtask = data.data.workflowtask
       this.task_id = data.data.task_id
       for (let i in this.workflowtask) {
@@ -308,7 +284,7 @@ export default {
   background: #fff;
   display: flex;
 }
-.approved::-webkit-scrollbar {
+.approving::-webkit-scrollbar {
   width: 0px;
   background: none;
 }
@@ -317,71 +293,52 @@ export default {
   border-right: 1px solid #ccc;
 }
 .appcontent > h4 {
-  font-size: 24px;
+  padding: 5px;
+  font-size: 22px;
   font-weight: 400;
   height: 28px;
   line-height: 28px;
   border-bottom: 1px solid #ccc;
   background: ghostwhite;
 }
-.app-ul {
-  display: flex;
-  justify-content: space-around;
-}
-.app-ul li {
-  flex: 1;
-  width: 100px;
-}
 .flow-content {
-  height:770px;
+  height: 770px;
   overflow: auto;
-  margin-top:20px;
-  /* position: relative; */
 }
-
 .flow-content::-webkit-scrollbar {
   width: 0px;
   background: none;
 }
 .app-list {
+  height: 100px;
   display: flex;
-  border-bottom: 1px solid #ccc;
   align-items: center;
+  padding: 5px;
+  border-bottom: 1px solid #ccc;
 }
-.user {
-  margin: 10px;
+.block {
+  flex: 1;
 }
 .list-cont {
+  flex: 2;
   text-align: left;
+}
+.app-right {
+  flex: 1;
+  margin-top: -60px;
+  text-align: right;
+  margin-right: 10px;
+}
+.list-cont ul li {
+  height: 20px;
 }
 .list-cont ul li span:nth-child(1) {
   width: 60px;
   display: inline-block;
   text-align-last: justify;
 }
-.block {
-  margin-top: 10px;
-}
-.block img {
-  width: 100%;
-  height: 100%;
-}
-.req_name{
-  display: inline-block;
-  width: 110px;
-}
 .flag {
-  margin-left: 10px;
   width: 80px;
-  display: inline-block;
-  text-align: center;
-  border-radius: 10px;
-  color: #fff;
-  background: chocolate;
-}
-.code {
-  margin-left: 10px;
-  width: 100px;
   display: inline-block;
   text-align: center;
   border-radius: 10px;
@@ -390,6 +347,7 @@ export default {
 }
 .apprconte {
   width: 75%;
+  height: 818px;
   text-align: left;
   overflow: auto;
 }
@@ -397,49 +355,45 @@ export default {
   width: 0px;
   background: none;
 }
-.app-box {
-  margin: 20px;
-  margin-top: -50px;
-}
 .content h4 {
   text-align: center;
   font-size: 24px;
   font-weight: 400;
+  margin: 10px;
+}
+.app-box {
+  display: flex;
+  justify-content: space-around;
+}
+.box-lefts {
+  flex: 1;
+  text-align: left;
 }
 .app-lists {
-  display: flex;
-  align-items: center;
+  margin: 20px;
 }
-.app-listCard {
-  display: flex;
-  align-items: center;
+.app-lists h3 {
+  margin-bottom: 10px;
 }
-.list-policy h4 {
-  font-size: 18px;
-  font-weight: 600;
-}
-.list-contr {
-  /* margin-left: -44px; */
-}
-.first {
-  width: 200px;
-  background: chocolate;
-  border-radius: 10px;
-  color: #fff;
-}
-.user-devep {
-  margin-top: 10px;
-  width: 400px;
+.list-conts {
+  width: 210px;
+  margin: 10px;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
-.user-devep div:nth-child(1) {
+.app-listss {
+  margin: 20px;
+}
+.user-devep {
+  display: flex;
+  margin: 10px;
+}
+.user-devep > div {
   flex: 1;
+  line-height: 20px;
 }
-.user-devep div p {
-  padding: 10px;
-}
-.user-devep div p span:nth-child(1) {
+.project {
   width: 60px;
   display: inline-block;
   text-align-last: justify;
@@ -447,15 +401,19 @@ export default {
 .font {
   font-weight: 600;
 }
-.app-argent {
-  display: flex;
+.box-right {
+  flex: 1;
   text-align: left;
 }
-.app-all {
-  flex: 1;
+.list-contss {
+  margin: 10px;
+  width: 180px;
+  display: flex;
+  align-items: center;
 }
-.app-conts {
-  margin: 20px;
+.app-box::-webkit-scrollbar {
+  width: 0px;
+  background: none;
 }
 .textarea {
   width: 300px;
