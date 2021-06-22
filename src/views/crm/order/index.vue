@@ -84,7 +84,7 @@ export default {
       })
     },
     tab(item) {
-      this.$router.push({ path: '/detail', query: { id: item.id } })
+      this.$router.push({ name: 'detail', query: { id: item.id } })
     }
   }
 }

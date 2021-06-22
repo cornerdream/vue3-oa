@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory} from 'vue-router'
-
+import { shallowRef } from '@vue/reactivity'
 import store from '@/store'
 
 /*
@@ -26,9 +26,9 @@ const Cart = () => import(/*webpackChunkName:'shop'*/ '@/views/shop/cart/index.v
 /*
  *后台我的
  */
-const Me = () => import(/*webpackChunkName:'home'*/ '@/views/crm/home/me/index.vue')
+const Me = () => import(/*webpackChunkName:'crm'*/ '@/views/crm/home/me/index.vue')
 const Orders = () =>
-  import(/*webpackChunkName:'home'*/ '@/views/crm/home/order/index.vue')
+  import(/*webpackChunkName:'crm'*/ '@/views/crm/home/order/index.vue')
 // //入库单
 // const personal = () => import(/*webpackChunkName:'warehouse'*/'@/views/crm/warehouse/index.vue');
 // const publish = () => import(/*webpackChunkName:'list'*/'@/views/crm/list/selectlist/index.vue');
@@ -44,15 +44,15 @@ const Orders = () =>
 // const picklist = () => import(/*webpackChunkName:'picking'*/'@/views/crm/picking/components/picklist.vue');
 // const pickdetail = () => import(/*webpackChunkName:'picking'*/'@/views/crm/picking/components/pickdetail.vue');
 //采购订单
-const personal = () => import(/*webpackChunkName:'home'*/'@/views/crm/order/index.vue');
-const unhandle = () => import(/*webpackChunkName:'home'*/'@/views/crm/order/unhandle.vue');
-const handled = () => import(/*webpackChunkName:'home'*/'@/views/crm/order/handled.vue');
-const order = () => import(/*webpackChunkName:'home'*/'@/views/crm/order/order.vue');
-const detail = () => import(/*webpackChunkName:'home'*/'@/views/crm/order/components/detail.vue');
-const publish = () => import(/*webpackChunkName:'home'*/'@/views/crm/order/publish/index.vue');
-const categories = () => import(/*webpackChunkName:'home'*/'@/views/crm/order/publish/components/categories/categories.vue');
-const infortion = () => import(/*webpackChunkName:'home'*/'@/views/crm/order/publish/components/infortion/infortion.vue');
-const release = () => import(/*webpackChunkName:'home'*/'@/views/crm/order/publish/components/release/release.vue');
+const personal = () => import(/*webpackChunkName:'order'*/'@/views/crm/order/index.vue');
+const unhandle = () => import(/*webpackChunkName:'order'*/'@/views/crm/order/unhandle.vue');
+const handled = () => import(/*webpackChunkName:'order'*/'@/views/crm/order/handled.vue');
+const order = () => import(/*webpackChunkName:'order'*/'@/views/crm/order/order.vue');
+const detail = () => import(/*webpackChunkName:'order'*/'@/views/crm/order/components/detail.vue');
+const publish = () => import(/*webpackChunkName:'order'*/'@/views/crm/order/publish/index.vue');
+const categories = () => import(/*webpackChunkName:'order'*/'@/views/crm/order/publish/components/categories/categories.vue');
+const infortion = () => import(/*webpackChunkName:'order'*/'@/views/crm/order/publish/components/infortion/infortion.vue');
+const release = () => import(/*webpackChunkName:'order'*/'@/views/crm/order/publish/components/release/release.vue');
 // 审批管理
 const approving = () => import(/*webpackChunkName:'workflows'*/'@/views/crm/workflows/approving/index.vue');
 const approved = () => import(/*webpackChunkName:'workflows'*/'@/views/crm/workflows/approved/index.vue');

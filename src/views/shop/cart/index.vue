@@ -19,14 +19,14 @@
           return row.id
         }
       "
-      :isAllSelect="isAllSelect"
       @select="handleSingleSelectionChange"
       @select-all="handleAllSelectionChange"
       @selection-change="handleSelectionChange"
+      @header-click="handleAllSelectionClick"
       >
+      <el-table-column type="selection" :reserve-selection="true" width="55">
+      </el-table-column>  
       
-      <el-table-column type="selection" fixed="left" :reserve-selection="true" width="55">
-      </el-table-column>
 
       <el-table-column prop="default_image_url" label="商品" width="120" type="index">
         <template v-slot="scope">
@@ -137,10 +137,11 @@ import cartImg from '@/assets/images/cart-logo.png'
 import { mapGetters } from 'vuex'
 import { save } from '@/api/order'
 import $ from 'jquery'
+import { toRaw } from '@vue/reactivity'
 export default {
   name: 'cart',
   computed: {
-    ...mapGetters(['cartList', 'totalPrice','totalNum', 'project', 'buyer', 'id'])
+    ...mapGetters(['cartList', 'totalPrice','totalNum', 'selectAll','project', 'buyer', 'id'])
   },
   data() {
     return {
@@ -150,7 +151,9 @@ export default {
       notesShow: false,
       projectShow: false,
       multipleSelection: [],
-      isAllSelect:true,
+      isAllSelect:this.selectAll,
+      currentRow:'',
+      _this:this,
       value1: '',
       value2: '',
       value3: '',
@@ -163,12 +166,11 @@ export default {
   },
   watch:{
     cartList(newv){
+      this.$refs.multipleTable.clearSelection();
       newv.forEach((row) => {
         this.$refs.multipleTable.toggleRowSelection(row,row.selected);
       })
-      const select = newv.every((item)=>item.selected)
-      console.log(select)
-      this.isAllSelect = select;
+      this.selectAll = newv.every(item=>item.selected)
     }
   },
   created() {
@@ -177,28 +179,24 @@ export default {
   mounted() {
     this.$nextTick(() => {
       this.cartList.forEach((row) => {
-        // this.$refs.multipleTable.toggleRowSelection(row,row.selected);
-        if (row.selected) {
-          this.$refs.multipleTable.toggleRowSelection(row);
-        } else {
-          this.$refs.multipleTable.toggleRowSelection(row, false);
-        }
+        this.$refs.multipleTable.toggleRowSelection(row,row.selected);
       })
+      
     })
   },
   methods: {
-   
-    handleCellClick(event, row, column) {
-      this.span = event.target
-      this.select = event.target.previousSibling
-      if (
-        column.property == 'buyer' ||
-        column.property == 'project' ||
-        column.property == 'notes'
-      ) {
-        this.span.classList.add('input-box');
-        this.select.classList.add('current-cell');
-      }
+    handleCellClick(row, column, cell, event) {
+      
+      
+      
+      // if (
+      //   column.property == 'buyer' ||
+      //   column.property == 'project' ||
+      //   column.property == 'notes'
+      // ) {
+      //   this.span.classList.add('input-box');
+      //   this.select.classList.add('current-cell');
+      //}
     },
     changeGateway(row, column, item) {
       console.log(row);
@@ -239,10 +237,9 @@ export default {
       const price = Number(parseFloat(row.price));
       return '￥' + (isNaN(price) ? 0 : price.toFixed(2));
     },
-    handleSingleSelectionChange(selection, row) {
-      console.log('单选', selection, row);
-      let select = selection.length && selection.indexOf(row) !== -1 ? true : false; //为true时选中，为 0 时（false）未选中
-      row.selected = select;
+    handleSingleChange(row){
+      console.log(row)
+      row.selected = !row.selected;
       const data = row;
       const { id, count, project, buyer, notes, selected } = data;
       const param = {
@@ -253,19 +250,57 @@ export default {
         notes: notes,
         selected: selected
       };
+      console.log(param)
       this.$store.dispatch('Update', param);
     },
-    handleAllSelectionClick(){
-      console.log('全选');    
-      console.log(this.cartList);
-      console.log(this.multipleSelection)
-      console.log(this.isAllSelect)
-      if(this.isAllSelect){
-        this.$store.dispatch('Select', { selected: !this.isAllSelect });
-      }else{
-        this.$store.dispatch('Select', { selected: !this.isAllSelect });
+    handleSingleSelectionChange(selection,row) {
+      console.log(selection)
+      console.log(row)
+      console.log(this.currentRow)
+      row.selected = !row.selected;
+      const data = row;
+      const { id, count, project, buyer, notes, selected } = data;
+      const param = {
+        sku_id: id,
+        count: count,
+        project: project.id,
+        buyer: buyer.id,
+        notes: notes,
+        selected: selected
+      };
+      console.log(param)
+      // if(param.selected){
+      //   this.$nextTick(()=>{
+      //     $('.el-checkbox,.el-checkbox__input').addClass('is-checked')
+      //   })
+        
+      // }else{
+      //   this.$nextTick(()=>{
+      //     $('.el-checkbox,.el-checkbox__input').removeClass('is-checked')
+      //   })
+        
+      // }
+      this.$store.dispatch('Update', param);
+    },
+    handleAllSelectionClick(column, event){
+      if(column.type=='selection'){
+        if(this.selectAll){
+          this.$store.dispatch('Select', { selected: !this.selectAll });
+          this.$nextTick(()=>{
+            $('.el-checkbox,.el-checkbox__input').removeClass('is-checked')
+          })
+        }else{
+          this.$store.dispatch('Select', { selected: !this.selectAll });
+          this.$nextTick(()=>{
+            $('.el-checkbox,.el-checkbox__input').addClass('is-checked')
+          })
+        }
+        setTimeout(() => {
+          this.$store.dispatch('GetCart');
+        }, 200); 
+        
       }
-      this.$store.dispatch('GetCart');
+      
     },
     handleAllSelectionChange(selection) {
        console.log('全选', selection)
@@ -277,7 +312,6 @@ export default {
       this.$store.dispatch('GetCart');
     },
     handleSelectionChange(val) {
-      console.log('选择', val)
       this.multipleSelection = val;
     },
     handleDel(id) {
@@ -323,7 +357,7 @@ export default {
     onPushOrder() {
       this.dialogSuccessVisible = false;
       this.$store.dispatch('GetCart').then(() => {});
-      this.$router.push('/order');
+      this.$router.push('/orders');
     }
   }
 }

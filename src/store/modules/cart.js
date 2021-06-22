@@ -25,6 +25,10 @@ const user = {
         }
       })
       return total
+    },
+    selectAll:(state)=>{
+      let select = state.cartList.every((item)=>item.selected)
+      return select
     }
   },
   mutations: {
