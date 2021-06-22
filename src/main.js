@@ -6,6 +6,8 @@ import store from './store/index'
 
 import elementplus from 'element-plus'
 import 'element-plus/lib/theme-chalk/index.css'
+
+
 import './styles/index.scss'
 import './icons/iconfont.css'
 // import './permission'

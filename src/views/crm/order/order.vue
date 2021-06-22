@@ -82,8 +82,8 @@ export default {
         }
       })
     },
-    tab(item) {
-      this.$router.push({ name: 'detail', query: { id: item.id } })
+      tab(item) {
+        this.$router.push({ name: 'detail', query: { id: item.id } })
     }
   }
 }

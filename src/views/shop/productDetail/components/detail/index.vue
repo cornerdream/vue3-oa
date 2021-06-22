@@ -33,6 +33,7 @@ export default {
   components: {
     productDetail
   },
+  inject:['$url'],
   data() {
     return {
       activeName: 'first',
@@ -74,11 +75,23 @@ export default {
       $('.param').html('');   
       $('.descript').html(this.descript);
       $('.param').html(this.param);
-      const srcdescript =  $('.descript').find('img').attr('src');
-      srcdescript?(srcdescript.includes('http')?null:$('.descript').find('img').attr('src','http://192.168.1.218:8000'+srcdescript)):null;
-      const srcparam =  $('.param').find('img').attr('src');
-      srcparam?(srcparam.includes('http')?null:$('.param').find('img').attr('src','http://192.168.1.218:8000'+srcparam)):null;
-  }
+      console.log(this.$url)
+      const srcdescript =  $('.descript').find('img').attr('src') || $('.descript').find('a').attr('href');
+      console.log(srcdescript.includes('http'))
+      if(srcdescript && !srcdescript.includes('http')){
+        console.log('meyouhttp')
+        $('.descript').find('img').attr('src',this.$url+srcdescript);
+        $('.descript').find('a').attr('href',this.$url+srcdescript);
+      }
+      // srcdescript?(srcdescript.includes('http')?null:$('.descript').find('img').attr('src',this.$url+srcdescript)|| $('.descript').find('a').attr('href',this.$url+srcdescript)) :null;
+      const srcparam =  $('.param').find('img').attr('src') || $('.param').find('a').attr('href');
+      if(srcparam && !srcparam.includes('http')){
+        console.log('meyouhttp')
+        $('.param').find('img').attr('src',this.$url+srcparam);
+        $('.param').find('a').attr('href',this.$url+srcparam)
+      }
+      // srcparam?(srcparam.includes('http')?null:$('.param').find('img').attr('src',this.$url+srcparam) || $('.param').find('a').attr('href',this.$url+srcparam)):null;
+    }
   }
 }
 </script>
