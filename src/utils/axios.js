@@ -7,7 +7,7 @@ import { routeLocationKey } from 'vue-router'
 
 
 //const baseURL='http://192.168.31.107:8000';
-const baseURL = 'http://192.168.1.218:8000';
+const baseURL = 'http://192.168.1.212:8000';
 const timeout = 2000;
 const $axios = Axios.create({
   baseURL,

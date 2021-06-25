@@ -4,7 +4,7 @@ import $axios from '@/utils/axios'
 // 获取购物车信息
 export const getCart=() =>{
   return $axios({
-    url: 'cart/',
+    url: 'cart/list/',
     method: 'get'
   })
 }
@@ -21,8 +21,8 @@ export const save=(data)=> {
 // 删除购物车信息
 export const del=(data)=> {
   return $axios({
-    url: 'cart/',
-    method: 'delete',
+    url: 'cart/delete/',
+    method: 'post',
     data
   })
 }
@@ -30,8 +30,8 @@ export const del=(data)=> {
 // 修改购物车信息
 export const update=(data)=> {
   return $axios({
-    url: 'cart/',
-    method: 'put',
+    url: 'cart/edit/',
+    method: 'post',
     data
   })
 }
@@ -40,7 +40,7 @@ export const update=(data)=> {
 export const select=(data) =>{
   return $axios({
     url: '/cart/selection/',
-    method: 'put',
+    method: 'post',
     data
   })
 }

@@ -13,14 +13,22 @@ export default defineConfig({
   base: './',
   server: {
     open: true,
-    cors: true
+    cors: true,
+    proxy: {
+          '/api': {
+            target: 'http://192.168.1.212:8000/',
+            changeOrigin: true,
+            ws: true,
+            rewrite: (path) => path.replace(/^\/api/, '')
+          }
+  },
   },
   // 生产环境移除console
-  build:{
-    terserOptions:{
-        compress:{
-            drop_console:true
-        }
+  build: {
+    terserOptions: {
+      compress: {
+        drop_console: true
+      }
     }
   }
 })

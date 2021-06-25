@@ -12,12 +12,6 @@
                 <li>专题</li>
                 <li>帮助</li>
             </ul>
-            <!-- <div class="footer-left-top-left">
-                <img :src="footerLeft" alt="">
-            </div>
-            <div class="footer-left-top-right">
-
-            </div> -->
         </div>
         <div class="footer-left-bottom">
            <div class="footer-left-top-left">
@@ -37,15 +31,6 @@
         </div>
     </div>
     <div class="footer-right">
-        <!-- <div class="footer-right-left">
-            <p class="footer-right-left-top">联系我们</p>
-            <ul class="footer-right-left-bottom">
-                <li>地址：北京经济技术开发区隆庆街9号1号楼</li>
-                <li>邮编：100176</li>
-                <li>电话：+86(10)6786-4680</li>
-                <li>邮箱:HR@yiconmed.com</li>
-            </ul>
-        </div> -->
         <div class="footer-right-right">
             <div class="footer-right-right-top">
                 <img :src="footerRight" alt="">

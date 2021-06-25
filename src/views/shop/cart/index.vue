@@ -30,7 +30,7 @@
 
       <el-table-column prop="default_image_url" label="商品" width="120" type="index">
         <template v-slot="scope">
-          <img :src="scope.row.default_image_url" alt="" min-width="70" height="70" />
+        <img :src="`http://192.168.1.212:8000`+scope.row.default_image_url" alt="" min-width="70" height="70" />
         </template>
       </el-table-column>
       <el-table-column prop="name" label="商品名称" width="120"> </el-table-column>
@@ -60,10 +60,6 @@
             >
             </el-option>
           </el-select>
-
-          <!-- <span @click="handleCellClick($event, scope.row, scope.column)">{{
-            scope.row.buyer.name
-          }}</span> -->
         </template>
       </el-table-column>
       <el-table-column prop="notes" label="备注" width="120">
@@ -76,9 +72,6 @@
             @blur.native="changeGateway(scope.row, scope.column, scope.row.notes)"
           >
           </el-input>
-          <!-- <span @click="handleCellClick($event, scope.row, scope.column)">{{
-            scope.row.notes
-          }}</span> -->
         </template>
       </el-table-column> 
       <el-table-column prop="project" label="项目" width="120">
@@ -93,9 +86,6 @@
             >
             </el-option>
           </el-select>
-          <!-- <span @click="handleCellClick($event, scope.row, scope.column)">{{
-            scope.row.project.name
-          }}</span> -->
         </template>
       </el-table-column>
       <el-table-column prop="handle" label="操作" fixed="right">
@@ -185,23 +175,9 @@ export default {
     })
   },
   methods: {
-    handleCellClick(row, column, cell, event) {
-      
-      
-      
-      // if (
-      //   column.property == 'buyer' ||
-      //   column.property == 'project' ||
-      //   column.property == 'notes'
-      // ) {
-      //   this.span.classList.add('input-box');
-      //   this.select.classList.add('current-cell');
-      //}
+  handleCellClick(row, column, cell, event) {
     },
     changeGateway(row, column, item) {
-      console.log(row);
-      console.log(column);
-      console.log(item);
       if (column.property == 'buyer') {
         row.buyer = item
       } else if (column.property == 'project') {
@@ -220,16 +196,9 @@ export default {
         buyer: buyer.id,
         notes: notes
       };
-      console.log(param);
-      this.$store.dispatch('Update', param);
-      // if (
-      //   column.property == 'buyer' ||
-      //   column.property == 'project' ||
-      //   column.property == 'notes'
-      // ) {
-      //   this.span.classList.remove('input-box');
-      //   this.select.classList.remove('current-cell');
-      // }
+      this.$store.dispatch('Update', param).then((res)=>{
+        console.log(res,'修改')
+      });
     },
     async loadCartInfo() {
     },
@@ -238,7 +207,6 @@ export default {
       return '￥' + (isNaN(price) ? 0 : price.toFixed(2));
     },
     handleSingleChange(row){
-      console.log(row)
       row.selected = !row.selected;
       const data = row;
       const { id, count, project, buyer, notes, selected } = data;
@@ -250,13 +218,9 @@ export default {
         notes: notes,
         selected: selected
       };
-      console.log(param)
       this.$store.dispatch('Update', param);
     },
     handleSingleSelectionChange(selection,row) {
-      console.log(selection)
-      console.log(row)
-      console.log(this.currentRow)
       row.selected = !row.selected;
       const data = row;
       const { id, count, project, buyer, notes, selected } = data;
@@ -268,18 +232,6 @@ export default {
         notes: notes,
         selected: selected
       };
-      console.log(param)
-      // if(param.selected){
-      //   this.$nextTick(()=>{
-      //     $('.el-checkbox,.el-checkbox__input').addClass('is-checked')
-      //   })
-        
-      // }else{
-      //   this.$nextTick(()=>{
-      //     $('.el-checkbox,.el-checkbox__input').removeClass('is-checked')
-      //   })
-        
-      // }
       this.$store.dispatch('Update', param);
     },
     handleAllSelectionClick(column, event){
@@ -303,7 +255,6 @@ export default {
       
     },
     handleAllSelectionChange(selection) {
-       console.log('全选', selection)
       if (this.cartList.length == this.multipleSelection.length) {
         this.$store.dispatch('Select', { selected: true });
       } else {
@@ -320,10 +271,8 @@ export default {
       })
     },
     onOrder() {
-      console.log(this.cartList);
-      console.log(this.multipleSelection);
       if (this.multipleSelection.length>0 && this.cartList.length > 0) {
-        save(this.id)
+        save({ id:this.id})
           .then((res) => {
             this.dialogSuccessVisible = true
             Promise.resolve(res)

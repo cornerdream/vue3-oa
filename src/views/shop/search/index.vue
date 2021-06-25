@@ -47,7 +47,7 @@ export default {
       this.filterData = data.data.filter;
       const res = await searchProductClassify(param);
       console.log(res)
-      this.listData =res.data.data.results;
+      this.listData =res.data.data.result;
     }
     
   }

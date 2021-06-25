@@ -2,12 +2,12 @@
 <template>
   <div class="app-tab">
     <p class="logo">
-      <img :src="headerLogo" alt="">
+      <img :src="headerLogo" alt="" />
     </p>
     <ul class="tabLink">
       <li>
-        <router-link :to="{ name: 'home' }" >
-          <span >首页</span>
+        <router-link :to="{ name: 'home' }">
+          <span>首页</span>
         </router-link>
       </li>
       <li>专题</li>
@@ -15,8 +15,14 @@
     </ul>
     <div class="userManger">
       <router-link :to="{ name: 'cart' }">
-        <el-dropdown style="color:#fff">
-          <span class="el-dropdown-link"><i class="el-icon-shopping-cart-2"></i> 购物车 </span>
+        <el-dropdown style="color: #fff">
+          <!-- <span class="el-dropdown-link"><i class="el-icon-shopping-cart-2"></i> 购物车 {{totalNum}}</span> -->
+          <span class="el-dropdown-link">
+            <el-badge :value="totalNum" class="item" type="danger">
+              <i class="el-icon-shopping-cart-2"></i>购物车
+            </el-badge></span
+          >
+
           <template #dropdown>
             <el-dropdown-menu max-height="200">
               <el-dropdown-item v-show="cartList.length == 0">购物车空空，快添加~</el-dropdown-item>
@@ -28,9 +34,19 @@
           </template>
         </el-dropdown>
       </router-link>
-      <router-link :to="{ name: 'me' }" active-class="" exact-active-class="" class="userMe" @click.native="handleReset('me')">
-        <el-avatar size="small" :src="image" class="userImg"></el-avatar>
-        <el-dropdown style="color:#fff">
+      <router-link
+        :to="{ name: 'me' }"
+        active-class=""
+        exact-active-class=""
+        class="userMe"
+        @click.native="handleReset('me')"
+      >
+        <el-avatar
+          size="small"
+          :src="`http://192.168.1.212:8000` + image"
+          class="userImg"
+        ></el-avatar>
+        <el-dropdown style="color: #fff">
           <span class="el-dropdown-link">
             个人中心<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
@@ -44,33 +60,23 @@
           </template>
         </el-dropdown>
       </router-link>
-      
     </div>
-    <!-- <div class="search">
-      <el-input placeholder="请输入内容" v-model="filterParams.text" @change="onSearch">
-        <template #append>
-          <el-button icon="el-icon-search"></el-button>
-        </template>
-      </el-input>
-    </div> -->
-
   </div>
 </template>
 
 <script>
-
 import logo from '@/assets/images/header-logo.png'
 import { mapGetters } from 'vuex'
 export default {
   name: 'app-tab',
   computed: {
-    ...mapGetters(['id', 'username', 'email', 'image', 'cartList'])
+    ...mapGetters(['id', 'username', 'email', 'image', 'cartList', 'totalNum'])
   },
   data() {
     return {
-      headerLogo:logo,
-      filterParams:{
-        text: '',
+      headerLogo: logo,
+      filterParams: {
+        text: ''
       }
     }
   },
@@ -81,14 +87,13 @@ export default {
     this.loadCartBuyer()
   },
   mounted() {},
-  methods:{
-    onSearch(){
-     
-      this.$router.push({name:'search',query:{text:this.filterParams.text}})
+  methods: {
+    onSearch() {
+      this.$router.push({ name: 'search', query: { text: this.filterParams.text } })
     },
-    handleReset(name){
-      this.$store.dispatch('GetActiveNav',name);
-      this.$store.dispatch('GetActiveOpen',[name]);
+    handleReset(name) {
+      this.$store.dispatch('GetActiveNav', name)
+      this.$store.dispatch('GetActiveOpen', [name])
     },
     async loadUserInfo() {
       this.$store.dispatch('GetUserInfo').then(() => {})
@@ -142,7 +147,7 @@ export default {
   height: 60px;
   /* border: 1px solid #eee; */
 }
-.logo img{
+.logo img {
   width: 100%;
   height: 100%;
 }
@@ -164,16 +169,15 @@ export default {
 .router-link-active {
   color: #fff;
 }
-.router-link-exact-active{
-  color:#0081CC;
+.router-link-exact-active {
+  color: #0081cc;
 }
 .userManger {
   display: flex;
   justify-content: center;
   align-items: center;
-  
 }
-.el-dropdown{
+.el-dropdown {
   color: #fff;
 }
 
@@ -188,7 +192,6 @@ export default {
   justify-content: center;
   align-items: center;
   margin-left: 20px;
-  
 }
 .count {
   display: inline-block;

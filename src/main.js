@@ -15,4 +15,4 @@ import locale from 'element-plus/lib/locale/lang/zh-cn'  //DatePicker显示中�
 
 const app = createApp(App);
 app.use(router).use(store).use(elementplus, { locale }).mount('#app')
-app.provide('$url', 'http://192.168.1.218:8000');
+app.provide('$url', 'http://192.168.1.212:8000');

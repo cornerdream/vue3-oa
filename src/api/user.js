@@ -1,7 +1,6 @@
 //用户
 import $axios from '@/utils/axios'
 export const upload=(data)=> {
-  console.log(data);
   return $axios({
     url: '/api/upload/',
     method: 'post',

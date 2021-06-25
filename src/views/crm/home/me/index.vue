@@ -1,7 +1,6 @@
 <!-- -->
 <template>
   <div class="me">
-    1111
     <cardState />
     <cardCollect />
     <cardOrder />

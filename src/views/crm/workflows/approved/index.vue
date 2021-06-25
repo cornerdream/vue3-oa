@@ -146,10 +146,13 @@ export default {
       is_approve: '', //同意拒绝
       task_id: '', //任务id
       apply_comment: '', // 审批意见
-      search: '火狐',
-      ordering: '33',
+      obj:{
+      search: '',
+      ordering: '',
       page: '1',
       size: '10',
+      },
+
       create_time: '', // 申请时间
       value: '',
       arrlist: [],
@@ -174,7 +177,7 @@ export default {
   mounted() {},
   methods: {
     async swork() {
-      await approved(this.search, this.ordering, this.page, this.size).then((res) => {
+      await approved(this.obj).then((res) => {
         this.arrlist = res.data.data.results
         this.is_approve = res.data.data.results[0].is_approved
         this.create_time = res.data.data.results[0].create_time.slice(0, 10)

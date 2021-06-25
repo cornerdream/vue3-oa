@@ -17,10 +17,6 @@
           <i class="iconfont icon-me"></i>
           <span>我的主页</span>
         </template>
-        <!-- <el-menu-item index="/cart">
-          <i class="iconfont icon-cart"></i>
-          <span slot="title">我的购物车</span>
-        </el-menu-item> -->
         <el-menu-item  index="orders">
           <i class="iconfont icon-order"></i>
           <span>我的订单</span>

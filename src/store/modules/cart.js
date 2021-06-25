@@ -120,7 +120,7 @@ const user = {
       return new Promise((resolve, reject) => {
         update(data)
           .then((res) => {
-            commit('SET_UPDATE', res.data.data)
+            commit('SET_UPDATE', res.data.result.data)
             resolve(res)
           })
           .catch((error) => {
@@ -133,7 +133,7 @@ const user = {
       return new Promise((resolve, reject) => {
         save(data)
           .then((res) => {
-            commit('SET_ADD', res.data.data)
+            commit('SET_ADD', res.data.result.data)
             resolve(res)
           })
           .catch((error) => {

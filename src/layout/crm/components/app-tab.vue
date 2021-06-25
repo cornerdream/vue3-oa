@@ -29,7 +29,7 @@
         </el-dropdown>
       </router-link>
       <router-link :to="{ name: 'me' }" active-class="" exact-active-class="" class="userMe" @click.native="handleReset('me')">
-        <el-avatar size="small" :src="image" class="userImg"></el-avatar>
+        <el-avatar size="small" :src="`http://192.168.1.212:8000`+image" class="userImg"></el-avatar>
         <el-dropdown style="color:#fff">
           <span class="el-dropdown-link">
             个人中心<i class="el-icon-arrow-down el-icon--right"></i>

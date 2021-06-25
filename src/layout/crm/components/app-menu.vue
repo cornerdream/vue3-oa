@@ -14,7 +14,7 @@
         <app-menu :menuList="item.children" />
       </el-submenu>
       <el-menu-item v-else :key="item.id" :index="item.path">
-        <i :class="`iconfont icon-${item.meta.icon}`"></i>
+        <!-- <i :class="`iconfont icon-${item.meta.icon}`"></i> -->
         <span>{{ item.name }}</span>
       </el-menu-item>
     </template>

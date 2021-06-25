@@ -29,7 +29,7 @@
         </el-dropdown>
       </router-link>
       <router-link :to="{ name: 'me' }" active-class="" exact-active-class="" class="userMe" @click.native="handleReset('me')">
-        <el-avatar size="small" :src="image" class="userImg"></el-avatar>
+        <el-avatar size="small" :src="`http://192.168.1.212:8000`+image" class="userImg"></el-avatar>
         <el-dropdown style="color:#fff">
           <span class="el-dropdown-link">
             个人中心<i class="el-icon-arrow-down el-icon--right"></i>
@@ -46,13 +46,6 @@
       </router-link>
       
     </div>
-    <!-- <div class="search">
-      <el-input placeholder="请输入内容" v-model="filterParams.text" @change="onSearch">
-        <template #append>
-          <el-button icon="el-icon-search"></el-button>
-        </template>
-      </el-input>
-    </div> -->
 
   </div>
 </template>
@@ -62,7 +55,7 @@
 import logo from '@/assets/images/header-logo.png'
 import { mapGetters } from 'vuex'
 export default {
-  name: 'app-tab',
+   name: 'app-tab',
   computed: {
     ...mapGetters(['id', 'username', 'email', 'image', 'cartList'])
   },

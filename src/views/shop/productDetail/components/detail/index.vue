@@ -2,8 +2,6 @@
 <template>
   <div class="detail">
     <div class="clearfix">
-      <!-- <productBig/> -->
-      <!-- <productDetail/> -->
     </div>
     <productDetail :productInfo="productInfo" :productParam="productParam" :images="images" @initDetail="loadProductDetail"/>
     <div class="tabBox">
@@ -54,18 +52,19 @@ export default {
 
   },
   created() {
-    this.loadProductDetail(this.id);
   },
   mounted() {
+    this.loadProductDetail(this.id);
   },
   methods:{
     async loadProductDetail(cData) {
       const { data } = await getProductDetail(cData);
-      this.productInfo = data.data.sku;
+      this.productInfo =data.data.sku;
       this.descript = data.data.sku.desc_detail;
       this.param = data.data.sku.desc_pack;
       this.images = data.data.sku.images;
       this.productParam = data.data.specs;
+      console.log(data.data,'data.daat',this.productInfo)
       this.loadhtml()
     },
     loadhtml(){
@@ -77,20 +76,20 @@ export default {
       $('.param').html(this.param);
       console.log(this.$url)
       const srcdescript =  $('.descript').find('img').attr('src') || $('.descript').find('a').attr('href');
-      console.log(srcdescript.includes('http'))
-      if(srcdescript && !srcdescript.includes('http')){
-        console.log('meyouhttp')
+       if(srcdescript && !srcdescript.includes('https')){
+        console.log('meyouhttp','跳转')
         $('.descript').find('img').attr('src',this.$url+srcdescript);
         $('.descript').find('a').attr('href',this.$url+srcdescript);
       }
+      console.log(this.$url+srcdescript,'this.$url+srcdescriptthis.$url+srcdescriptthis.$url+srcdescript')
       // srcdescript?(srcdescript.includes('http')?null:$('.descript').find('img').attr('src',this.$url+srcdescript)|| $('.descript').find('a').attr('href',this.$url+srcdescript)) :null;
       const srcparam =  $('.param').find('img').attr('src') || $('.param').find('a').attr('href');
+     
       if(srcparam && !srcparam.includes('http')){
-        console.log('meyouhttp')
+        console.log('meyouhttp','跳转')
         $('.param').find('img').attr('src',this.$url+srcparam);
         $('.param').find('a').attr('href',this.$url+srcparam)
       }
-      // srcparam?(srcparam.includes('http')?null:$('.param').find('img').attr('src',this.$url+srcparam) || $('.param').find('a').attr('href',this.$url+srcparam)):null;
     }
   }
 }

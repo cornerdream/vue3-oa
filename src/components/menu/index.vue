@@ -156,7 +156,6 @@ export default {
 }
 .news-el-tabs .el-tabs__content {
   height: 100%;
-  /* background-color: #409eff; */
   text-align: left;
   color: #0D2140;
 }

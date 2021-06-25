@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory} from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import { shallowRef } from '@vue/reactivity'
 import store from '@/store'
 
@@ -20,71 +20,31 @@ const Page404 = () => import(/*webpackChunkName:'login'*/ '@/components/404/inde
 const Home = () => import(/*webpackChunkName:'shop'*/ '@/views/shop/home/index.vue')
 const ProductClassify = () => import(/*webpackChunkName:'shop'*/ '@/views/shop/productClassify/index.vue')
 const Search = () => import(/*webpackChunkName:'shop'*/ '@/views/shop/search/index.vue')
-const ProductDetail = () =>
-  import(/*webpackChunkName:'shop'*/ '@/views/shop/productDetail/index.vue')
+const ProductDetail = () => import(/*webpackChunkName:'shop'*/ '@/views/shop/productDetail/index.vue')
 const Cart = () => import(/*webpackChunkName:'shop'*/ '@/views/shop/cart/index.vue')
 /*
  *后台我的
  */
 const Me = () => import(/*webpackChunkName:'crm'*/ '@/views/crm/home/me/index.vue')
-const Orders = () =>
-  import(/*webpackChunkName:'crm'*/ '@/views/crm/home/order/index.vue')
-// //入库单
-// const personal = () => import(/*webpackChunkName:'warehouse'*/'@/views/crm/warehouse/index.vue');
-// const publish = () => import(/*webpackChunkName:'list'*/'@/views/crm/list/selectlist/index.vue');
-// const detail = () => import(/*webpackChunkName:'warehouse'*/'@/views/crm/warehouse/components/detail.vue');
-// const categories = () => import(/*webpackChunkName:'list'*/'@/views/crm/list/selectlist/components/categories/categories.vue');
-// const infortion = () => import(/*webpackChunkName:'list'*/'@/views/crm/list/selectlist/components/infortion/infortion.vue');
-// const release = () => import(/*webpackChunkName:'list'*/'@/views/crm/list/selectlist/components/release/release.vue');
-// // 审批管理
-
-// const approving = () => import(/*webpackChunkName:'approving'*/'@/views/crm/approving/index.vue');
-// const approved = () => import(/*webpackChunkName:'approved'*/'@/views/crm/approved/index.vue');
-// const picking = () => import(/*webpackChunkName:'picking'*/'@/views/crm/picking/index.vue');
-// const picklist = () => import(/*webpackChunkName:'picking'*/'@/views/crm/picking/components/picklist.vue');
-// const pickdetail = () => import(/*webpackChunkName:'picking'*/'@/views/crm/picking/components/pickdetail.vue');
-//采购订单
-const personal = () => import(/*webpackChunkName:'order'*/'@/views/crm/order/index.vue');
-const unhandle = () => import(/*webpackChunkName:'order'*/'@/views/crm/order/unhandle.vue');
-const handled = () => import(/*webpackChunkName:'order'*/'@/views/crm/order/handled.vue');
-const order = () => import(/*webpackChunkName:'order'*/'@/views/crm/order/order.vue');
-const detail = () => import(/*webpackChunkName:'order'*/'@/views/crm/order/components/detail.vue');
-const publish = () => import(/*webpackChunkName:'order'*/'@/views/crm/order/publish/index.vue');
-const categories = () => import(/*webpackChunkName:'order'*/'@/views/crm/order/publish/components/categories/categories.vue');
-const infortion = () => import(/*webpackChunkName:'order'*/'@/views/crm/order/publish/components/infortion/infortion.vue');
-const release = () => import(/*webpackChunkName:'order'*/'@/views/crm/order/publish/components/release/release.vue');
-// 审批管理
+const Orders = () => import(/*webpackChunkName:'crm'*/ '@/views/crm/home/order/index.vue')// 审批管理
 const approving = () => import(/*webpackChunkName:'workflows'*/'@/views/crm/workflows/approving/index.vue');
 const approved = () => import(/*webpackChunkName:'workflows'*/'@/views/crm/workflows/approved/index.vue');
-//仓库管理
-const picking = () => import(/*webpackChunkName:'warehouse'*/'@/views/crm/warehouse/index.vue');
-const picklist = () => import(/*webpackChunkName:'warehouse'*/'@/views/crm/warehouse/components/picklist.vue');
-const pickdetail = () => import(/*webpackChunkName:'warehouse'*/'@/views/crm/warehouse/components/pickdetail.vue');
 
 /*
  *系统设置
  */
-const Consumer = () =>
-  import(/*webpackChunkName:'system'*/ '@/views/crm/system/consumer/index.vue')
-const Menu = () =>
-  import(/*webpackChunkName:'system'*/ '@/views/crm/system/menu/index.vue')
-const Access = () =>
-  import(/*webpackChunkName:'system'*/ '@/views/crm/system/access/index.vue')
-const Role = () =>
-  import(/*webpackChunkName:'system'*/ '@/views/crm/system/role/index.vue')
-const Organize = () =>
-  import(/*webpackChunkName:'system'*/ '@/views/crm/system/organize/index.vue')
+const Consumer = () => import(/*webpackChunkName:'system'*/ '@/views/crm/system/consumer/index.vue')
+const Menu = () => import(/*webpackChunkName:'system'*/ '@/views/crm/system/menu/index.vue')
+const Access = () => import(/*webpackChunkName:'system'*/ '@/views/crm/system/access/index.vue')
+const Role = () => import(/*webpackChunkName:'system'*/ '@/views/crm/system/role/index.vue')
+const Organize = () => import(/*webpackChunkName:'system'*/ '@/views/crm/system/organize/index.vue')
 
-
-
-
-
-const routes= [
+const routes = [
   {
     path: '/login',
     name: 'login',
     component: Login
-  }, 
+  },
   {
     path: '/',
     name: 'homeLayout',
@@ -92,30 +52,30 @@ const routes= [
     meta: {
       requiresAuth: true
     },
-    children:[
+    children: [
       {
-        path:'',
-        name:'home',
-        component:Home
+        path: '',
+        name: 'home',
+        component: Home
       }
     ]
   },
   {
-    path:'/detail',
-    name:'detailLayout',
-    redirect:{
-      name:'page404',
+    path: '/detail',
+    name: 'detailLayout',
+    redirect: {
+      name: 'page404',
       params: { pathMatch: 'page404' }
     },
-    component:detailLayout,
+    component: detailLayout,
     meta: {
       requiresAuth: true
     },
-    children:[
+    children: [
       {
         path: '/404',
         name: 'page404',
-        component: Page404    
+        component: Page404
       },
       {
         path: '/productClassify',
@@ -140,17 +100,17 @@ const routes= [
     ]
   },
   {
-    path:'/crm',
-    name:'crm',
-    redirect:{
-      name:'page404',
+    path: '/crm',
+    name: 'crm',
+    redirect: {
+      name: 'page404',
       params: { pathMatch: 'page404' }
     },
-    component:crmLayout,
+    component: crmLayout,
     meta: {
       requiresAuth: true
     },
-    children:[
+    children: [
       {
         path: '/me',
         name: 'me',
@@ -186,68 +146,6 @@ const routes= [
         name: 'organize',
         component: Organize
       },
-      // 新增入库单 2021/5/18
-      {
-        path: '/personal',
-        name: 'personal',
-        component: personal
-      },
-      {
-        path: '/detail',
-        name: 'detail',
-        component: detail
-      },
-      {
-        path: '/unhandle',
-        name: 'unhandle',
-        component: unhandle,
-        meta: {
-          title: '待采购'
-        }
-      },
-      {
-        path: '/handled',
-        name: 'handled',
-        component: handled,
-        meta: {
-          title: '已完成'
-        }
-      },
-      {
-        path: '/order',
-        name: 'order',
-        component: order,
-        meta: {
-          title: '到货单'
-        }
-      },
-      {
-        path: '/publish',
-        name: 'publish',
-        component: publish,
-        children: [
-          {
-            path: '',        //如果只写 / 则说明默认打开一个页面
-            redirect: 'categories'//默认指向页面
-          },
-          {
-            path: '/categories',
-            name: 'categories',
-            component: categories
-          },
-          {
-            path: '/infortion',
-            name: 'infortion',
-            component: infortion
-          },
-          {
-            path: '/release',
-            name: 'release',
-            component: release
-          }
-
-        ]
-      },
       {
         path: '/approving',
         name: 'approving',
@@ -257,21 +155,6 @@ const routes= [
         path: '/approved',
         name: 'approved',
         component: approved
-      },
-      {
-        path: '/picking',
-        name: 'picking',
-        component: picking
-      },
-      {
-        path: '/picklist',
-        name: 'picklist',
-        component: picklist
-      },
-      {
-        path: '/pickdetail',
-        name: 'pickdetail',
-        component: pickdetail
       },
     ]
   },

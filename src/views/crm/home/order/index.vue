@@ -31,7 +31,7 @@ export default {
         search: '',
         ordering: '',
         page: 1,
-        size: 100
+        size: 10
       }
     }
   },
@@ -42,6 +42,7 @@ export default {
   methods: {
     async loadOrder() {
       const { data } = await getOrder(this.filterParams)
+      console.log(data.data,'我的订单')
       if (data.code !== 200) {
         ElMessage.error(data.error)
       } else {

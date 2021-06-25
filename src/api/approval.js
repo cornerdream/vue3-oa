@@ -1,18 +1,26 @@
 //审批管理
 import $axios from '@/utils/axios'
 // 获取当前用户的所有任务
-export const sworkflowtask=(search, ordering, page, size) => {
+// export const sworkflowtask=(search, ordering, page, size) => {
+//   return $axios({
+//     url:
+//       '/api/user/workflowtask?search=' +
+//       search +
+//       '&ordering=' +
+//       ordering +
+//       '&page=' +
+//       page +
+//       '&size=' +
+//       size,
+//     method: 'get'
+//   })
+// }
+export const sworkflowtask=(params) => {
   return $axios({
     url:
-      '/api/user/workflowtask?search=' +
-      search +
-      '&ordering=' +
-      ordering +
-      '&page=' +
-      page +
-      '&size=' +
-      size,
-    method: 'get'
+      '/api/user/workflowtask',
+    method: 'get',
+    params
   })
 }
 //获取某个审批任务单据详情
@@ -31,47 +39,29 @@ export const approve=(data) => {
   })
 }
 //获取当前用户的已审批任务
-export const approved=(search, ordering, page, size) => {
+export const approved=(params) => {
   return $axios({
     url:
-      '/api/user/workflowtask/approved?search=' +
-      search +
-      '&ordering=_' +
-      ordering +
-      '&page=' +
-      page +
-      '&size=' +
-      size,
-    method: 'get'
+      '/api/user/workflowtask/approved',
+    method: 'get',
+    params
   })
 }
 //获取当前用户的待审批任务
-export const approving=(search, ordering, page, size) =>{
+export const approving=(params) =>{
   return $axios({
     url:
-      '/api/user/workflowtask/approving?search=' +
-      search +
-      '&ordering=_' +
-      ordering +
-      '&page=' +
-      page +
-      '&size=' +
-      size,
-    method: 'get'
+      '/api/user/workflowtask/approving',
+    method: 'get',
+    params
   })
 }
 //获取当前用户的已拒绝任务
-export const denyed=(search, ordering, page, size) => {
+export const denyed=(params) => {
   return $axios({
     url:
-      '/api/user/workflowtask/denyed?search=' +
-      search +
-      '&ordering=_' +
-      ordering +
-      '&page=' +
-      page +
-      '&size=' +
-      size,
-    method: 'get'
+      '/api/user/workflowtask/denyed',
+    method: 'get',
+    params
   })
 }
