@@ -3,8 +3,8 @@ import { getUserMenu } from '@/api/login'
 const user = {
   state: {
     userMenu: {},
-    activeNav:'me',
-    activeOpen:['me']
+    activeNav:'orders',
+    activeOpen:['']
   },
 
   mutations: {
@@ -12,16 +12,13 @@ const user = {
       state.userMenu = userMenu
       // window.localStorage.setItem('userMenu',userMenu);
     },
-    SET_ACTIVENAV: (state, activeNav) => {
-      
+    SET_ACTIVENAV: (state, activeNav) => {   
       state.activeNav = activeNav
-      
     },
     SET_ACTIVEOPEN:function(state, activeOpen){
-      
-      state.activeOpen = [];
+     
+      // state.activeOpen = [];
       state.activeOpen=activeOpen
-      
     },
   },
 
@@ -32,6 +29,7 @@ const user = {
         getUserMenu()
           .then((res) => {
             commit('SET_USERMENU', res.data.data)
+            console.log(res.data.data,'房贷还款计划')
             resolve(res)
           })
           .catch((error) => {

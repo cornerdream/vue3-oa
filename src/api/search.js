@@ -38,3 +38,10 @@ export const searchProductTag=(params) =>{
         params
     })
   }
+  export const keyword=() =>{
+    return $axios({
+      url: 'api/keyword/',
+      method: 'get',
+      // params
+    })
+  }

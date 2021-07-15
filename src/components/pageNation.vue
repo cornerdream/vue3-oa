@@ -8,7 +8,7 @@
       @current-change="handleCurrentChange"
       :current-page="page_index"
       :page-sizes="pageSizes"
-      :page-size="page.limit"
+      :page-size="page.page_limit"
       layout="total, prev, pager, next"
       :total="total"
     >

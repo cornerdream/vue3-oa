@@ -13,7 +13,7 @@
         <el-input v-model="form.username"></el-input>
       </el-form-item>
       <el-form-item label="密码" prop="password">
-        <el-input type="password" v-model="form.password"></el-input>
+        <el-input type="password" v-model="form.password"  @keyup.enter.native = "handleSubmit"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button class="login-btn" type="primary" :loading="isLoginLoading" @click="onLogin"
@@ -30,8 +30,10 @@ export default {
   data() {
     return {
       form: {
-        username: 'admin',
-        password: '1'
+        username: '',
+        password: ''
+        // username: '18730607903@163.com',
+        // password: '1'
       },
       rules: {
         phone: [
@@ -49,6 +51,9 @@ export default {
   created() {},
   mounted() {},
   methods: {
+    handleSubmit(){
+      this.onLogin()
+    },
     async onLogin() {
       try {
         await this.$refs.form .validate();

@@ -10,16 +10,7 @@
         </el-aside>
         <el-main><router-view /></el-main>
       </el-container>
-      <!-- <el-main><router-view :key="$route.name"/></el-main> -->
     </el-container>
-    <!-- <el-container style="height: 100%">
-      <el-aside width="200px" style="height: 100%">
-        <app-aside :menus="userMenu" />
-      </el-aside>
-      <el-main>
-        <router-view />
-      </el-main>
-    </el-container> -->
   </div>
 </template>
 
@@ -44,7 +35,7 @@ export default {
   mounted() {},
   methods: {
     async loadUserMenu() {
-      this.$store.dispatch('GetUserMenu').then(() => {})
+      this.$store.dispatch('GetUserMenu').then((res) => {console.log('急急急',res.data.data)})
     }
   }
 }

@@ -1,15 +1,42 @@
 <!-- -->
 <template>
   <div class="detail">
-    <div class="clearfix">
+    <div class="clearfix"></div>
+    <productDetail
+      :productInfo="productInfo"
+      :productParam="productParam"
+      :images="images"
+      @initDetail="loadProductDetail"
+    />
+    <!-- <ul>
+    <li>商品详情
+        <div v-html="descript"></div>
+
+    </li>
+    <li>商品参数</li>
+    <li>商品评论</li>
+  </ul> -->
+    <div id="box">
+      <!--点击设置msg的值  如果msg等于0，第一个a添加cur类名，如果msg等于1，第二个a添加cur类名，以此类推。
+            添加了cur类名，a就会改变样式 @click,:class ,v-show这三个是vue常用的指令或添加事件的方式-->
+      <div class="tab-tit">
+        <p href="javascript:;" @click="msg = 0" :class="{ cur: msg === 0 }">商品详情</p>
+        <p href="javascript:;" @click="msg = 1" :class="{ cur: msg === 1 }">商品参数</p>
+        <p href="javascript:;" @click="msg = 2" :class="{ cur: msg === 2 }">商品评论</p>
+      </div>
+      <!--根据msg的值显示div,如果msg等于0，第一个div显示，其它三个div不显示。
+                如果msg等于1，第二个div显示，其它三个div不显示。以此类推-->
+      <div class="tab-con">
+        <div v-show="msg === 0" class="descript"></div>
+        <!-- <div v-show="msg === 0" class="descript"></div> -->
+        <div v-show="msg === 1" class="param"></div>
+        <div v-show="msg === 2" >商品评论</div>
+      </div>
     </div>
-    <productDetail :productInfo="productInfo" :productParam="productParam" :images="images" @initDetail="loadProductDetail"/>
-    <div class="tabBox">
+    <!-- <div class="tabBox">
       <el-tabs v-model="activeName" type="card" >
         <el-tab-pane label="商品详情" name="first">
-          <div class="descript" >
-            
-          </div>
+           <div v-html="descript"></div>
         </el-tab-pane>
         <el-tab-pane label="商品参数" name="second">
           <div class="param" >
@@ -18,24 +45,25 @@
         </el-tab-pane>
         <el-tab-pane label="商品评论" name="third">商品评论</el-tab-pane>
       </el-tabs>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
 import productDetail from './components/product-detail.vue'
-import { getProductDetail} from '@/api/product'
+import { getProductDetail } from '@/api/product'
 import $ from 'jquery'
+// import a from '../../../../../styles/web.assets_common.css'
 export default {
   name: 'detail',
   components: {
     productDetail
   },
-  inject:['$url'],
+  inject: ['$url'],
   data() {
     return {
       activeName: 'first',
-      id:this.$route.query.id,
+      id: this.$route.query.id,
       productInfo: {
         id: -1,
         name: '',
@@ -43,77 +71,87 @@ export default {
         default_image_url: ''
       },
       productParam: [],
-      descript:'',
-      param:'',
-      images:[]
+      descript: '',
+      param: '',
+      images: [],
+      msg: 0
     }
   },
-  watch:{
-
-  },
-  created() {
-  },
+  watch: {},
+  created() {},
   mounted() {
-    this.loadProductDetail(this.id);
+    this.loadProductDetail(this.id)
   },
-  methods:{
+  methods: {
     async loadProductDetail(cData) {
-      const { data } = await getProductDetail(cData);
-      this.productInfo =data.data.sku;
-      this.descript = data.data.sku.desc_detail;
-      this.param = data.data.sku.desc_pack;
-      this.images = data.data.sku.images;
-      this.productParam = data.data.specs;
-      console.log(data.data,'data.daat',this.productInfo)
+      const { data } = await getProductDetail(cData)
+      this.productInfo = data.data.sku
+      this.descript = data.data.sku.desc_detail
+      this.param = data.data.sku.desc_pack
+      this.images = data.data.sku.images
+      this.productParam = data.data.specs
+      // console.log(this.param, 'data.daat', this.descript)
       this.loadhtml()
     },
-    loadhtml(){
-      console.log('jinlai')
+    loadhtml() {
+      $(document).off()
       $('.el-tabs__content').show()
-      $('.descript').html('');        
-      $('.param').html('');   
-      $('.descript').html(this.descript);
-      $('.param').html(this.param);
-      console.log(this.$url)
-      const srcdescript =  $('.descript').find('img').attr('src') || $('.descript').find('a').attr('href');
-       if(srcdescript && !srcdescript.includes('https')){
-        console.log('meyouhttp','跳转')
-        $('.descript').find('img').attr('src',this.$url+srcdescript);
-        $('.descript').find('a').attr('href',this.$url+srcdescript);
-      }
-      console.log(this.$url+srcdescript,'this.$url+srcdescriptthis.$url+srcdescriptthis.$url+srcdescript')
-      // srcdescript?(srcdescript.includes('http')?null:$('.descript').find('img').attr('src',this.$url+srcdescript)|| $('.descript').find('a').attr('href',this.$url+srcdescript)) :null;
-      const srcparam =  $('.param').find('img').attr('src') || $('.param').find('a').attr('href');
-     
-      if(srcparam && !srcparam.includes('http')){
-        console.log('meyouhttp','跳转')
-        $('.param').find('img').attr('src',this.$url+srcparam);
-        $('.param').find('a').attr('href',this.$url+srcparam)
-      }
+      $('.descript').html('')
+      $('.param').html('')
+      $('.descript').html(this.descript)
+      $('.param').html(this.param)
+      const srcdescript =
+        $('.descript').find('img').attr('src') || $('.descript').find('a').attr('href')
+      const url1 = $('.descript').find('.o_image').eq(0).attr('href')
+      const url2 = $('.descript').find('.o_image').eq(1).attr('href')
+      $('.descript').find('img').attr('src', srcdescript)
+      $('.descript').find('.o_image').eq(0).attr('href', this.$url + url1)
+      $('.descript').find('.o_image').eq(1).attr('href', this.$url + url2)
+      const srcparam = $('.param').find('img').attr('src') || $('.param').find('a').attr('href')
+        $('.param').find('img').attr('src', srcparam)
+          const url3 = $('.param').find('.o_image').eq(0).attr('href')
+          const url4 = $('.param').find('.o_image').eq(1).attr('href')
+          $('.param').find('.o_image').eq(0).attr('href', this.$url + url3)
+          $('.param').find('.o_image').eq(1).attr('href', this.$url + url4)
     }
   }
 }
 </script>
-<style >
-.tabBox{
+<style scoped>
+.descript a {
+  color: #409eff;
+}
+#box {
   margin-top: 7rem;
 }
-.tabBox > .el-tabs--card>.el-tabs__header {
-  border-bottom: 1px solid #0D2140;
- 
+.tab-tit {
+  font-size: 0;
+  width: 600px;
 }
-.tabBox > .el-tabs--card>.el-tabs__header .el-tabs__nav {
-  border: 1px solid #0D2140;
-  background: #0D2140;
-  
-}
-.tabBox > .el-tabs--card>.el-tabs__header .el-tabs__item.is-active {
-    border-bottom-color: #0D2140;
-}
-.tabBox .el-tabs__item {
+.tab-tit p {
+  display: inline-block;
+  height: 50px;
+  line-height: 50px;
+  width: 25%;
+  font-size: 18px;
+  text-align: center;
+  background: #0d2140;
   color: #fff;
+  text-decoration: none;
 }
-.tabBox  .el-tabs__item.is-active {
-    color: #409EFF;
+.tab-tit .cur {
+  color: #09f;
+}
+.tab-con {
+}
+.tab-con div {
+  margin: 0 10px;
+  padding-top: 20px;
+  min-height: 400px;
+}
+.o_image {
+  width: 100px;
+  height: 100px;
+  background: #000;
 }
 </style>

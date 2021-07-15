@@ -24,9 +24,10 @@ export default {
   justify-content: flex-end;
   flex: 1;
 }
-.carousel img{
+ .carousel img{
+   border: none;
 }
-.el-carousel {
+/*.el-carousel {
   height: 100%;
 }
 .el-carousel__container {
@@ -52,5 +53,5 @@ export default {
 
 .el-carousel__item:nth-child(2n + 1) {
   background-color: #d3dce6;
-}
+} */
 </style>

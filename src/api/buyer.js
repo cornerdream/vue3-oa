@@ -11,7 +11,7 @@ export function buyerlist() {
 ///api/orders/{id}/采购员订单详情
 export function buyerid(id) {
     return $axios({
-      url: '/api/orders/'+  id,
+      url: '/api/orders/'+  id+'/',
       method: 'get'
     })
 }

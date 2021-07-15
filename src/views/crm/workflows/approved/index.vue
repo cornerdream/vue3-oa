@@ -2,7 +2,8 @@
 <template>
   <div class="approved">
     <div class="appcontent">
-      <h4>待我审批</h4>
+      <h4>已审批</h4>
+      <p v-html='url'></p>
       <div class="flow-content infinite-list-wrapper" style="overflow: auto">
         <div
           class="app-list"
@@ -13,21 +14,21 @@
           @click="detail(item, index)"
         >
           <div class="block">
-            <el-avatar :size="50" :src="item.user_id.image"></el-avatar>
+            <el-avatar :size="50" :src="`${$url}` + item.user_id.image"></el-avatar>
           </div>
           <div class="list-cont">
             <ul>
               <li>
-                <span>单号</span>：<span>{{ item.req_id.name }}</span>
+                <span>单号</span>：<span>{{ item.req_id ? item.req_id.name : '' }}</span>
               </li>
               <li>
-                <span>申请人</span>：<span>{{ item.user_id.name }}</span>
+                <span>申请人</span>：<span>{{ item.user_id ? item.user_id.name : '' }}</span>
               </li>
               <li>
-                <span>申请时间</span>：<span>{{ create_time }}</span>
+                <span>申请时间</span>：<span>{{ create_time ? create_time : '' }}</span>
               </li>
               <li>
-                <span>部门</span>：<span> {{ item.department.name }}</span>
+                <span>部门</span>：<span> {{ item.department ? item.department.name : '' }}</span>
               </li>
             </ul>
           </div>
@@ -48,11 +49,13 @@
               <h3>单号：{{ order.name }}</h3>
               <div class="list-conts">
                 <div class="block">
-                  <el-avatar :size="50" :src="order.create_uid.image"></el-avatar>
+                  <el-avatar :size="50" :src="`${$url}` + order.create_uid.image"></el-avatar>
                 </div>
                 <ul>
                   <li>
-                    <span>申请人</span>：<span>{{ order.create_uid.name }}</span>
+                    <span>申请人</span>：<span>{{
+                      order.create_uid ? order.create_uid.name : ''
+                    }}</span>
                   </li>
                   <li>
                     <span>创建时间</span>：<span>{{ order.create_time }}</span>
@@ -65,20 +68,24 @@
               <div class="user-devep">
                 <div>
                   <p>
-                    <span class="project">项目</span> ： <span>{{ order.project.name }}</span>
+                    <span class="project">项目</span> ：
+                    <span>{{ order.project ? order.project.name : '' }}</span>
                   </p>
                   <p>
                     <span class="project">供应商</span> ：<span v-if="order.supplier != null">{{
-                      order.supplier.name
+                      order.supplier ? order.supplier.name : ''
                     }}</span>
                   </p>
                 </div>
                 <div>
                   <p>
-                    <span class="project">部门</span> ：<span>{{ order.department.name }}</span>
+                    <span class="project">部门</span> ：<span>{{
+                      order.department ? order.department.name : ''
+                    }}</span>
                   </p>
                   <p>
-                    <span class="project">总价</span> ： <span>{{ order.total_amount }}</span>
+                    <span class="project">总价</span> ：
+                    <span>{{ order.total_amount ? order.total_amount : '' }}</span>
                   </p>
                 </div>
               </div>
@@ -102,8 +109,8 @@
             <div class="app-listss">
               <p class="font">审批详情：</p>
               <div class="list-contss" v-for="(item, index) in workflowtask" :key="index">
-                <div class="block">
-                  <el-avatar :size="50" :src="item.appro_user.image"></el-avatar>
+                <div class="blocks">
+                  <el-avatar :size="50" :src="`${$url}` + item.appro_user.image"></el-avatar>
                 </div>
                 <ul>
                   <li>
@@ -140,17 +147,18 @@ import { approved, worflowre, approve } from '@/api/approval'
 import { transdate, timestampToTime } from '@/utils/index'
 export default {
   name: 'personal',
+  inject: ['$url'],
   data() {
     return {
       loading: false,
       is_approve: '', //同意拒绝
       task_id: '', //任务id
       apply_comment: '', // 审批意见
-      obj:{
-      search: '',
-      ordering: '',
-      page: '1',
-      size: '10',
+      obj: {
+        search: '',
+        ordering: '',
+        page: '1',
+        size: '10'
       },
 
       create_time: '', // 申请时间
@@ -161,7 +169,7 @@ export default {
       order: {},
       tableData: [],
       workflowtask: []
-    }
+      }
   },
   computed: {
     noMore() {
@@ -173,16 +181,19 @@ export default {
   },
   created() {
     this.swork()
-  },
+    },
   mounted() {},
   methods: {
     async swork() {
       await approved(this.obj).then((res) => {
-        this.arrlist = res.data.data.results
-        this.is_approve = res.data.data.results[0].is_approved
-        this.create_time = res.data.data.results[0].create_time.slice(0, 10)
-
-        console.log(res.data.data, 'res.data.data')
+        if (res.data.code == 200 && res.data.data.results != []) {
+          this.arrlist = res.data.data.results
+          for (let i = 0; i < res.data.data.results.length; i++) {
+            // console.log(res.data.data.results[0].is_approved, 'jl')
+            this.is_approve = res.data.data.results[0].is_approved
+            this.create_time = res.data.data.results[0].create_time.slice(0, 10)
+          }
+        }
       })
     },
     load() {
@@ -299,7 +310,7 @@ export default {
   padding: 5px;
   font-size: 22px;
   font-weight: 400;
-  height: 28px;
+  /* height: 28px; */
   line-height: 28px;
   border-bottom: 1px solid #ccc;
   background: ghostwhite;
@@ -410,9 +421,12 @@ export default {
 }
 .list-contss {
   margin: 10px;
-  width: 180px;
+  width: 200px;
   display: flex;
   align-items: center;
+}
+.list-contss ul {
+ margin-left: 10px;
 }
 .app-box::-webkit-scrollbar {
   width: 0px;

@@ -1,10 +1,11 @@
 //用户
 import $axios from '@/utils/axios'
+import qs from 'qs'
 export const upload=(data)=> {
   return $axios({
     url: '/api/upload/',
     method: 'post',
-    data
+    data: qs.stringify(data)
   })
 }
 
@@ -12,7 +13,7 @@ export const add=(data)=> {
   return $axios({
     url: 'api/users/',
     method: 'post',
-    data
+    data: qs.stringify(data)
   })
 }
 
@@ -35,7 +36,7 @@ export const updatePasswd=(id, data)=> {
   return $axios({
     url: 'api/users/' + id + '/change-passwd/',
     method: 'post',
-    data
+    data: qs.stringify(data)
   })
 }
 

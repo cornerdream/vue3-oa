@@ -32,7 +32,7 @@ export default {
   padding: 0 16px;
   border: 1px solid #efefef ;
   box-sizing: border-box;
-  box-shadow: 1px 2px 4px #bababa;
+  box-shadow: 1px 2px 4px #ced4da;
   margin-bottom: 20px;
 }
 .el-icon-arrow-right:before {

@@ -44,7 +44,7 @@
             <el-form-item label="照片" prop="img">
               <el-upload
                 class="avatar-uploader"
-                action="http://192.168.1.212:8000/api/upload/"
+                action="http://192.168.1.218:8000/api/upload/"
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload"

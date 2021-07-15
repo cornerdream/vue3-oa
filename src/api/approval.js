@@ -1,20 +1,7 @@
 //审批管理
 import $axios from '@/utils/axios'
+import qs from 'qs'
 // 获取当前用户的所有任务
-// export const sworkflowtask=(search, ordering, page, size) => {
-//   return $axios({
-//     url:
-//       '/api/user/workflowtask?search=' +
-//       search +
-//       '&ordering=' +
-//       ordering +
-//       '&page=' +
-//       page +
-//       '&size=' +
-//       size,
-//     method: 'get'
-//   })
-// }
 export const sworkflowtask=(params) => {
   return $axios({
     url:
@@ -35,7 +22,7 @@ export const approve=(data) => {
   return $axios({
     url: '/api/user/workflowtask/approve',
     method: 'post',
-    data
+    data: qs.stringify(data)
   })
 }
 //获取当前用户的已审批任务

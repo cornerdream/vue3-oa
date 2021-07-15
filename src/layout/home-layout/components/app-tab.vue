@@ -2,20 +2,24 @@
 <template>
   <div class="app-tab">
     <p class="logo">
-      <img :src="headerLogo" alt="">
+      <img :src="headerLogo" alt="" />
     </p>
     <ul class="tabLink">
       <li>
-        <router-link :to="{ name: 'home' }" >
-          <span >首页</span>
+        <router-link :to="{ name: 'home' }">
+          <span>首页</span>
         </router-link>
       </li>
-      <li>专题</li>
-      <li>帮助</li>
+      <!-- <li>专题</li> -->
+      <li>
+         <router-link :to="{ name: 'help' }">
+          <span>帮助</span>
+        </router-link>  
+      </li>
     </ul>
     <div class="userManger">
       <router-link :to="{ name: 'cart' }">
-        <el-dropdown style="color:#fff">
+        <el-dropdown style="color: #fff">
           <span class="el-dropdown-link"><i class="el-icon-shopping-cart-2"></i> 购物车 </span>
           <template #dropdown>
             <el-dropdown-menu max-height="200">
@@ -28,9 +32,15 @@
           </template>
         </el-dropdown>
       </router-link>
-      <router-link :to="{ name: 'me' }" active-class="" exact-active-class="" class="userMe" @click.native="handleReset('me')">
-        <el-avatar size="small" :src="`http://192.168.1.212:8000`+image" class="userImg"></el-avatar>
-        <el-dropdown style="color:#fff">
+      <router-link
+        :to="{ name: 'orders' }"
+        active-class=""
+        exact-active-class=""
+        class="userMe"
+        @click.native="handleReset('orders')"
+      >
+        <el-avatar size="small" :src="`${$url}` + image" class="userImg"></el-avatar>
+        <el-dropdown style="color: #fff">
           <span class="el-dropdown-link">
             个人中心<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
@@ -44,14 +54,11 @@
           </template>
         </el-dropdown>
       </router-link>
-      
     </div>
-
   </div>
 </template>
 
 <script>
-
 import logo from '@/assets/images/header-logo.png'
 import { mapGetters } from 'vuex'
 export default {
@@ -59,6 +66,7 @@ export default {
   computed: {
     ...mapGetters(['id', 'username', 'email', 'image', 'cartList'])
   },
+  inject: ['$url'],
   data() {
     return {
       headerLogo:logo,
@@ -122,18 +130,17 @@ export default {
 </script>
 <style scoped>
 .app-tab {
-  /* height: 61px; */
   padding: 20px 60px;
   background: #000;
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: relative;
+  font-size: 18px;
 }
 .logo {
   width: 162px;
   height: 60px;
-  /* border: 1px solid #eee; */
 }
 .logo img{
   width: 100%;
@@ -150,7 +157,15 @@ export default {
 .tabLink li {
   float: left;
   margin-right: 60px;
+  color: #fff;
 }
+.tabLink li a{
+  color: #fff;
+}
+.tabLink li a:hover{
+  color:#3e93ec;
+}
+
 .router-link-active {
   color: #fff;
 }
@@ -166,10 +181,6 @@ export default {
 .el-dropdown{
   color: #fff;
 }
-
-/* a.active {
-  color: rgba(235, 14, 14, 0.384);
-} */
 .userImg {
   margin-right: 5px;
 }
@@ -183,5 +194,11 @@ export default {
 .count {
   display: inline-block;
   margin-left: 10px;
+}
+.el-dropdown-link{
+  font-size: 18px;
+}
+.el-dropdown-link:hover{
+  color:#3e93ec;
 }
 </style>

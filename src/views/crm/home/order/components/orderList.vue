@@ -3,13 +3,13 @@
   <div class="orderList">
     <el-table
       :data="orderList"
-      height="650"
       style="width: 100%"
       row-key="id"
       border
       lazy
       :load="load"
       :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
+      @row-click="tab"
     >
       <el-table-column prop="name" label="订单号"> </el-table-column>
       <el-table-column prop="create_uid" label="申请人">
@@ -40,7 +40,7 @@
       <el-table-column prop="notes" label="备注"> </el-table-column>
       <el-table-column prop="state" label="状态">
         <template #default="scope">
-          <el-tag type="success">{{scope.row.state[scope.row.state.length-1]}}</el-tag>
+          <el-tag type="success">{{ scope.row.state[scope.row.state.length - 1] }}</el-tag>
         </template>
       </el-table-column>
     </el-table>
@@ -49,12 +49,18 @@
 <script>
 export default {
   name: 'orderList',
-  props:['orderList'],
+  props: ['orderList'],
   data() {
     return {}
   },
   created() {},
-  mounted() {}
+  mounted() {},
+  methods: {
+    tab(item) {
+      this.$router.push({ path: 'orderDetail', query: { id: item.id } })
+      console.log(item, '订单详情')
+    }
+  }
 }
 </script>
 <style scoped>

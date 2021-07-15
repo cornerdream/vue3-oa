@@ -2,20 +2,24 @@
 <template>
   <div class="app-tab">
     <p class="logo">
-      <img :src="headerLogo" alt="">
+      <img :src="headerLogo" alt="" />
     </p>
     <ul class="tabLink">
       <li>
-        <router-link :to="{ name: 'home' }" >
-          <span >首页</span>
+        <router-link :to="{ name: 'home' }">
+          <span>首页</span>
         </router-link>
       </li>
-      <li>专题</li>
-      <li>帮助</li>
+      <!-- <li>专题</li> -->
+      <li>
+         <router-link :to="{ name: 'help' }">
+          <span>帮助</span>
+        </router-link>  
+      </li>
     </ul>
     <div class="userManger">
       <router-link :to="{ name: 'cart' }">
-        <el-dropdown style="color:#fff">
+        <el-dropdown style="color: #fff">
           <span class="el-dropdown-link"><i class="el-icon-shopping-cart-2"></i> 购物车 </span>
           <template #dropdown>
             <el-dropdown-menu max-height="200">
@@ -28,9 +32,15 @@
           </template>
         </el-dropdown>
       </router-link>
-      <router-link :to="{ name: 'me' }" active-class="" exact-active-class="" class="userMe" @click.native="handleReset('me')">
-        <el-avatar size="small" :src="`http://192.168.1.212:8000`+image" class="userImg"></el-avatar>
-        <el-dropdown style="color:#fff">
+      <router-link
+        :to="{ name: 'orders' }"
+        active-class=""
+        exact-active-class=""
+        class="userMe"
+        @click.native="handleReset('orders')"
+      >
+        <el-avatar size="small" :src="`${$url}` + image" class="userImg"></el-avatar>
+        <el-dropdown style="color: #fff">
           <span class="el-dropdown-link">
             个人中心<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
@@ -44,7 +54,6 @@
           </template>
         </el-dropdown>
       </router-link>
-      
     </div>
     <!-- <div class="search">
       <el-input placeholder="请输入内容" v-model="filterParams.text" @change="onSearch">
@@ -53,12 +62,10 @@
         </template>
       </el-input>
     </div> -->
-
   </div>
 </template>
 
 <script>
-
 import logo from '@/assets/images/header-logo.png'
 import { mapGetters } from 'vuex'
 export default {
@@ -66,11 +73,12 @@ export default {
   computed: {
     ...mapGetters(['id', 'username', 'email', 'image', 'cartList'])
   },
+  inject: ['$url'],
   data() {
     return {
-      headerLogo:logo,
-      filterParams:{
-        text: '',
+      headerLogo: logo,
+      filterParams: {
+        text: ''
       }
     }
   },
@@ -80,18 +88,18 @@ export default {
     this.loadCartProject()
     this.loadCartBuyer()
   },
-  mounted() {},
-  methods:{
-    onSearch(){
-     
-      this.$router.push({name:'search',query:{text:this.filterParams.text}})
+  mounted() {
+  },
+  methods: {
+    onSearch() {
+      this.$router.push({ name: 'search', query: { text: this.filterParams.text } })
     },
-    handleReset(name){
-      this.$store.dispatch('GetActiveNav',name);
-      this.$store.dispatch('GetActiveOpen',[name]);
+    handleReset(name) {
+      this.$store.dispatch('GetActiveNav', name)
+      this.$store.dispatch('GetActiveOpen', [name])
     },
     async loadUserInfo() {
-      this.$store.dispatch('GetUserInfo').then(() => {})
+      this.$store.dispatch('GetUserInfo').then((res) => {console.log(res,'res用户信息')})
     },
     async loadCartInfo() {
       this.$store.dispatch('GetCart').then(() => {})
@@ -136,13 +144,14 @@ export default {
   justify-content: space-between;
   align-items: center;
   position: relative;
+  font-size: 18px;
 }
 .logo {
   width: 162px;
   height: 60px;
   /* border: 1px solid #eee; */
 }
-.logo img{
+.logo img {
   width: 100%;
   height: 100%;
 }
@@ -157,29 +166,28 @@ export default {
 .tabLink li {
   float: left;
   margin-right: 60px;
+  color: #fff; 
 }
 .tabLink a {
   color: #fff;
 }
+.tabLink li a:hover{
+  color:#3e93ec;
+}
 .router-link-active {
   color: #fff;
 }
-.router-link-exact-active{
-  color:#0081CC;
+.router-link-exact-active {
+  color: #0081cc;
 }
 .userManger {
   display: flex;
   justify-content: center;
   align-items: center;
-  
 }
-.el-dropdown{
+.el-dropdown {
   color: #fff;
 }
-
-/* a.active {
-  color: rgba(235, 14, 14, 0.384);
-} */
 .userImg {
   margin-right: 5px;
 }
@@ -188,10 +196,15 @@ export default {
   justify-content: center;
   align-items: center;
   margin-left: 20px;
-  
 }
 .count {
   display: inline-block;
   margin-left: 10px;
+}
+.el-dropdown-link{
+  font-size: 18px;
+}
+.el-dropdown-link:hover{
+  color:#3e93ec;
 }
 </style>

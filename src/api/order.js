@@ -1,5 +1,6 @@
 //订单
 import $axios from '@/utils/axios'
+import qs from 'qs'
 // 获取订单信息
 export const getOrder=(params) =>{
   return $axios({
@@ -14,7 +15,7 @@ export const save=(data) =>{
   return $axios({
     url: '/api/orders/',
     method: 'post',
-    data
+    data: qs.stringify(data)
   })
 }
 
@@ -23,7 +24,7 @@ export const del=(data)=> {
   return $axios({
     url: 'cart/',
     method: 'post',
-    data
+    data: qs.stringify(data)
   })
 }
 
@@ -32,7 +33,7 @@ export const update=(data) =>{
   return $axios({
     url: 'cart/',
     method: 'post',
-    data
+    data: qs.stringify(data)
   })
 }
 
@@ -41,6 +42,6 @@ export const select=(data)=> {
   return $axios({
     url: '/cart/selection/',
     method: 'post',
-    data
+    data: qs.stringify(data)
   })
 }

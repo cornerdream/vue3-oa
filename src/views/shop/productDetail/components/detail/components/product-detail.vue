@@ -15,9 +15,9 @@
           @mouseout="display(false)"
         >
           <div class="mask" :class="mask_hide"></div>
-          <img :src="`http://192.168.1.212:8000`+productInfo.default_image_url" class="lit_img" />
+          <img :src="`${$url}` + productInfo.default_image_url" class="lit_img" />
           <div class="big_box" :class="mask_hide">
-            <img :src="`http://192.168.1.212:8000`+productInfo.default_image_url" />
+            <img :src="`${$url}` + productInfo.default_image_url" />
           </div>
         </div>
         <div class="images_list">
@@ -25,30 +25,35 @@
           <i class="el-icon-arrow-right arrow-next" @click="tabClick(false)"></i>
           <div class="images_list_box">
             <ul class="images_list_ul">
-              <li v-for="o in images" :key="o.sku" class="images_list_li" @mouseover="liHover(o.image,$event)" >
-                <img :src="`http://192.168.1.212:8000`+o.image" class="images_list_img">
+              <li
+                v-for="o in images"
+                :key="o.sku"
+                class="images_list_li"
+                @mouseover="liHover(o.image, $event)"
+              >
+                <img :src="`${$url}` + o.image" class="images_list_img" />
               </li>
             </ul>
           </div>
         </div>
       </div>
-          
+
       <div class="goods_detail_list">
         <h3 class="goods_name">{{ productInfo.name }}</h3>
         <div class="goods_detail">
           <div class="goods_price">
-            <div class="num_name">价格：</div> 
+            <div class="num_name">价格：</div>
             <div class="num_price">
               ¥<em>{{ productInfo.price }}</em>
             </div>
           </div>
-          
-          <div class="type_select" v-for="(item) in productParam" :key="item.id">
+
+          <div class="type_select" v-for="item in productParam" :key="item.id">
             <label>{{ item.name }}:</label>
             <a
               href="javascript:;"
-              :class="{ select: o.sku_id == $route.query.id,select_null:o.sku_id == null }"
-              v-for="(o) in item.options"
+              :class="{ select: o.sku_id == $route.query.id, select_null: o.sku_id == null }"
+              v-for="o in item.options"
               :key="o.sku_id"
               @click="onSelect(o.sku_id, $event)"
               >{{ o.value }}</a
@@ -57,28 +62,34 @@
           <div class="goods_num">
             <div class="num_name">数 量：</div>
             <div class="num_add">
-              <el-input-number size="mini" v-model="num" :min="1"></el-input-number>
+              <el-input-number size="mini" v-model="num" :min="1" @change="changeGateway(val)"></el-input-number>
             </div>
           </div>
           <div class="goods_total">
-            <div class="num_name">总价：</div> 
+            <div class="num_name">总价：</div>
             <div class="num_price">
               ¥<em>{{ productInfo.price * num }}</em>
             </div>
-           
           </div>
           <div class="operate_btn">
             <a href="javascript:;" class="add_cart" id="add_cart" @click="onCart">加入购物车</a>
           </div>
         </div>
-        
       </div>
     </div>
 
     <el-dialog title="采购信息" v-model="dialogFormVisible" width="600px">
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="采购员" prop="value1">
-          <el-select v-model="form.value1" style="width: 360px" placeholder="请选择采购人员">
+          <el-select
+            style="width: 360px"
+            v-model="form.value1"
+            placeholder="请输入课程的关键词"
+            class="interval"
+            filterable
+            remote
+            :filter-method="dataFilter"
+          >
             <el-option v-for="item in buyer" :key="item.id" :label="item.name" :value="item.id">
             </el-option>
           </el-select>
@@ -94,7 +105,15 @@
           </el-input>
         </el-form-item>
         <el-form-item label="项目" prop="value3">
-          <el-select v-model="form.value3" style="width: 360px" placeholder="请选择项目">
+          <el-select
+            v-model="form.value3"
+            style="width: 360px"
+            filterable
+            remote
+            class="interval"
+            :filter-method="dataproject"
+            placeholder="请选择项目"
+          >
             <el-option v-for="item in project" :key="item.id" :label="item.name" :value="item.id">
             </el-option>
           </el-select>
@@ -120,6 +139,7 @@
 </template>
 
 <script>
+import { defineComponent, getCurrentInstance, onMounted } from 'vue'
 import detailImg from '@/assets/images/detail-logo.png'
 import { offset } from '@/utils'
 import { mapGetters } from 'vuex'
@@ -129,10 +149,13 @@ export default {
   computed: {
     ...mapGetters(['project', 'buyer'])
   },
-  props:['productInfo','productParam','images'],
+  props: ['productInfo', 'productParam', 'images'],
+  inject: ['$url'],
   data() {
     return {
-      productList:{},
+      name: '',
+      search: [],
+      productList: {},
       detailImg: detailImg,
       mask_hide: {
         hide: true
@@ -154,8 +177,71 @@ export default {
     }
   },
   created() {},
-  mounted() {},
+  mounted() {
+    const {
+      appContext: {
+        config: { globalProperties }
+      }
+    } = getCurrentInstance()
+  },
   methods: {
+    changeGateway(val){
+      if(this.num == undefined){
+         this.num = '1'
+      }else {
+        return false
+      }
+    },
+    dataFilter(val) {
+      //val监听输入的内容，this.lessonlist为接口获取的数据
+      this.name = val
+      if (val) {
+        //val存在
+        this.buyer = this.search.filter((item) => {
+          if (!!~item.name.indexOf(val) || !!~item.name.toUpperCase().indexOf(val.toUpperCase())) {
+            return true
+          }
+        })
+      } else {
+        //val为空时，还原数组
+        this.buyer = this.search
+      }
+
+      this.getalllesson()
+    },
+    dataproject(val) {
+      this.name = val
+      if (val) {
+        //val存在
+        this.project = this.search.filter((item) => {
+          if (!!~item.name.indexOf(val) || !!~item.name.toUpperCase().indexOf(val.toUpperCase())) {
+            return true
+          }
+        })
+      } else {
+        //val为空时，还原数组
+        this.project = this.search
+      }
+      this.getalllessons()
+    },
+    getalllesson() {
+      let serch = this.name
+      this.$store.dispatch('GetBuyer', serch).then((res) => {
+        this.search = res.data.data.results
+        if (res.data.data.results == []) {
+          this.form.value1 = ''
+        }
+      })
+    },
+    getalllessons() {
+      let project = this.name
+      this.$store.dispatch('GetProject', project).then((res) => {
+        this.search = res.data.data.results
+        if (res.data.data.results == []) {
+          this.form.value3 = ''
+        }
+      })
+    },
     tabClick(bool) {
       const wrapper = $('.images_list_ul')
       const len = $('.images_list_li').length - 4
@@ -191,8 +277,8 @@ export default {
         big = document.querySelector('.big_box'),
         bigImg = big.querySelector('img')
       let o = offset(lit)
-      let l = e.pageX - o.l - mask.clientWidth/2,
-        t = e.pageY - o.t - mask.clientHeight/2
+      let l = e.pageX - o.l - mask.clientWidth / 2,
+        t = e.pageY - o.t - mask.clientHeight / 2
       let maxL = lit.clientWidth - mask.clientWidth,
         maxT = lit.clientHeight - mask.clientHeight
       l = l < 0 ? 0 : l > maxL ? maxL : l
@@ -235,35 +321,38 @@ export default {
     },
     async onSubmit() {
       await this.$refs.form.validate()
-      this.$store
-        .dispatch('Save', {
-          sku_id: this.productInfo.id,
-          count: this.num,
-          buyer: this.form.value1,
-          notes: this.form.value2,
-          project: this.form.value3
-        })
-        .then((res) => {
-          console.log(res,res.data,res.data.result)
-          if(res.data.result.code==200){
-          this.resetForm()
-          this.$message({
-            showClose: true,
-            type: 'success',
-            message: '加入成功!',
-            duration: 2500
+      if (this.form.value1 == '' || this.form.value3 == '') {
+      } else {
+        this.$store
+          .dispatch('Save', {
+            sku_id: this.productInfo.id,
+            count: this.num,
+            buyer: this.form.value1,
+            notes: this.form.value2,
+            project: this.form.value3
           })
-          } else {
-          }
+          .then((res) => {
+            console.log(res, res.data, res.data)
+            if (res.data.code == 200) {
+              this.resetForm()
+              this.$message({
+                showClose: true,
+                type: 'success',
+                message: '加入成功!',
+                duration: 2500
+              })
+            } else {
+            }
 
-          // this.dialogFormVisible = false;
-        })
-        .catch((err) => {
-          this.dialogErrorVisible = true
-          this.error = err
-          this.dialogFormVisible = false
-          Promise.reject(err)
-        })
+            // this.dialogFormVisible = false;
+          })
+          .catch((err) => {
+            this.dialogErrorVisible = true
+            this.error = err
+            this.dialogFormVisible = false
+            Promise.reject(err)
+          })
+      }
     },
     resetForm() {
       this.dialogFormVisible = false
@@ -326,6 +415,7 @@ export default {
   top: -42rem;
   overflow: hidden;
   z-index: 999;
+  background: #fff;
 }
 .big_box img {
   width: 312rem;

@@ -3,8 +3,14 @@
   <div class="app-top">
     <div class="helloMsg">您好，欢迎来到YICONMED商城</div>
     <div class="userManger">
-      <router-link :to="{ name: 'me' }" active-class="" exact-active-class="" class="userMe" @click.native="handleReset('me')">
-        <el-avatar size="small" :src="`http://192.168.1.212:8000`+image" class="userImg"></el-avatar>
+      <router-link
+        :to="{ name: 'orders' }"
+        active-class=""
+        exact-active-class=""
+        class="userMe"
+        @click.native="handleReset('orders')"
+      >
+        <el-avatar size="small" :src="`${$url}` + image" class="userImg"></el-avatar>
         <el-dropdown>
           <span class="el-dropdown-link">
             个人中心<i class="el-icon-arrow-down el-icon--right"></i>
@@ -44,6 +50,7 @@ export default {
   computed: {
     ...mapGetters(['id', 'username', 'email', 'image', 'cartList'])
   },
+  inject: ['$url'],
   data() {
     return {}
   },
@@ -55,9 +62,9 @@ export default {
   },
   mounted() {},
   methods: {
-    handleReset(name){
-      this.$store.dispatch('GetActiveNav',name);
-      this.$store.dispatch('GetActiveOpen',[name]);
+    handleReset(name) {
+      this.$store.dispatch('GetActiveNav', name)
+      this.$store.dispatch('GetActiveOpen', [name])
     },
     async loadUserInfo() {
       this.$store.dispatch('GetUserInfo').then(() => {})
@@ -78,6 +85,9 @@ export default {
         type: 'warning'
       })
         .then(() => {
+          let obj = {
+            token: localStorage.getItem('token')
+          }
           this.$store.dispatch('LogOut').then(() => {
             this.$router.push('/login')
           })

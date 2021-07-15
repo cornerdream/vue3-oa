@@ -25,3 +25,10 @@ export const getUserMenu = () => {
     url: '/auth/build/menus/'
   })
 }
+//推出后获取导航信息
+export const getLogout = () => {
+  return $axios({
+    method: 'GET',
+    url: '/api/logout',
+  })
+}

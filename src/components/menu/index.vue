@@ -100,7 +100,7 @@ export default {
       }else{
         len = 1
       }
-      console.log(len);
+      console.log(len,'argArr',argArr);
       let param;
       switch(len){
         case 0:
@@ -114,7 +114,6 @@ export default {
         default:
           param = arguments
       }
-      console.log(param);
       this.$store.dispatch('GetProductTag',param);
       this.$store.dispatch('GetProductClassify',param)
     }  

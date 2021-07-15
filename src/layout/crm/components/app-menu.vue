@@ -4,17 +4,25 @@
     <template v-for="item in menuList">
       <el-submenu
         v-if="item.children && item.children.length > 0"
-        :key="item.id"
-        :index="item.path"
+        :key="item.path "
+        :index="item.path "
       >
-        <template #title>
+        <template #title :index="item.path ">
           <i :class="`iconfont icon-${item.meta.icon}`"></i>
-          <span>{{ item.name }}</span>
+          <span>{{ item.meta.title }}</span>
         </template>
-        <app-menu :menuList="item.children" />
+        <el-menu-item
+          v-for="items in item.children"
+          :key="items.path "
+          :index="items.path "
+          >{{ items.name }}</el-menu-item
+        >
       </el-submenu>
-      <el-menu-item v-else :key="item.id" :index="item.path">
-        <!-- <i :class="`iconfont icon-${item.meta.icon}`"></i> -->
+      <el-menu-item
+        v-if="item.children && item.children.length < 0"
+        :key="item.path"
+        :index="item.path "
+      >
         <span>{{ item.name }}</span>
       </el-menu-item>
     </template>
@@ -27,10 +35,15 @@ export default {
   components: {},
   props: ['menuList'],
   data() {
-    return {}
+    return {
+      list: {}
+    }
+  },
+  computed: {
   },
   created() {},
-  mounted() {},
+  mounted() {
+  },
   methods: {}
 }
 </script>

@@ -10,11 +10,8 @@
         <div class="grid-content">
           <el-card @click="onClick(o.id)">
             <img v-if="!o.default_image_url" :src="defaultImage" class="image" />
-            <authImgs
-              class="image"
-              :authSrc="`http://192.168.1.212:8000` + o.default_image_url"
-              alt=""/>
-            <!-- <img v-else :src="`http://192.168.1.212:8000`+o.default_image_url" class="image" /> -->
+
+            <img v-else :src="`${$url}`+o.default_image_url" class="image" />
             <div class="productResult">
               <p class="card-title">{{ o.name }}</p>
               <div class="bottom">
@@ -37,6 +34,7 @@ import authImgs from '@/components/img.vue'
 export default {
   components: { authImgs },
   name: 'product',
+  inject:['$url'],
   data() {
     return {
       title: [
@@ -102,6 +100,7 @@ export default {
 .grid-content {
   width: 25rem;
   // height: 22rem;
+  height: 260px;
   border-radius: 6px;
   margin: 0 2rem 3rem 0;
   text-align: center;
@@ -111,7 +110,7 @@ export default {
   padding: 3rem;
 }
 .product .image {
-  height: 100%;
+  // height: 260px;
   width: 100%;
 }
 .product .card-title {

@@ -13,21 +13,22 @@
           @click="detail(item, index)"
         >
           <div class="block">
-            <el-avatar :size="50" :src="item.user_id.image"></el-avatar>
+            <el-avatar :size="50" :src="`${$url}`+item.user_id.image"></el-avatar>
           </div>
           <div class="list-cont">
             <ul>
               <li>
-                <span>单号</span>：<span>{{ item.req_id.name }}</span>
+                <span>单号</span>：<span>{{ item.req_id?item.req_id.name:'' }}</span>
               </li>
               <li>
-                <span>申请人</span>：<span>{{ item.user_id.name }}</span>
+                <span>申请人</span>：<span>{{ item.user_id?item.user_id.name:'' }}</span>
               </li>
               <li>
-                <span>申请时间</span>：<span>{{ create_time }}</span>
+                <span>申请时间</span>：
+                <span>{{create_time?create_time:'' }}</span>
               </li>
               <li>
-                <span>部门</span>：<span> {{ item.department.name }}</span>
+                <span>部门</span>：<span> {{ item.department?item.department.name:'' }}</span>
               </li>
             </ul>
           </div>
@@ -48,7 +49,7 @@
               <h3>单号：{{ order.name }}</h3>
               <div class="list-conts">
                 <div class="block">
-                  <el-avatar :size="50" :src="order.create_uid.image"></el-avatar>
+                  <el-avatar :size="50" :src="`${$url}`+order.create_uid.image"></el-avatar>
                 </div>
                 <ul>
                   <li>
@@ -75,7 +76,7 @@
                 </div>
                 <div>
                   <p>
-                    <span class="project">部门</span> ：<span>{{ order.department.name }}</span>
+                    <span class="project">部门</span> ：<span>{{ order.department?order.department.name:'' }}</span>
                   </p>
                   <p>
                     <span class="project">总价</span> ： <span>{{ order.total_amount }}</span>
@@ -103,7 +104,7 @@
               <p class="font">审批详情：</p>
               <div class="list-contss" v-for="(item, index) in workflowtask" :key="index">
                 <div class="block">
-                  <el-avatar :size="50" :src="item.appro_user.image"></el-avatar>
+                  <el-avatar :size="50" :src="`${$url}`+item.appro_user.image"></el-avatar>
                 </div>
                 <ul>
                   <li>
@@ -142,6 +143,7 @@
 import {worflowre, approve, approving } from '@/api/approval'
 export default {
   name: 'personal',
+  inject:['$url'],
   data() {
     return {
       loading: false,
@@ -179,11 +181,18 @@ export default {
   methods: {
     async swork() {
       await approving(this.obj).then((res) => {
+        if(res.data.code ==200 && res.data.data.results!=[]){  
         this.arrlist = res.data.data.results
-        this.is_approve = res.data.data.results[0].is_approved
+         for (let i=0;i< res.data.data.results.length;i++){
+          //  console.log(res.data.data.results[0].is_approved,'jl')
+          //   this.is_approve = res.data.data.results[0].is_approved
         this.create_time = res.data.data.results[0].create_time.slice(0, 10)
+        }
+       
         console.log(res.data.data, 'res.data.data', this.count)
+        }
       })
+      
     },
     load() {
       this.loading = true
@@ -218,10 +227,11 @@ export default {
       this.task_id = data.data.task_id
       this.apply_comment = ''
       this.show = true
+      console.log(data.data,'this.task_idthis.task_id返回数据')
     },
     agree() {
       let obj = {
-        is_approve: this.is_approve,
+        is_approve:true,
         task_id: this.task_id,
         apply_comment: this.apply_comment
       }
@@ -250,7 +260,7 @@ export default {
     },
     refuse() {
       let obj = {
-        is_approve: this.is_approve,
+        is_approve: false,
         task_id: this.task_id,
         apply_comment: this.apply_comment
       }
@@ -289,7 +299,7 @@ export default {
   padding: 5px;
   font-size: 22px;
   font-weight: 400;
-  height: 28px;
+  /* height: 28px; */
   line-height: 28px;
   border-bottom: 1px solid #ccc;
   background: ghostwhite;
@@ -403,6 +413,11 @@ export default {
   width: 180px;
   display: flex;
   align-items: center;
+}
+.list-contss ul li {
+  margin: 5px;
+ width: 200px;
+ line-height: 20px;
 }
 .app-box::-webkit-scrollbar {
   width: 0px;

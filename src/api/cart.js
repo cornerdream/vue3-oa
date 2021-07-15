@@ -1,6 +1,6 @@
 //购物车
 import $axios from '@/utils/axios'
-
+import qs from 'qs'
 // 获取购物车信息
 export const getCart=() =>{
   return $axios({
@@ -14,7 +14,7 @@ export const save=(data)=> {
   return $axios({
     url: 'cart/',
     method: 'post',
-    data
+    data: qs.stringify(data)
   })
 }
 
@@ -23,7 +23,7 @@ export const del=(data)=> {
   return $axios({
     url: 'cart/delete/',
     method: 'post',
-    data
+    data: qs.stringify(data)
   })
 }
 
@@ -32,7 +32,7 @@ export const update=(data)=> {
   return $axios({
     url: 'cart/edit/',
     method: 'post',
-    data
+    data: qs.stringify(data)
   })
 }
 
@@ -41,6 +41,6 @@ export const select=(data) =>{
   return $axios({
     url: '/cart/selection/',
     method: 'post',
-    data
+    data: qs.stringify(data)
   })
 }

@@ -39,7 +39,7 @@
               @click="onAddItem(o.name, item.params, o.id)"
             >
               <a href="javascript:;">
-                <img :src="o.logo" alt="" v-if="o.logo" />
+                <img :src="`${$url}` + o.logo" alt="" v-if="o.logo" />
                 <i>{{ o.name }}</i>
               </a>
             </li>
@@ -47,44 +47,49 @@
         </li>
       </ul>
     </section>
-    <section class="container" v-if="listShow">
-      <el-col :xs="8" :sm="8" :md="6" :lg="6" :xl="4" v-for="o in productList" :key="o" :id="o.id">
-        <div class="grid-content">
-          <el-card @click="onClick(o.id)">
-            <div class="image-box">
-              <img v-if="!o.default_image_url" :src="defaultImage" class="image" />
-              <img v-else :src="`http://192.168.1.212:8000` + o.default_image_url" class="image" />
-            </div>
-
-            <div class="productResult">
-              <p class="card-title">{{ o.name }}</p>
-              <div class="bottom">
-                <p class="price">{{ '¥' + o.price }}</p>
-              </div>
-            </div>
-          </el-card>
-        </div>
-      </el-col>
-    </section>
-    <section class="result" v-else>
-      <el-result title="404" subTitle="抱歉，请求没有数据">
-        <template #icon>
-          <el-image :src="defaultImage" class="result-image"></el-image>
-        </template>
-        <template #extra>
-          <el-button type="primary" size="medium" @click="onBack">返回</el-button>
-        </template>
-      </el-result>
-    </section>
+    <div class="list-box" v-if="listShow">
+      <ul class="box-ul">
+        <li class="box-li"  v-for="o in productList" :key="o" :id="o.id" @click="onClick(o.id)">
+          <div class="box-img">
+            <img v-if="!o.default_image_url" :src="defaultImage"  />
+            <img  v-else :src="`${$url}` + o.default_image_url" />
+          </div>
+          <p class="productResult"> <span>{{ o.name }}</span> <span>{{ '¥' + o.price }}</span></p>
+        </li>
+      </ul>
+      <Pagenation
+      class="pagenation"
+        :total="total"
+        @pageChange="pageChange"
+        :page_index="page"
+        v-if="total != []"
+      ></Pagenation>
+      </div>
+      <section class="result" v-else>
+        <el-result title="404" subTitle="抱歉，请求没有数据">
+          <template #icon>
+            <el-image :src="defaultImage" class="result-image"></el-image>
+          </template>
+          <template #extra>
+            <el-button type="primary" size="medium" @click="onBack">返回</el-button>
+          </template>
+        </el-result>
+      </section>
+    
   </div>
 </template>
 
 <script>
+import Pagenation from '@/components/pageNations.vue'
 import defaultImg from '@/assets/images/mouse.png'
 import classifyImg from '@/assets/images/detail-logo.png'
 export default {
   name: 'list',
-  props: ['productTag', 'productNav', 'productFilter', 'productList'],
+  props: ['productTag', 'productNav', 'productFilter', 'productList', 'total'],
+  inject: ['$url'],
+  components: {
+    Pagenation
+  },
   data() {
     return {
       classifyImg: classifyImg,
@@ -99,7 +104,9 @@ export default {
         {
           category_id: this.$route.query.id
         }
-      ]
+      ],
+      page: '1',
+      size: '12'
     }
   },
   watch: {
@@ -111,29 +118,42 @@ export default {
       }
     },
     $route(to, from) {
-      this.query = [{ category_id: to.query.id }]
+      this.query = [{ category_id: to.query.id, page: this.page, size: this.size }]
     }
   },
   created() {},
-  mounted() {},
+  mounted() {
+    this.query.push({
+      page: this.page,
+      size: this.size
+    })
+    this.$emit('initProductTag', this.query)
+  },
 
   methods: {
-    onBread(id) {
-      console.log({ name: 'productClassify', query: { id } })
-      this.$router.push({ name: 'productClassify', query: { id } })
-      this.query[0]['category_id'] = id
+    pageChange(item) {
+      this.page = item.page_index
+      this.size = item.page_limit
+      this.query.push({
+        page: this.page,
+        size: this.size
+      })
       this.$emit('initProductTag', this.query)
     },
+    onBread(id) {
+      this.$router.push({
+        name: 'productClassify',
+        query: { id, page: this.page, size: this.size }
+      })
+      this.query[0]['category_id'] = id
+      this.$emit('initProductTag', this.query, this.page, this.size)
+    },
     handleClose(tag) {
-      console.log(tag)
-      console.log(this.query)
       let oItem = this.query.find((item) => {
         return item[tag.params]
       })
-      console.log(oItem)
       if (tag.params == 'option') {
         const option = oItem[tag.params]
-        console.log(option)
         const str = String(option).indexOf(',')
         console.log(str)
         if (str >= 0) {
@@ -156,7 +176,6 @@ export default {
       } else {
         this.query.splice(this.query.indexOf(oItem), 1)
       }
-      console.log(this.query)
       this.$emit('initProductTag', this.query)
       if (this.query.length == 1) {
         this.tagShow = false
@@ -165,10 +184,11 @@ export default {
 
     onAddItem(tag, params, id) {
       this.tagShow = true
-
       if (params == 'brand') {
         this.query.push({
-          brand: id
+          brand: id,
+          page: this.page,
+          size: this.size
         })
       } else {
         const oItem = this.query.find((item) => {
@@ -178,11 +198,10 @@ export default {
         if (oItem) {
           oItem['option'] += ',' + id
         } else {
-          let o = { option: id }
+          let o = { option: id, page: this.page, size: this.size }
           this.query.push(o)
         }
       }
-      console.log(this.query)
       this.$emit('initProductTag', this.query)
     },
     onClick(id) {
@@ -286,14 +305,15 @@ export default {
   flex: 1;
   display: flex;
   align-items: center;
-  overflow: hidden;
+  // overflow: hidden;
+  flex-wrap: wrap;
   zoom: 1;
   background: #fff;
 }
 
 .type-value .valueli {
   padding: 0.8rem 1.2rem;
-  margin: 0 5rem;
+  margin: 1rem;
 }
 .type-value .valueli a {
   color: #0d2140;
@@ -304,7 +324,7 @@ export default {
   border: 1px solid #0d2140;
   border-radius: 10px;
   text-align: center;
-  width: 10rem;
+  width: 11rem;
   height: 3rem;
   padding: 0.4rem 1rem;
 }
@@ -323,7 +343,7 @@ export default {
 .logoLi a {
   width: 10rem;
   height: 3rem;
-  line-height: 3rem;
+  line-height: 1.5rem;
 }
 .logoLi a img {
   vertical-align: top;
@@ -347,27 +367,54 @@ export default {
     margin-bottom: 0;
   }
 }
-.grid-content {
-  padding: 10px;
-  margin-bottom: 10px;
-  text-align: center;
-}
-.grid-content .el-card .image-box {
-  width: 100%;
-  height: 100%;
-}
-.grid-content .el-card .image {
-  width: 100%;
-  height: 100%;
-}
-.grid-content .el-card .card-title {
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-}
 .result {
   max-height: 500px;
   max-width: 500px;
   margin: 0 auto;
+}
+.fot {
+  color: #e9eef3;
+}
+
+.list-box {
+  position: relative;
+}
+.box-ul{
+  margin-left: 120px;
+   width: 1600px;
+   flex-wrap:wrap;
+   justify-content: space-around;
+    
+}
+.box-li{
+  width: 220px;
+  height: 320px;
+  float: left;
+  margin: 10px;
+  background: #fff;
+  position: relative;
+  text-align: -moz-center;
+}
+.box-img{
+  width: 200px;
+  padding: 10px;
+}
+.box-li>p{
+  margin: 5px;
+}
+.productResult{
+  position: absolute;
+  bottom: 0;
+  text-align: left;
+}
+.productResult>span{
+display: block;
+}
+.pagenation {
+  float:left;
+  width: 100%;
+  height: 50px;
+  text-align: right;
+  margin-top: 10px;
 }
 </style>

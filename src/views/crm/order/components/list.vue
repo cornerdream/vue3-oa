@@ -127,7 +127,6 @@ export default {
   watch: {
     select(newv) {
       this.selectDepartment = newv
-      console.log(newv, 'wacth')
     }
   },
   data() {
@@ -160,7 +159,6 @@ export default {
         disabledDate(time) {
           let vm = this
           let endTime = new Date().setFullYear(new Date().getFullYear() + 1)
-          console.log(time, 'tiem')
           return time.getTime() < Date.now() || time.getTime() > endTime
         }
       },

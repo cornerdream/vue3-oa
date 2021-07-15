@@ -10,19 +10,21 @@
           <span>首页</span>
         </router-link>
       </li>
-      <li>专题</li>
-      <li>帮助</li>
+      <!-- <li>专题</li> -->
+      <li>
+         <router-link :to="{ name: 'help' }">
+          <span>帮助</span>
+        </router-link>  
+      </li>
     </ul>
     <div class="userManger">
       <router-link :to="{ name: 'cart' }">
         <el-dropdown style="color: #fff">
-          <!-- <span class="el-dropdown-link"><i class="el-icon-shopping-cart-2"></i> 购物车 {{totalNum}}</span> -->
-          <span class="el-dropdown-link">
-            <el-badge :value="totalNum" class="item" type="danger">
-              <i class="el-icon-shopping-cart-2"></i>购物车
-            </el-badge></span
-          >
+          <span class="el-dropdown-link"><i class="el-icon-shopping-cart-2"></i> 购物车 </span>
 
+          <!-- <el-badge :value="totalNum"  class="item" type="danger">
+ <span class="el-dropdown-link"> <i class="el-icon-shopping-cart-2"></i>购物车 </span> 
+</el-badge> -->
           <template #dropdown>
             <el-dropdown-menu max-height="200">
               <el-dropdown-item v-show="cartList.length == 0">购物车空空，快添加~</el-dropdown-item>
@@ -35,17 +37,13 @@
         </el-dropdown>
       </router-link>
       <router-link
-        :to="{ name: 'me' }"
+        :to="{ name: 'orders' }"
         active-class=""
         exact-active-class=""
         class="userMe"
-        @click.native="handleReset('me')"
+        @click.native="handleReset('orders')"
       >
-        <el-avatar
-          size="small"
-          :src="`http://192.168.1.212:8000` + image"
-          class="userImg"
-        ></el-avatar>
+        <el-avatar size="small" :src="`${$url}` + image" class="userImg"></el-avatar>
         <el-dropdown style="color: #fff">
           <span class="el-dropdown-link">
             个人中心<i class="el-icon-arrow-down el-icon--right"></i>
@@ -72,6 +70,7 @@ export default {
   computed: {
     ...mapGetters(['id', 'username', 'email', 'image', 'cartList', 'totalNum'])
   },
+  inject: ['$url'],
   data() {
     return {
       headerLogo: logo,
@@ -114,6 +113,9 @@ export default {
         type: 'warning'
       })
         .then(() => {
+          let obj = {
+            token: localStorage.getItem('token')
+          }
           this.$store.dispatch('LogOut').then(() => {
             this.$router.push('/login')
           })
@@ -134,18 +136,17 @@ export default {
 </script>
 <style scoped>
 .app-tab {
-  /* height: 61px; */
   padding: 20px 60px;
   background: #000;
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: relative;
+  font-size: 18px;
 }
 .logo {
   width: 162px;
   height: 60px;
-  /* border: 1px solid #eee; */
 }
 .logo img {
   width: 100%;
@@ -166,6 +167,9 @@ export default {
 .tabLink a {
   color: #fff;
 }
+.tabLink li a:hover{
+  color:#3e93ec;
+}
 .router-link-active {
   color: #fff;
 }
@@ -180,10 +184,6 @@ export default {
 .el-dropdown {
   color: #fff;
 }
-
-/* a.active {
-  color: rgba(235, 14, 14, 0.384);
-} */
 .userImg {
   margin-right: 5px;
 }
@@ -196,5 +196,11 @@ export default {
 .count {
   display: inline-block;
   margin-left: 10px;
+}
+.el-dropdown-link{
+  font-size: 18px;
+}
+.el-dropdown-link:hover{
+  color:#3e93ec;
 }
 </style>

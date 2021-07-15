@@ -1,11 +1,11 @@
 <!-- -->
 <template>
-  <div class="cart">
+ <div class="cart">
     <div class="productTitle">
       <img :src="cartImg" alt="">
       <span class="title">购物车({{totalNum}})</span>
     </div>
-    
+
     <el-table
       :header-cell-style="{background:'#0D2140',color:'#fff'}"
       id="multipleTable"
@@ -30,7 +30,7 @@
 
       <el-table-column prop="default_image_url" label="商品" width="120" type="index">
         <template v-slot="scope">
-        <img :src="`http://192.168.1.212:8000`+scope.row.default_image_url" alt="" min-width="70" height="70" />
+        <img :src="`${$url}`+scope.row.default_image_url" alt="" min-width="70" height="70" />
         </template>
       </el-table-column>
       <el-table-column prop="name" label="商品名称" width="120"> </el-table-column>
@@ -39,7 +39,6 @@
       <el-table-column prop="count" label="商品数量" width="200">
         <template v-slot="scope">
           <el-input-number
-            size="mini"
             :min="1"
             v-model="scope.row.count"
             @change="changeGateway(scope.row, scope.column, scope.row.count)"
@@ -48,21 +47,23 @@
           ></el-input-number>
         </template>
       </el-table-column>
-      <el-table-column prop="buyer" label="采购员" width="140">
+      <el-table-column prop="buyer" label="采购员" width="210">
         <template v-slot="scope">
-          <el-select v-model="scope.row.buyer.name" placeholder="请选择" >
-            <el-option
-              v-for="item in buyer"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-              @click.native="changeGateway(scope.row, scope.column, item)"
-            >
+          <el-select
+            v-model="scope.row.buyer.name"
+            placeholder="请输入课程的关键词"
+            class="interval"
+            filterable
+            remote
+            :filter-method="dataFilter"
+            
+          >
+            <el-option v-for="item in buyer"  :label="item.name" :value="item.name"  @click.native="changeGateway(scope.row, scope.column, item)">
             </el-option>
           </el-select>
         </template>
       </el-table-column>
-      <el-table-column prop="notes" label="备注" width="120">
+      <el-table-column prop="notes" label="备注" width="180">
         <template v-slot="scope">
           <el-input
             type="textarea"
@@ -74,16 +75,17 @@
           </el-input>
         </template>
       </el-table-column> 
-      <el-table-column prop="project" label="项目" width="120">
+      <el-table-column prop="project" label="项目" width="210">
         <template v-slot="scope">
-          <el-select v-model="scope.row.project.name" placeholder="请选择" >
-            <el-option
-              v-for="item in project"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-              @click.native="changeGateway(scope.row, scope.column, item)"
-            >
+             <el-select
+            v-model="scope.row.project.name"
+            filterable
+            remote
+            class="interval"
+            :filter-method="dataproject"
+            placeholder="请选择项目"
+          >
+            <el-option v-for="item in project" :key="item.id" :label="item.name" :value="item.name" @click.native="changeGateway(scope.row, scope.column, item)">
             </el-option>
           </el-select>
         </template>
@@ -101,7 +103,6 @@
       </div>
       <el-button type="primary" size="medium" @click="onOrder" class="order">结算</el-button>
     </div>
-
     <el-dialog title="订单创建成功" v-model="dialogSuccessVisible" @close="handleClose">
       <el-result icon="success" title="成功提示" subTitle="请根据提示进行操作">
         <template #extra>
@@ -131,19 +132,19 @@ import { toRaw } from '@vue/reactivity'
 export default {
   name: 'cart',
   computed: {
-    ...mapGetters(['cartList', 'totalPrice','totalNum', 'selectAll','project', 'buyer', 'id'])
+    ...mapGetters(['cartList', 'totalPrice', 'totalNum', 'selectAll', 'project', 'buyer', 'id'])
   },
+  inject: ['$url'],
   data() {
     return {
-      
-      cartImg:cartImg,
+      cartImg: cartImg,
       buyerShow: false,
       notesShow: false,
       projectShow: false,
       multipleSelection: [],
-      isAllSelect:this.selectAll,
-      currentRow:'',
-      _this:this,
+      isAllSelect: this.selectAll,
+      currentRow: '',
+      _this: this,
       value1: '',
       value2: '',
       value3: '',
@@ -151,16 +152,20 @@ export default {
       select: '',
       dialogSuccessVisible: false,
       dialogErrorVisible: false,
-      error: ''
+      error: '',
+      name:'',
+      search:[],
+      searchs:[],
+      inputNumber:'1'
     }
   },
-  watch:{
-    cartList(newv){
-      this.$refs.multipleTable.clearSelection();
+  watch: {
+    cartList(newv) {
+      this.$refs.multipleTable.clearSelection()
       newv.forEach((row) => {
-        this.$refs.multipleTable.toggleRowSelection(row,row.selected);
+        this.$refs.multipleTable.toggleRowSelection(row, row.selected)
       })
-      this.selectAll = newv.every(item=>item.selected)
+      this.selectAll = newv.every((item) => item.selected)
     }
   },
   created() {
@@ -169,14 +174,62 @@ export default {
   mounted() {
     this.$nextTick(() => {
       this.cartList.forEach((row) => {
-        this.$refs.multipleTable.toggleRowSelection(row,row.selected);
+        this.$refs.multipleTable.toggleRowSelection(row, row.selected)
       })
-      
     })
   },
   methods: {
-  handleCellClick(row, column, cell, event) {
+    //采购员搜索
+   dataFilter(val) {
+      //val监听输入的内容，this.lessonlist为接口获取的数据
+      this.name = val
+      if (val) {
+        //val存在
+        this.buyer = this.search.filter((item) => {
+          if (!!~item.name.indexOf(val) || !!~item.name.toUpperCase().indexOf(val.toUpperCase())) {
+            return true
+          }
+        })
+      } else {
+        //val为空时，还原数组
+        this.buyer = this.search
+      }
+
+      this.getalllesson()
     },
+
+   getalllesson() {
+      let serch = this.name
+      this.$store.dispatch('GetBuyer', serch).then((res) => {
+        this.search = res.data.data.results
+      })
+    },
+    //项目搜索
+    dataproject(val) {
+      this.name = val
+      if (val) {
+        //val存在
+        this.project = this.search.filter((item) => {
+          if (!!~item.name.indexOf(val) || !!~item.name.toUpperCase().indexOf(val.toUpperCase())) {
+            return true
+          }
+        })
+      } else {
+        //val为空时，还原数组
+        this.project = this.searchs
+      }
+      this.getalllessons()
+    },
+  getalllessons() {
+      let project = this.name
+      this.$store.dispatch('GetProject', project).then((res) => {
+        this.searchs = res.data.data.results
+        if (res.data.data.results == []) {
+        }
+      })
+    },
+
+    handleCellClick(row, column, cell, event) {},
     changeGateway(row, column, item) {
       if (column.property == 'buyer') {
         row.buyer = item
@@ -185,31 +238,35 @@ export default {
       } else if (column.property == 'notes') {
         row.notes = item
       } else if (column.property == 'count') {
-        row.count = item
+        if(row.count == undefined){
+           row.count = '1'
+        }else{
+         row.count = item
+        }
       }
-      const data = row;
-      const { id, count, project, buyer, notes } = data;
+      const data = row
+      const { id, count, project, buyer, notes } = data
       const param = {
         sku_id: id,
         count: count,
         project: project.id,
         buyer: buyer.id,
         notes: notes
-      };
-      this.$store.dispatch('Update', param).then((res)=>{
-        console.log(res,'修改')
-      });
+      }
+      this.$store.dispatch('Update', param).then((res) => {
+         this.$store.dispatch('GetProject')
+         this.$store.dispatch('GetBuyer')
+      })
     },
-    async loadCartInfo() {
-    },
+    async loadCartInfo() {},
     formatPrice(row) {
-      const price = Number(parseFloat(row.price));
-      return '￥' + (isNaN(price) ? 0 : price.toFixed(2));
+      const price = Number(parseFloat(row.price))
+      return '￥' + (isNaN(price) ? 0 : price.toFixed(2))
     },
-    handleSingleChange(row){
-      row.selected = !row.selected;
-      const data = row;
-      const { id, count, project, buyer, notes, selected } = data;
+    handleSingleSelectionChange(selection, row) {
+      row.selected = !row.selected
+      const data = row
+      const { id, count, project, buyer, notes, selected } = data
       const param = {
         sku_id: id,
         count: count,
@@ -217,62 +274,51 @@ export default {
         buyer: buyer.id,
         notes: notes,
         selected: selected
-      };
-      this.$store.dispatch('Update', param);
+      }
+      this.$store.dispatch('Update', param)
     },
-    handleSingleSelectionChange(selection,row) {
-      row.selected = !row.selected;
-      const data = row;
-      const { id, count, project, buyer, notes, selected } = data;
-      const param = {
-        sku_id: id,
-        count: count,
-        project: project.id,
-        buyer: buyer.id,
-        notes: notes,
-        selected: selected
-      };
-      this.$store.dispatch('Update', param);
-    },
-    handleAllSelectionClick(column, event){
-      if(column.type=='selection'){
-        if(this.selectAll){
-          this.$store.dispatch('Select', { selected: !this.selectAll });
-          this.$nextTick(()=>{
+    handleAllSelectionClick(column, event) {
+      if (column.type == 'selection') {
+        if (this.selectAll) {
+          this.$store.dispatch('Select', { selected: !this.selectAll })
+          this.$nextTick(() => {
             $('.el-checkbox,.el-checkbox__input').removeClass('is-checked')
           })
-        }else{
-          this.$store.dispatch('Select', { selected: !this.selectAll });
-          this.$nextTick(()=>{
+        } else {
+          console.log(!this.selectAll, 'this.selectAll,,,,this.selectAll')
+          this.$store.dispatch('Select', { selected: !this.selectAll })
+          this.$nextTick(() => {
             $('.el-checkbox,.el-checkbox__input').addClass('is-checked')
           })
         }
         setTimeout(() => {
-          this.$store.dispatch('GetCart');
-        }, 200); 
-        
+          this.$store.dispatch('GetCart').then((res) => {
+          })
+        }, 200)
       }
-      
     },
     handleAllSelectionChange(selection) {
       if (this.cartList.length == this.multipleSelection.length) {
-        this.$store.dispatch('Select', { selected: true });
+        this.$store.dispatch('Select', { selected: true }).then((res) => {
+        })
       } else {
-        this.$store.dispatch('Select', { selected: false });
+        this.$store.dispatch('Select', { selected: false }).then((res) => {
+        })
       }
-      this.$store.dispatch('GetCart');
+      this.$store.dispatch('GetCart').then((res) => {
+      })
     },
     handleSelectionChange(val) {
-      this.multipleSelection = val;
+      this.multipleSelection = val
     },
     handleDel(id) {
       this.$store.dispatch('Delete', { sku_id: id }).then(() => {
-        this.$store.dispatch('GetCart');
+        this.$store.dispatch('GetCart')
       })
     },
     onOrder() {
-      if (this.multipleSelection.length>0 && this.cartList.length > 0) {
-        save({ id:this.id})
+      if (this.multipleSelection.length > 0 && this.cartList.length > 0) {
+        save({ id: this.id })
           .then((res) => {
             this.dialogSuccessVisible = true
             Promise.resolve(res)
@@ -294,56 +340,58 @@ export default {
         })
       }
     },
-    handleClose(){
-      this.dialogSuccessVisible = false;
-      this.$store.dispatch('GetCart').then(() => {});
+    handleClose() {
+      this.dialogSuccessVisible = false
+      this.$store.dispatch('GetCart').then(() => {})
     },
     onRetainCart() {
-      this.dialogSuccessVisible = false;
-      this.$store.dispatch('GetCart').then(() => {});
-      this.$router.push('/');
+      this.dialogSuccessVisible = false
+      this.$store.dispatch('GetCart').then(() => {})
+      this.$router.push('/')
     },
     onPushOrder() {
-      this.dialogSuccessVisible = false;
-      this.$store.dispatch('GetCart').then(() => {});
-      this.$router.push('/orders');
+      this.dialogSuccessVisible = false
+      this.$store.dispatch('GetCart').then(() => {})
+      this.$router.push('/orders')
     }
   }
 }
 </script>
 
 <style scoped>
-.cart{
-  padding:3rem 10rem;
+.cart {
+  padding: 3rem 10rem;
 }
 .productTitle {
   display: flex;
   align-items: center;
   margin-bottom: 3rem;
 }
-.title{
+.title {
   font-size: 1.6rem;
-  margin-left:1.5rem
+  margin-left: 1.5rem;
 }
-#multipleTable{
+#multipleTable {
   border-radius: 10px;
-  box-shadow: 2px 2px 5px #0D2140;
+  box-shadow: 2px 2px 5px #0d2140;
 }
 
-.cart-footer{
-  position: absolute;
+.cart-footer {
+  /* position: absolute;
   bottom: 20px;
-  right: 20px;
+  right: 20px; */
+  margin-top: 10px;
+  text-align: right;
 }
-.order-price{
+.order-price {
   margin-left: -4rem;
 }
-.totalPrice{
-  color: #EF7854;
+.totalPrice {
+  color: #ef7854;
   font-size: 2.5rem;
 }
 .order {
-  width:112px;
+  width: 112px;
   height: 43px;
   border: none;
   margin-top: 20px;

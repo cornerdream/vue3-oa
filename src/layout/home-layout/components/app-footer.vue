@@ -21,7 +21,11 @@
                         </router-link>
                     </li>
                     <li>专题</li>
-                    <li>帮助</li>
+                    <li>
+                        <router-link :to="{ name: 'help' }">
+                        <span>帮助</span>
+                        </router-link>  
+                    </li>
                 </ul>
             </div>
         </el-col>

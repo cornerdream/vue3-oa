@@ -1,6 +1,6 @@
 // 菜单
 import $axios from '@/utils/axios'
-
+import qs from 'qs'
 // 获取菜单列表
 export const getMenuTree=() =>{
   return $axios({
@@ -18,11 +18,10 @@ export const getMenus=(params)=> {
 }
 //菜单新增
 export const add=(data) =>{
-  console.log(data);
   return $axios({
     url: 'api/menus/',
     method: 'post',
-    data
+    data: qs.stringify(data)
   })
 }
 //菜单删除

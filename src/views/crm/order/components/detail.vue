@@ -276,7 +276,6 @@ export default {
       this.arry(data.data)
     },
     actionval() {
-      console.log(this.form, 'id')
       let obj = {
         id: this.form.id
       }

@@ -7,6 +7,7 @@
       :product-nav="navData"
       :product-filter="filterData"
       :product-list="listData"
+      :total="total"
       @initProductTag="loadProductTag"
     />
   </div>
@@ -25,11 +26,14 @@ export default {
     return {
       filterParams:{
         text: this.$route.query.text,
+        page:'1',
+        size:'12'
       },
       tagData: [],
       navData:[],
       filterData: [],
       listData: [],
+      total:''
     }
   },
   watch: {},
@@ -47,6 +51,7 @@ export default {
       this.filterData = data.data.filter;
       const res = await searchProductClassify(param);
       console.log(res)
+      this.total = res.data.data.count
       this.listData =res.data.data.result;
     }
     

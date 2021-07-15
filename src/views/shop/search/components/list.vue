@@ -34,7 +34,7 @@
               @click="onAddItem(o.name, item.params, o.id)"
             >
               <a href="javascript:;">
-                <img :src="o.logo" alt="" v-if="o.logo" />
+                <img :src="`${$url}` + o.logo" alt="" v-if="o.logo" />
                 <i>{{ o.name }}</i>
               </a>
             </li>
@@ -42,43 +42,45 @@
         </li>
       </ul>
     </section>
-    <section class="container" v-if="listShow">
-      <el-col :xs="8" :sm="8" :md="6" :lg="6" :xl="4" v-for="o in productList" :key="o" :id="o.id">
-        <div class="grid-content">
-          <el-card @click="onClick(o.id)">
-            <div class="image-box">
-              <img v-if="!o.default_image_url" :src="defaultImage" class="image" />
-              <img v-else :src="`http://192.168.1.212:8000` + o.default_image_url" class="image" />
-            </div>
+    <div class="list-box" v-if="listShow">
+         <ul class="box-ul">
+        <li class="box-li"  v-for="o in productList" :key="o" :id="o.id" @click="onClick(o.id)">
+          <div class="box-img">
+            <img v-if="!o.default_image_url" :src="defaultImage"  />
+            <img  v-else :src="`${$url}` + o.default_image_url" />
+          </div>
+          <p class="productResult"> <span>{{ o.name }}</span> <span>{{ '¥' + o.price }}</span></p>
+        </li>
+      </ul>
+         <Pagenation
+        :total="total"
+        @pageChange="pageChange"
+        :page_index="page"
+        v-if="total != []"
+      ></Pagenation>
+    </div>
+      <section class="result" v-else>
+        <el-result title="404" subTitle="抱歉，请求没有数据">
+          <template #icon>
+            <el-image :src="defaultImage" class="result-image"></el-image>
+          </template>
+          <template #extra>
+            <el-button type="primary" size="medium" @click="onBack">返回</el-button>
+          </template>
+        </el-result>
+      </section>
 
-            <div class="productResult">
-              <p class="card-title">{{ o.name }}</p>
-              <div class="bottom">
-                <p class="price">{{ '¥' + o.price }}</p>
-              </div>
-            </div>
-          </el-card>
-        </div>
-      </el-col>
-    </section>
-    <section class="result" v-else>
-      <el-result title="404" subTitle="抱歉，请求没有数据">
-        <template #icon>
-          <el-image :src="defaultImage" class="result-image"></el-image>
-        </template>
-        <template #extra>
-          <el-button type="primary" size="medium" @click="onBack">返回</el-button>
-        </template>
-      </el-result>
-    </section>
   </div>
 </template>
 
 <script>
 import defaultImg from '@/assets/images/mouse.png'
+import Pagenation from '@/components/pageNations.vue'
 export default {
   name: 'list',
-  props: ['productTag', 'productNav', 'productFilter', 'productList'],
+  props: ['productTag', 'productNav', 'productFilter', 'productList', 'total'],
+  inject: ['$url'],
+  components: { Pagenation },
   data() {
     return {
       tagShow: false,
@@ -92,7 +94,9 @@ export default {
         {
           text: this.$route.query.text
         }
-      ]
+      ],
+      page: '1',
+      size: '12'
     }
   },
   watch: {
@@ -108,6 +112,15 @@ export default {
   mounted() {},
 
   methods: {
+    pageChange(item) {
+      this.page = item.page_index
+      this.size = item.page_limit
+      this.query.push({
+        page: this.page,
+        size: this.size
+      })
+      this.$emit('initProductTag', this.query)
+    },
     onBread(id) {
       this.$router.push({ name: 'productClassify', query: { id } })
       this.query[0]['category_id'] = id
@@ -256,7 +269,8 @@ export default {
   // margin-left: 110px;
   // padding-right: 130px;
   // padding-left: 10px;
-  overflow: hidden;
+  // overflow: hidden;
+  flex-wrap: wrap;
   zoom: 1;
   background: #fff;
 }
@@ -268,7 +282,7 @@ export default {
   // height: 26px;
   // line-height: 26px;
   padding: 0.8rem 1.2rem;
-  margin: 0 5rem;
+  margin: 1rem;
 }
 .type-value .valueli a {
   // float: left;
@@ -309,7 +323,7 @@ export default {
 .logoLi a {
   width: 10rem;
   height: 3rem;
-  line-height: 3rem;
+  line-height: 1.5rem;
   // display: block;
   // height: 46px;
   // width: 114px;
@@ -343,27 +357,50 @@ export default {
     margin-bottom: 0;
   }
 }
-.grid-content {
-  padding: 10px;
-  margin-bottom: 10px;
-  text-align: center;
-}
-.grid-content .el-card .image-box {
-  width: 100%;
-  height: 100%;
-}
-.grid-content .el-card .image {
-  width: 100%;
-  height: 100%;
-}
-.grid-content .el-card .card-title {
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-}
 .result {
   max-height: 500px;
   max-width: 500px;
   margin: 0 auto;
+}
+.list-box {
+  position: relative;
+}
+.box-ul{
+  margin-left: 120px;
+   width: 1600px;
+   flex-wrap:wrap;
+   justify-content: space-around;
+    
+}
+.box-li{
+  width: 220px;
+  height: 320px;
+  float: left;
+  margin: 10px;
+  background: #fff;
+ position: relative;
+ text-align: -moz-center;
+}
+.box-img{
+  width: 200px;
+  padding: 10px;
+}
+.box-li>p{
+  margin: 5px;
+}
+.productResult{
+  position: absolute;
+  bottom: 0;
+  text-align: left;
+}
+.productResult>span{
+display: block;
+}
+.pagenation {
+  float:left;
+  width: 100%;
+  height: 50px;
+  text-align: right;
+  margin-top: 10px;
 }
 </style>
