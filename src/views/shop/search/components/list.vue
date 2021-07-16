@@ -127,11 +127,6 @@ export default {
       this.$emit('initProductTag', this.query)
     },
     handleClose(tag) {
-      // this.dynamicTags.splice(this.dynamicTags.indexOf(tag.name), 1);
-      // const itemKey = tag.params;
-      // const itemVal = tag.id;
-      // const item = {};
-      // item[itemKey] = itemVal;
       let oItem = this.query.find((item) => {
         return item[tag.params]
       })
@@ -161,12 +156,6 @@ export default {
       }
     },
     onAddItem(tag, params, id) {
-      // const obj = {
-      //   name: tag,
-      //   params,
-      //   id
-      // };
-      // this.dynamicTags.push(obj);
       this.tagShow = true
 
       if (params == 'brand') {
@@ -220,11 +209,7 @@ export default {
 }
 
 #type .typeli {
-  // position: relative;
-  // line-height: 34px;
-  // background: #f3f3f3;
   display: flex;
-  // align-items:center;
   border-bottom: 1px solid #0d2140;
   &:last-child {
     border-bottom: 0;
@@ -258,7 +243,6 @@ export default {
   text-align: center;
   color: #fff;
   flex: 0 0 18rem;
-  // height: 5rem;
   line-height: 5rem;
 }
 
@@ -266,41 +250,23 @@ export default {
   flex: 1;
   display: flex;
   align-items: center;
-  // margin-left: 110px;
-  // padding-right: 130px;
-  // padding-left: 10px;
-  // overflow: hidden;
   flex-wrap: wrap;
   zoom: 1;
   background: #fff;
 }
 
 .type-value .valueli {
-  // float: left;
-  // margin-right: 50px;
-  // margin-bottom: 4px;
-  // height: 26px;
-  // line-height: 26px;
   padding: 0.8rem 1.2rem;
   margin: 1rem;
 }
 .type-value .valueli a {
-  // float: left;
-  // white-space: nowrap;
-  // zoom: 1;
   color: #0d2140;
   width: 10rem;
   height: 3rem;
 }
 .type-value .logoLi {
-  // float: left;
-  // width: 116px;
-  // height: 48px;
-  // padding: 0;
   border: 1px solid #0d2140;
   border-radius: 10px;
-  // margin: 0 0 0 0;
-  // background: #fff;
   text-align: center;
   width: 10rem;
   height: 3rem;
@@ -310,8 +276,6 @@ export default {
   display: none;
 }
 .type-value .logoLi:hover {
-  // width: 114px;
-  // height: 46px;
   border: 1px solid #ef7854;
 }
 .type-value .logoLi:hover a i {
@@ -324,18 +288,8 @@ export default {
   width: 10rem;
   height: 3rem;
   line-height: 1.5rem;
-  // display: block;
-  // height: 46px;
-  // width: 114px;
-  // overflow: hidden;
-  // text-overflow: ellipsis;
-  // white-space: nowrap;
-  // zoom: 1;
-  // color: #005aa0;
-  // line-height: 48px;
 }
 .logoLi a img {
-  // margin: 5px 6px;
   vertical-align: top;
 }
 .navbar {
@@ -358,8 +312,8 @@ export default {
   }
 }
 .result {
-  max-height: 500px;
-  max-width: 500px;
+  // max-height: 500px;
+  max-width:500px;
   margin: 0 auto;
 }
 .list-box {

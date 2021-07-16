@@ -368,7 +368,7 @@ export default {
   }
 }
 .result {
-  max-height: 500px;
+  // max-height: 500px;
   max-width: 500px;
   margin: 0 auto;
 }
@@ -393,11 +393,12 @@ export default {
   margin: 10px;
   background: #fff;
   position: relative;
-  text-align: -moz-center;
+  // text-align: -moz-center;
 }
 .box-img{
-  width: 200px;
+  // width: 200px;
   padding: 10px;
+
 }
 .box-li>p{
   margin: 5px;

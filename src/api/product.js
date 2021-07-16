@@ -52,7 +52,6 @@ export const getProductClassify = (params) => {
         let obj = {}
         params.map((item) => {
             Object.assign(obj, item)
-            console.log(item,'item')
         })
         return $axios({
             url: '/categories/' + id + '/skus/',

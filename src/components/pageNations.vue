@@ -35,7 +35,7 @@ export default {
       }
     }
   },
-  mounted(){console.log(this.total,this.page_index,'分页')},
+  mounted(){},
   methods: {
     // // 每页查看条数变化
     handleSizeChange(val) {

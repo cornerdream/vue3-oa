@@ -35,7 +35,7 @@ export default {
   mounted() {},
   methods: {
     async loadUserMenu() {
-      this.$store.dispatch('GetUserMenu').then((res) => {console.log('急急急',res.data.data)})
+      this.$store.dispatch('GetUserMenu').then((res) => {})
     }
   }
 }

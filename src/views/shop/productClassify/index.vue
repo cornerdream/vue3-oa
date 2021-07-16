@@ -41,9 +41,7 @@ export default {
     pageChange(item) {
       this.page = item.page_index
       this.size = item.page_limit
-      // this.loadOrder() //改变页码，重新渲染页面
       this.loadProductTag()
-      console.log(item)
     },
     async loadProductTag() {
       let argArr = toRaw(arguments[0])
@@ -57,7 +55,6 @@ export default {
       }
 
       let param
-      let obj
       switch (len) {
         case 0:
           param = this.$route.query.id
@@ -69,7 +66,6 @@ export default {
           break
         default:
           param = arguments
-          console.log()
       }
       this.$store.dispatch('GetProductTag', param)
       this.$store.dispatch('GetProductClassify', param).then((res) => {

@@ -40,6 +40,7 @@
         <template v-slot="scope">
           <el-input-number
             :min="1"
+            :max="10000"
             v-model="scope.row.count"
             @change="changeGateway(scope.row, scope.column, scope.row.count)"
             :row="scope.row"

@@ -8,14 +8,6 @@
       :images="images"
       @initDetail="loadProductDetail"
     />
-    <!-- <ul>
-    <li>商品详情
-        <div v-html="descript"></div>
-
-    </li>
-    <li>商品参数</li>
-    <li>商品评论</li>
-  </ul> -->
     <div id="box">
       <!--点击设置msg的值  如果msg等于0，第一个a添加cur类名，如果msg等于1，第二个a添加cur类名，以此类推。
             添加了cur类名，a就会改变样式 @click,:class ,v-show这三个是vue常用的指令或添加事件的方式-->
@@ -28,24 +20,10 @@
                 如果msg等于1，第二个div显示，其它三个div不显示。以此类推-->
       <div class="tab-con">
         <div v-show="msg === 0" class="descript"></div>
-        <!-- <div v-show="msg === 0" class="descript"></div> -->
         <div v-show="msg === 1" class="param"></div>
-        <div v-show="msg === 2" >商品评论</div>
+        <div v-show="msg === 2">商品评论</div>
       </div>
     </div>
-    <!-- <div class="tabBox">
-      <el-tabs v-model="activeName" type="card" >
-        <el-tab-pane label="商品详情" name="first">
-           <div v-html="descript"></div>
-        </el-tab-pane>
-        <el-tab-pane label="商品参数" name="second">
-          <div class="param" >
-           
-          </div>
-        </el-tab-pane>
-        <el-tab-pane label="商品评论" name="third">商品评论</el-tab-pane>
-      </el-tabs>
-    </div> -->
   </div>
 </template>
 
@@ -53,7 +31,6 @@
 import productDetail from './components/product-detail.vue'
 import { getProductDetail } from '@/api/product'
 import $ from 'jquery'
-// import a from '../../../../../styles/web.assets_common.css'
 export default {
   name: 'detail',
   components: {
@@ -90,7 +67,6 @@ export default {
       this.param = data.data.sku.desc_pack
       this.images = data.data.sku.images
       this.productParam = data.data.specs
-      // console.log(this.param, 'data.daat', this.descript)
       this.loadhtml()
     },
     loadhtml() {
@@ -105,14 +81,26 @@ export default {
       const url1 = $('.descript').find('.o_image').eq(0).attr('href')
       const url2 = $('.descript').find('.o_image').eq(1).attr('href')
       $('.descript').find('img').attr('src', srcdescript)
-      $('.descript').find('.o_image').eq(0).attr('href', this.$url + url1)
-      $('.descript').find('.o_image').eq(1).attr('href', this.$url + url2)
+      $('.descript')
+        .find('.o_image')
+        .eq(0)
+        .attr('href', this.$url + url1)
+      $('.descript')
+        .find('.o_image')
+        .eq(1)
+        .attr('href', this.$url + url2)
       const srcparam = $('.param').find('img').attr('src') || $('.param').find('a').attr('href')
-        $('.param').find('img').attr('src', srcparam)
-          const url3 = $('.param').find('.o_image').eq(0).attr('href')
-          const url4 = $('.param').find('.o_image').eq(1).attr('href')
-          $('.param').find('.o_image').eq(0).attr('href', this.$url + url3)
-          $('.param').find('.o_image').eq(1).attr('href', this.$url + url4)
+      $('.param').find('img').attr('src', srcparam)
+      const url3 = $('.param').find('.o_image').eq(0).attr('href')
+      const url4 = $('.param').find('.o_image').eq(1).attr('href')
+      $('.param')
+        .find('.o_image')
+        .eq(0)
+        .attr('href', this.$url + url3)
+      $('.param')
+        .find('.o_image')
+        .eq(1)
+        .attr('href', this.$url + url4)
     }
   }
 }

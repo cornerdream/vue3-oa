@@ -29,7 +29,6 @@ const user = {
         getUserMenu()
           .then((res) => {
             commit('SET_USERMENU', res.data.data)
-            console.log(res.data.data,'房贷还款计划')
             resolve(res)
           })
           .catch((error) => {

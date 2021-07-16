@@ -56,7 +56,6 @@ export default {
       } else {
         this.orderList = data.data.result
         this.total = data.data.count
-        console.log(data.data,'data.data')
       }
     },
     onQuery() {

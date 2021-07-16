@@ -45,7 +45,6 @@ export default {
   },
   created() {},
   mounted() {
-    console.log(this.menus,'风纪扣')
   },
   methods: {
     handleSelect(key, keyPath) {

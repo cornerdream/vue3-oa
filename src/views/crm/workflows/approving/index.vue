@@ -188,8 +188,6 @@ export default {
           //   this.is_approve = res.data.data.results[0].is_approved
         this.create_time = res.data.data.results[0].create_time.slice(0, 10)
         }
-       
-        console.log(res.data.data, 'res.data.data', this.count)
         }
       })
       
@@ -227,7 +225,6 @@ export default {
       this.task_id = data.data.task_id
       this.apply_comment = ''
       this.show = true
-      console.log(data.data,'this.task_idthis.task_id返回数据')
     },
     agree() {
       let obj = {

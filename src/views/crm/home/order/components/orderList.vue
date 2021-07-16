@@ -57,7 +57,7 @@ export default {
   mounted() {},
   methods: {
     tab(item) {
-      this.$router.push({ path: 'orderDetail', query: { id: item.id } })
+      this.$router.push({ path: '/orderdetail', query: { id: item.id } })
       console.log(item, '订单详情')
     }
   }

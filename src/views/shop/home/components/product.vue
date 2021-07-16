@@ -54,14 +54,12 @@ export default {
 
   created() {
     this.loadProductList()
-    console.log(this.$url,'$url$url$url$url$url$url$url')
   },
   mounted() {},
   methods: {
     async loadProductList() {
       const { data } = await getProductList()
       this.productList = data.data
-      console.log(data.data, 'data.data', this.$url)
     },
     onClick(id) {
       this.$router.push({ name: 'productDetail', query: { id } })

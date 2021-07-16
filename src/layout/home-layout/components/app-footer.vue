@@ -20,7 +20,7 @@
                         <span >首页</span>
                         </router-link>
                     </li>
-                    <li>专题</li>
+                    <!-- <li>专题</li> -->
                     <li>
                         <router-link :to="{ name: 'help' }">
                         <span>帮助</span>

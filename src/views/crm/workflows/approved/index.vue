@@ -189,7 +189,6 @@ export default {
         if (res.data.code == 200 && res.data.data.results != []) {
           this.arrlist = res.data.data.results
           for (let i = 0; i < res.data.data.results.length; i++) {
-            // console.log(res.data.data.results[0].is_approved, 'jl')
             this.is_approve = res.data.data.results[0].is_approved
             this.create_time = res.data.data.results[0].create_time.slice(0, 10)
           }

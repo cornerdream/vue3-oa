@@ -99,7 +99,7 @@ export default {
       this.$store.dispatch('GetActiveOpen', [name])
     },
     async loadUserInfo() {
-      this.$store.dispatch('GetUserInfo').then((res) => {console.log(res,'res用户信息')})
+      this.$store.dispatch('GetUserInfo').then((res) => {})
     },
     async loadCartInfo() {
       this.$store.dispatch('GetCart').then(() => {})

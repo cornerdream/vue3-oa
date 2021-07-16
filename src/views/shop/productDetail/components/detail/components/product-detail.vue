@@ -62,7 +62,7 @@
           <div class="goods_num">
             <div class="num_name">数 量：</div>
             <div class="num_add">
-              <el-input-number size="mini" v-model="num" :min="1" @change="changeGateway(val)"></el-input-number>
+              <el-input-number size="mini" v-model="num" :min="1" :max="10000" @change="changeGateway(val)"></el-input-number>
             </div>
           </div>
           <div class="goods_total">
