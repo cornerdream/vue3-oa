@@ -49,33 +49,34 @@
     </section>
     <div class="list-box" v-if="listShow">
       <ul class="box-ul">
-        <li class="box-li"  v-for="o in productList" :key="o" :id="o.id" @click="onClick(o.id)">
+        <li class="box-li" v-for="o in productList" :key="o" :id="o.id" @click="onClick(o.id)">
           <div class="box-img">
-            <img v-if="!o.default_image_url" :src="defaultImage"  />
-            <img  v-else :src="`${$url}` + o.default_image_url" />
+            <img v-if="!o.default_image_url" :src="defaultImage" />
+            <img v-else :src="`${$url}` + o.default_image_url" />
           </div>
-          <p class="productResult"> <span>{{ o.name }}</span> <span>{{ '¥' + o.price }}</span></p>
+          <p class="productResult">
+            <span>{{ o.name }}</span> <span>{{ '¥' + o.price }}</span>
+          </p>
         </li>
       </ul>
       <Pagenation
-      class="pagenation"
+        class="pagenation"
         :total="total"
         @pageChange="pageChange"
         :page_index="page"
         v-if="total != []"
       ></Pagenation>
-      </div>
-      <section class="result" v-else>
-        <el-result title="404" subTitle="抱歉，请求没有数据">
-          <template #icon>
-            <el-image :src="defaultImage" class="result-image"></el-image>
-          </template>
-          <template #extra>
-            <el-button type="primary" size="medium" @click="onBack">返回</el-button>
-          </template>
-        </el-result>
-      </section>
-    
+    </div>
+    <section class="result" v-else>
+      <el-result title="404" subTitle="抱歉，请求没有数据">
+        <template #icon>
+          <el-image :src="defaultImage" class="result-image"></el-image>
+        </template>
+        <template #extra>
+          <el-button type="primary" size="medium" @click="onBack">返回</el-button>
+        </template>
+      </el-result>
+    </section>
   </div>
 </template>
 
@@ -234,6 +235,11 @@ export default {
   width: 2.8rem;
   height: 3.5rem;
 }
+.productTitle .img > img {
+  width: 100%;
+  height: 100%;
+}
+
 .title {
   padding: 0 1.5rem;
   font-size: 3rem;
@@ -241,10 +247,6 @@ export default {
 }
 .list {
   padding: 20px;
-}
-.list img {
-  width: 100%;
-  height: 100%;
 }
 #section .el-breadcrumb {
   line-height: 34px;
@@ -320,6 +322,10 @@ export default {
   width: 10rem;
   height: 3rem;
 }
+.type-value .valueli a > img {
+  width: 100%;
+  height: 100%;
+}
 .type-value .logoLi {
   border: 1px solid #0d2140;
   border-radius: 10px;
@@ -368,7 +374,6 @@ export default {
   }
 }
 .result {
-  // max-height: 500px;
   max-width: 500px;
   margin: 0 auto;
 }
@@ -379,40 +384,40 @@ export default {
 .list-box {
   position: relative;
 }
-.box-ul{
+.box-ul {
   margin-left: 120px;
-   width: 1600px;
-   flex-wrap:wrap;
-   justify-content: space-around;
-    
+  width: 1600px;
+  flex-wrap: wrap;
+  justify-content: space-around;
 }
-.box-li{
-  width: 220px;
+.box-li {
   height: 320px;
   float: left;
   margin: 10px;
   background: #fff;
   position: relative;
-  // text-align: -moz-center;
 }
-.box-img{
-  // width: 200px;
+.box-img {
+  width: 200px;
   padding: 10px;
-
 }
-.box-li>p{
+.box-img > img {
+  width: 100%;
+  height: 100%;
+}
+.box-li > p {
   margin: 5px;
 }
-.productResult{
+.productResult {
   position: absolute;
   bottom: 0;
   text-align: left;
 }
-.productResult>span{
-display: block;
+.productResult > span {
+  display: block;
 }
 .pagenation {
-  float:left;
+  float: left;
   width: 100%;
   height: 50px;
   text-align: right;

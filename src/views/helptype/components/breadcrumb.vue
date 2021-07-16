@@ -22,21 +22,6 @@ export default {
   props: ['currentPath', 'listBox'],
   mounted() {},
   methods: {
-    loadhtml() {
-      $(document).off()
-      $('.el-tabs__content').show()
-      $('.listBox').html('')
-      $('.listBox').html(this.listBox)
-      // const srcdescript =
-      //   $('.listBox').find('img').attr('src') || $('.listBox').find('a').attr('href')
-      // $('.descript').find('img').attr('src', this.$url+srcdescript)
-      // const url1 = $('.listBox').find('.img-fluid').eq(0).attr('src')
-      // //  $('.listBox').find('.img-fluid').eq(0).attr('src', this.$url + url1)
-      //  let arr =  $('.listBox').find('.img-fluid')
-      //  $.map(arr,function(index,value){
-      //     $('.listBox').find('.img-fluid').index.attr('src', this.$url + url1)
-      //  })
-    }
   }
 }
 </script>

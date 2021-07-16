@@ -39,7 +39,7 @@
         class="userMe"
         @click.native="handleReset('orders')"
       >
-        <el-avatar size="small" :src="`${$url}` + image" class="userImg"></el-avatar>
+           <div class="userImg"><img  :src="`${$url}` + image" /></div>
         <el-dropdown style="color: #fff">
           <span class="el-dropdown-link">
             个人中心<i class="el-icon-arrow-down el-icon--right"></i>
@@ -189,8 +189,16 @@ export default {
   color: #fff;
 }
 .userImg {
+  width: 35px;
+  height: 35px;
   margin-right: 5px;
 }
+.userImg>img{
+  width: 100%;
+  height: 100%;
+    border-radius: 50%;
+}
+
 .userMe {
   display: flex;
   justify-content: center;

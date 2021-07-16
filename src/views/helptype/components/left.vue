@@ -29,6 +29,7 @@ import { getHelptype, getHelpdoc } from '../../../api/help'
 import breadcrumbNav from './breadcrumb.vue'
 import $ from 'jquery'
 export default {
+  inject: ['$url'],
   components: { breadcrumbNav },
   data() {
     return {
@@ -78,6 +79,20 @@ export default {
       $('.el-tabs__content').show()
       $('.listBox').html('')
       $('.listBox').html(this.listBox)
+      const srcdetail = $('.listBox').find('img')
+      for (let i = 0; i < srcdetail.length; i++) {
+        let a = srcdetail.eq(i).attr('src')
+        if (!a.includes('http')) {
+        srcdetail.eq(i).attr('src', this.$url + a)
+        }
+      }
+      const list = $('.listBox').find('a')
+      for (let i = 0; i < list.length; i++) {
+        let b = list.eq(i).attr('href')
+        if (!b.includes('http')) {
+          list.eq(i).attr('href', this.$url + b)
+        }
+      }
     }
   }
 }

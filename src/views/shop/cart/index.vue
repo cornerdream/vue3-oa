@@ -30,7 +30,7 @@
 
       <el-table-column prop="default_image_url" label="商品" width="120" type="index">
         <template v-slot="scope">
-        <img :src="`${$url}`+scope.row.default_image_url" alt="" min-width="70" height="70" />
+        <img class="img"  :src="`${$url}`+scope.row.default_image_url" alt="" min-width="70" height="70" />
         </template>
       </el-table-column>
       <el-table-column prop="name" label="商品名称" width="120"> </el-table-column>
@@ -404,5 +404,9 @@ export default {
 }
 .current-cell {
   display: block;
+}
+.img{
+  width: 100%;
+  height: 100%;
 }
 </style>
