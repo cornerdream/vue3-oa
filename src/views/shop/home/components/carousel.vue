@@ -26,6 +26,8 @@ export default {
 }
  .carousel img{
    border: none;
+   width: 958px;
+   height: 600px;
 }
 .el-carousel {
   height: 100%;

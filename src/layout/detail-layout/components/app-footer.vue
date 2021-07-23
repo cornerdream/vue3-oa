@@ -21,7 +21,7 @@
         <div class="footer-left-top-left">
           <ul class="footer-right-left-bottom">
             <li>电话：+86(10)6786-4680</li>
-            <li>邮箱:HR@yiconmed.com</li>
+            <li>邮箱：HR@yiconmed.com</li>
             <li>网址：www.yiconmed.com</li>
           </ul>
         </div>

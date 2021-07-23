@@ -32,7 +32,7 @@
           </template>
         </el-dropdown>
       </router-link>
-      <router-link
+      <!-- <router-link
         :to="{ name: 'orders' }"
         active-class=""
         exact-active-class=""
@@ -53,7 +53,7 @@
             </el-dropdown-menu>
           </template>
         </el-dropdown>
-      </router-link>
+      </router-link> -->
     </div>
     <!-- <div class="search">
       <el-input placeholder="请输入内容" v-model="filterParams.text" @change="onSearch">

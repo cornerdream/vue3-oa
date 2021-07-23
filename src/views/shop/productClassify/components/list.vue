@@ -195,7 +195,6 @@ export default {
         const oItem = this.query.find((item) => {
           return item['option']
         })
-        console.log(oItem)
         if (oItem) {
           oItem['option'] += ',' + id
         } else {

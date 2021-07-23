@@ -94,7 +94,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="备注">
+        <el-form-item label="体重">
           <el-input
             type="textarea"
             :rows="2"

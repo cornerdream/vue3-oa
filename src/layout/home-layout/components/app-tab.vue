@@ -12,9 +12,9 @@
       </li>
       <!-- <li>专题</li> -->
       <li>
-         <router-link :to="{ name: 'help' }">
+        <router-link :to="{ name: 'help' }">
           <span>帮助</span>
-        </router-link>  
+        </router-link>
       </li>
     </ul>
     <div class="userManger">
@@ -32,7 +32,23 @@
           </template>
         </el-dropdown>
       </router-link>
-      <router-link
+      <div class="userMe" @click="handleReset">
+        <div class="userImg"><img :src="`${$url}` + image" /></div>
+        <el-dropdown style="color: #fff">
+          <span class="el-dropdown-link">
+            个人中心<i class="el-icon-arrow-down el-icon--right"></i>
+          </span>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item icon="el-icon-plus">{{ username }}</el-dropdown-item>
+              <el-dropdown-item icon="el-icon-circle-plus" @click.native="onLoginOut"
+                >退出</el-dropdown-item
+              >
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+      </div>
+      <!-- <router-link
         :to="{ name: 'orders' }"
         active-class=""
         exact-active-class=""
@@ -53,7 +69,7 @@
             </el-dropdown-menu>
           </template>
         </el-dropdown>
-      </router-link>
+      </router-link> -->
     </div>
   </div>
 </template>
@@ -62,16 +78,16 @@
 import logo from '@/assets/images/header-logo.png'
 import { mapGetters } from 'vuex'
 export default {
-   name: 'app-tab',
+  name: 'app-tab',
   computed: {
     ...mapGetters(['id', 'username', 'email', 'image', 'cartList'])
   },
   inject: ['$url'],
   data() {
     return {
-      headerLogo:logo,
-      filterParams:{
-        text: '',
+      headerLogo: logo,
+      filterParams: {
+        text: ''
       }
     }
   },
@@ -82,15 +98,18 @@ export default {
     this.loadCartBuyer()
   },
   mounted() {},
-  methods:{
-    onSearch(){
-     
-      this.$router.push({name:'search',query:{text:this.filterParams.text}})
+  methods: {
+    onSearch() {
+      this.$router.push({ name: 'search', query: { text: this.filterParams.text } })
     },
-    handleReset(name){
-      this.$store.dispatch('GetActiveNav',name);
-      this.$store.dispatch('GetActiveOpen',[name]);
+    handleReset() {
+      window.location.href =
+        'http://192.168.1.218:8000/web#action=189&model=yi.purchase.order.line&view_type=list&cids=1&menu_id=126'
     },
+    // handleReset(name){
+    //   this.$store.dispatch('GetActiveNav',name);
+    //   this.$store.dispatch('GetActiveOpen',[name]);
+    // },
     async loadUserInfo() {
       this.$store.dispatch('GetUserInfo').then(() => {})
     },
@@ -142,7 +161,7 @@ export default {
   width: 162px;
   height: 60px;
 }
-.logo>img{
+.logo > img {
   width: 100%;
   height: 100%;
 }
@@ -159,26 +178,25 @@ export default {
   margin-right: 60px;
   color: #fff;
 }
-.tabLink li a{
+.tabLink li a {
   color: #fff;
 }
-.tabLink li a:hover{
-  color:#3e93ec;
+.tabLink li a:hover {
+  color: #3e93ec;
 }
 
 .router-link-active {
   color: #fff;
 }
-.router-link-exact-active .el-dropdown{
-  color:#0081CC;
+.router-link-exact-active .el-dropdown {
+  color: #0081cc;
 }
 .userManger {
   display: flex;
   justify-content: center;
   align-items: center;
-  
 }
-.el-dropdown{
+.el-dropdown {
   color: #fff;
 }
 .userImg {
@@ -186,26 +204,25 @@ export default {
   height: 35px;
   margin-right: 5px;
 }
-.userImg>img{
+.userImg > img {
   width: 100%;
   height: 100%;
-    border-radius: 50%;
+  border-radius: 50%;
 }
 .userMe {
   display: flex;
   justify-content: center;
   align-items: center;
   margin-left: 20px;
-  
 }
 .count {
   display: inline-block;
   margin-left: 10px;
 }
-.el-dropdown-link{
+.el-dropdown-link {
   font-size: 18px;
 }
-.el-dropdown-link:hover{
-  color:#3e93ec;
+.el-dropdown-link:hover {
+  color: #3e93ec;
 }
 </style>

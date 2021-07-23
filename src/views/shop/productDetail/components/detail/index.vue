@@ -13,7 +13,7 @@
             添加了cur类名，a就会改变样式 @click,:class ,v-show这三个是vue常用的指令或添加事件的方式-->
       <div class="tab-tit">
         <p href="javascript:;" @click="msg = 0" :class="{ cur: msg === 0 }">商品详情</p>
-        <p href="javascript:;" @click="msg = 1" :class="{ cur: msg === 1 }">商品参数</p>
+        <p href="javascript:;" @click="msg = 1" :class="{ cur: msg === 1 }">内部数据</p>
         <!-- <p href="javascript:;" @click="msg = 2" :class="{ cur: msg === 2 }">商品评论</p> -->
       </div>
       <!--根据msg的值显示div,如果msg等于0，第一个div显示，其它三个div不显示。

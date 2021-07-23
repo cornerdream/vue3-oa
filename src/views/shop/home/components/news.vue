@@ -16,21 +16,6 @@
           </template>
         </el-input>
       </div>
-      <div class="search-keywords">
-        <p class="keywords">
-          关键词：
-          <span
-            class="keywords-tab"
-            :class="index==num ? 'keywords-tab-active' : ''"
-            v-for="(item, index) in list"
-            :key="index"
-            @click="fnTab(item,index)"
-            >{{ item}}</span
-          >
-          <!-- <span class="keywords-tab keywords-tab-active">肿瘤</span>
-          <span class="keywords-tab">免疫</span> -->
-        </p>
-      </div>
     </div>
   </div>
 </template>
@@ -65,11 +50,6 @@ export default {
   methods: {
     onSearch() {
       this.$router.push({ name: 'search', query: { text: this.filterParams.text } })
-    },
-    fnTab(item,index){ 
-      this.num =index
-      this.$router.push({ name: 'search', query: { text: item} })
-    
     }
   }
 }
@@ -100,23 +80,4 @@ export default {
   border-radius: 0;
   margin-right: -21px;
 }
-.search-keywords {
-  font-size: 1.5rem;
-}
-.keywords-tab {
-  border: 1px solid #0d2140;
-  padding: 0.2rem 1rem;
-  border-radius: 5rem;
-  margin: 0 3rem;
-  cursor:pointer
-}
-.keywords-tab:hover{
-   background: #0d2140;
-  color: #fff;
-}
-.keywords-tab-active {
-  background: #0d2140;
-  color: #fff;
-}
-
 </style>

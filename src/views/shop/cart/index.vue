@@ -64,7 +64,7 @@
           </el-select>
         </template>
       </el-table-column>
-      <el-table-column prop="notes" label="备注" width="180">
+      <el-table-column prop="notes" label="体重" width="180">
         <template v-slot="scope">
           <el-input
             type="textarea"

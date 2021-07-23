@@ -39,7 +39,7 @@
                     <li>地址：北京经济技术开发区隆庆街9号1号楼</li>
                     <li>邮编：100176</li>
                     <li>电话：+86(10)6786-4680</li>
-                    <li>邮箱:HR@yiconmed.com</li>
+                    <li>邮箱：HR@yiconmed.com</li>
                 </ul>
             </div>
             <div class="footer-right-right">
