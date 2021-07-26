@@ -16,10 +16,10 @@
               class="valueli"
               v-for="(items, index) in item.lines"
               :key="index"
-              @click="handelCheck(items, item.param, items.id, item.lines)"
+              @click="handelCheck(items,items.id)"
             >
-              <el-checkbox-group v-model="items.checked">
-                <el-checkbox :label="items.id">{{ items.name }}</el-checkbox>
+              <el-checkbox-group v-model="items.checked" >
+                <el-checkbox :label="items.id" >{{ items.name }}</el-checkbox>
               </el-checkbox-group>
             </li>
           </ul>
@@ -31,7 +31,7 @@
         <img :src="item.img" alt="" />
         <span class="title">{{ item.title }}</span>
       </div>
-      <ul class="box-ul">
+       <ul class="box-ul">
         <li class="box-li" v-for="o in productList" :key="o" :id="o.id" @click="onClick(o.id)">
           <div class="box-img">
             <img v-if="!o.default_image_url" :src="defaultImage" />
@@ -42,23 +42,8 @@
           </p>
         </li>
       </ul>
-      <!-- <el-col :xs="8" :sm="8" :md="6" :lg="6" :xl="4" v-for="o in productList" :key="o" :id="o.id">
-        <div class="grid-content">
-          <el-card @click="onClick(o.id)">
-            <img v-if="!o.default_image_url" :src="defaultImage" class="image" />
-
-            <img v-else :src="`${$url}` + o.default_image_url" class="image" />
-            <div class="productResult">
-              <p class="card-title">{{ o.name }}</p>
-              <div class="bottom">
-                <p class="price">{{ '¥' + o.price }}</p>
-              </div>
-            </div>
-          </el-card>
-        </div>
-      </el-col> -->
     </div>
-    <Pagenation
+      <Pagenation
       class="pagenation"
       :total="total"
       @pageChange="pageChange"
@@ -69,6 +54,7 @@
 </template>
 
 <script>
+// import $ from 'jquery'
 import defaultImg from '@/assets/images/mouse.png'
 import titleImg1 from '@/assets/images/home-logo1.png'
 import titleImg2 from '@/assets/images/home-logo2.png'
@@ -76,8 +62,9 @@ import { getProductList } from '@/api/product'
 import authImgs from '@/components/img.vue'
 import { keyword } from '../../../../api/search'
 import Pagenation from '@/components/pageNations.vue'
+import { toRaw } from '@vue/reactivity'
 export default {
-  components: { authImgs, Pagenation },
+  components: { authImgs,Pagenation },
   name: 'product',
   inject: ['$url'],
   data() {
@@ -86,7 +73,7 @@ export default {
         {
           title: '热销产品',
           img: titleImg1
-        }
+        },
         // {
         //   title: '促销产品',
         //   img: titleImg2
@@ -95,102 +82,92 @@ export default {
       defaultImage: defaultImg,
       productList: [],
       checkList: [],
-      query: [],
-      one: [],
-      list: [],
-      page: '1',
-      size: '12',
+      query:[],
+      page:1,
+      size:12,
       total: ''
     }
   },
- 
+
   created() {
-    let obj = {
+       this.query.push({
       page: this.page,
       size: this.size
-    }
-    this.loadProductList(obj)
+    })
+    this.loadProductList(this.query)
     this.getList()
   },
   mounted() {
     this.$nextTick(() => {})
   },
   methods: {
-    pageChange(item) {
+     pageChange(item) {
       this.page = item.page_index
       this.size = item.page_limit
-      let obj = {
-        key: this.query,
-        page: this.page,
-        size: this.size
-      }
-      console.log(item, '分页')
-      this.loadProductList(obj)
+      this.query.push({
+      page: this.page,
+      size: this.size
+    })
+      this.loadProductList( this.query)
     },
-    loadProductList(obj) {
-      getProductList(obj).then((res) => {
-        this.productList = res.data.data.results
-        this.total = res.data.data.count
-      })
+    loadProductList(obj){
+       getProductList(obj).then((res)=>{
+         this.productList = res.data.data.results
+         this.total = res.data.data.count
+       })
     },
     onClick(id) {
       this.$router.push({ name: 'productDetail', query: { id } })
     },
-    handelCheck(val, params, id, list) {
-      val.checked = !val.checked
-      let a = []
-      let b = []
-      for (let i = 0; i < list.length; i++) {
-        if (list[i].checked == true) {
-          if (params == 'option') {
-            a.push(list[i].id)
-            this.one = a
+    handelCheck(val,id) {
+      val.checked =!val.checked
+      if(val.checked ==true){
+           const oItem = this.query.find((item)=>{
+             return item['key']
+           })
+           if(oItem){
+            oItem['key'] +=','+id
+           }else {
+             let o = {key:id,page: this.page, size: this.size}
+             this.query.push(o)
+           }
+      }else {
+        let oItem = this.query.find((item) => {
+        return item['key']
+      })
+       const option = oItem['key']
+        const str = String(option).indexOf(',')
+        if(str>=0){
+          let optionArr = option.split(',')
+          let newArr = optionArr.filter((item) => item !=id)
+          console.log(newArr)
+          let newOption
+          if (newArr.length == 1) {
+            newOption = newArr.toString()
           } else {
-            b.push(list[i].id)
-            this.list = b
+            newOption = newArr.join(',')
           }
-        } else {
-          if (params == 'option') {
-            a.splice(list[i].id)
-            this.one = a
-          } else {
-            b.splice(list[i].id)
-            this.list = b
-          }
+          oItem['key'] = newOption
+        }else {
+          this.query.splice(this.query.indexOf(oItem), 1)
         }
+     
       }
-      if (this.one.length >= 1 && this.list.length >= 1) {
-        var aa = this.one.join('+') + ','.concat(this.list.join('+'))
-      } else if (this.one.length >= 1) {
-        var aa = this.one.join('+')
-      } else if (this.list.length >= 1) {
-        var aa = this.list.join('+')
-      }
-      this.query = aa
-      let obj = {
-        key: aa,
-        page: this.page,
-        size: this.size
-      }
-      this.loadProductList(obj)
+      this.loadProductList(this.query)
     },
     getList() {
       keyword().then((res) => {
         let list = res.data.data
-        list.map((items) => {
-          let allTags = items.lines
-
-          allTags.map((item) => {
-            if (items.name == '品系') {
-              items.param = 'option'
-            } else if (items.name == '性别') {
-              items.param = 'sex'
-            }
-            item.checked = false
-            return item
+          list.map((items) => {
+            let allTags = items.lines
+           
+            allTags.map((item) => {
+              item.checked = false
+              return item
+            })
+            this.checkList = list
+            console.log(this.checkList, 'this.checkList')
           })
-          this.checkList = list
-        })
       })
     }
   }

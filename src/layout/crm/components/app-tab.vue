@@ -32,6 +32,22 @@
           </template>
         </el-dropdown>
       </router-link>
+       <div class="userMe" @click="handleReset">
+        <div class="userImg"><img :src="`${$url}` + image" /></div>
+        <el-dropdown style="color: #fff">
+          <span class="el-dropdown-link">
+            个人中心<i class="el-icon-arrow-down el-icon--right"></i>
+          </span>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item icon="el-icon-plus">{{ username }}</el-dropdown-item>
+              <el-dropdown-item icon="el-icon-circle-plus" @click.native="onLoginOut"
+                >退出</el-dropdown-item
+              >
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+      </div>
       <!-- <router-link
         :to="{ name: 'orders' }"
         active-class=""
@@ -94,10 +110,14 @@ export default {
     onSearch() {
       this.$router.push({ name: 'search', query: { text: this.filterParams.text } })
     },
-    handleReset(name) {
-      this.$store.dispatch('GetActiveNav', name)
-      this.$store.dispatch('GetActiveOpen', [name])
+    handleReset() {
+      window.location.href =
+        'http://192.168.1.218:8000/web#action=189&model=yi.purchase.order.line&view_type=list&cids=1&menu_id=126'
     },
+    // handleReset(name) {
+    //   this.$store.dispatch('GetActiveNav', name)
+    //   this.$store.dispatch('GetActiveOpen', [name])
+    // },
     async loadUserInfo() {
       this.$store.dispatch('GetUserInfo').then((res) => {})
     },

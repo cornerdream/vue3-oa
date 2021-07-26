@@ -82,14 +82,14 @@ export default {
       const srcdetail = $('.listBox').find('img')
       for (let i = 0; i < srcdetail.length; i++) {
         let a = srcdetail.eq(i).attr('src')
-        if (!a.includes('http')) {
+        if (!a.includes('http')&&!a.includes('https')) {
         srcdetail.eq(i).attr('src', this.$url + a)
         }
       }
       const list = $('.listBox').find('a')
       for (let i = 0; i < list.length; i++) {
         let b = list.eq(i).attr('href')
-        if (!b.includes('http')) {
+        if (!b.includes('http')&&!b.includes('https')) {
           list.eq(i).attr('href', this.$url + b)
         }
       }

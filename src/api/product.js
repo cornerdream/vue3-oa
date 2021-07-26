@@ -55,17 +55,21 @@ export const getProductClassify = (params) => {
 
 // 获取首页商品列表
 export const getProductList = (params) => {
-    if (params) {
+    if (!isNaN(params)) {
         return $axios({
             url: '/api/skus/list/keyword',
             method: 'get',
-            params
+            params:obj
         })
     } else {
+        let obj = {}
+            params.map((item) => {
+                Object.assign(obj, item)
+            })
         return $axios({
             url: '/api/skus/list/keyword',
             method: 'get',
-            params
+            params:obj
         })
     }
 
