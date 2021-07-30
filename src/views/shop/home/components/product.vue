@@ -203,7 +203,6 @@ export default {
 }
 .grid-content {
   width: 25rem;
-  // height: 22rem;
   height: 260px;
   border-radius: 6px;
   margin: 0 2rem 3rem 0;
@@ -214,7 +213,6 @@ export default {
   padding: 3rem;
 }
 .product .image {
-  // height: 260px;
   width: 100%;
 }
 .product .card-title {
@@ -239,7 +237,7 @@ export default {
   align-items: center;
 }
 #type {
-  width: 1400px;
+  width: 100%;
   background: #fff;
   margin: 2rem 0 5rem 0;
   border-radius: 10px;
@@ -332,24 +330,21 @@ export default {
   margin-top: -30px;
 }
 .box-ul {
-  width: 1600px;
+  width: 100%;
+  display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  text-align: left;
 }
 .box-li {
-  height: 320px;
-  float: left;
+  width: 14%;
+  height: 220px;
   margin: 10px;
   background: #fff;
   position: relative;
-}
-.box-img {
-  width: 200px;
-  padding: 10px;
+  border: 1px solid #dadada;
 }
 .box-img > img {
   width: 100%;
-  height: 100%;
 }
 .box-li > p {
   margin: 5px;
@@ -361,5 +356,8 @@ export default {
 }
 .productResult > span {
   display: block;
+}
+.pagenation{
+  text-align: right;
 }
 </style>

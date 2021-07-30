@@ -9,7 +9,6 @@
 <style>
 </style>
 <script>
-import $ from 'jquery'
 import { mapGetters } from 'vuex'
 export default {
   inject: ['$url'],
@@ -27,7 +26,7 @@ export default {
 </script>
 <style scoped>
 .el-breadcrumb {
-  background-color: #e9eef3;
+  background-color: #fff;
   width: 100%;
   line-height: 50px;
   padding: 0 16px;

@@ -353,7 +353,8 @@ export default {
     onPushOrder() {
       this.dialogSuccessVisible = false
       this.$store.dispatch('GetCart').then(() => {})
-      this.$router.push('/orders')
+      // this.$router.push('/orders')
+      window.location.href = 'http://192.168.1.218:8000/web#action=189&model=yi.purchase.order.line&view_type=list&cids=1&menu_id=126'
     }
   }
 }

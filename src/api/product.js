@@ -111,3 +111,12 @@ export const getProductBuyer = (params) => {
         })
     }
 }
+//商品评价
+export const getevaluate= (params) => {
+        return $axios({
+            url: '/api/evaluate/',
+            method: 'get',
+            params
+        })
+
+}

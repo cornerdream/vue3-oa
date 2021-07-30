@@ -384,25 +384,21 @@ export default {
   position: relative;
 }
 .box-ul {
-  margin-left: 120px;
-  width: 1600px;
+  width: 100%;
+  display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  text-align: left;
 }
 .box-li {
-  height: 320px;
-  float: left;
+  width: 14%;
+  height: 220px;
   margin: 10px;
   background: #fff;
   position: relative;
-}
-.box-img {
-  width: 200px;
-  padding: 10px;
+  border: 1px solid #dadada;
 }
 .box-img > img {
   width: 100%;
-  height: 100%;
 }
 .box-li > p {
   margin: 5px;

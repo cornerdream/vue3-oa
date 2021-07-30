@@ -11,7 +11,7 @@
         </p>
         <ul class="box-li" v-show="index == indexs ? !item.isSubShow : item.isSubShow">
           <li v-for="(subItem, index) in item.lines" :key="index">
-            <p :class="subItem.id == num ? 'active' : ''" @click="showToggles(subItem)">
+            <p :class="subItem.id == num ? 'active' : 'flags'" @click="showToggles(subItem)">
               {{ subItem.name }}
             </p>
           </li>
@@ -103,7 +103,7 @@ export default {
   display: flex;
 }
 .box-ul {
-  width: 240px;
+  width: 260px;
   background: #303133;
   color: #fff;
   min-height: 800px;
@@ -112,18 +112,24 @@ export default {
   cursor: pointer;
 }
 .box-ul > li {
+  width: 100%;
   line-height: 30px;
+  margin: 10px;
+  position: relative;
+}
+.flags{
+  width:200px;
 }
 .active {
+  width:200px; 
   color: #3e93ec;
 }
 .list-i {
-  margin-left: 98px;
-  text-align: right;
+  position: absolute;
+  right: 0;
 }
 span {
   display: inline-block;
-  width: 88px;
 }
 .box-li {
   margin-left: 20px;

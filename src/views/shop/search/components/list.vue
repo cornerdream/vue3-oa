@@ -312,43 +312,39 @@ export default {
   }
 }
 .result {
-  // max-height: 500px;
   max-width:500px;
   margin: 0 auto;
 }
 .list-box {
   position: relative;
 }
-.box-ul{
-  margin-left: 120px;
-   width: 1600px;
-   flex-wrap:wrap;
-   justify-content: space-around;
-    
+.box-ul {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  text-align: left;
 }
-.box-li{
-  width: 220px;
-  height: 320px;
-  float: left;
+.box-li {
+  width: 14%;
+  height: 220px;
   margin: 10px;
   background: #fff;
- position: relative;
- text-align: -moz-center;
+  position: relative;
+  border: 1px solid #dadada;
 }
-.box-img{
-  width: 200px;
-  padding: 10px;
+.box-img > img {
+  width: 100%;
 }
-.box-li>p{
+.box-li > p {
   margin: 5px;
 }
-.productResult{
+.productResult {
   position: absolute;
   bottom: 0;
   text-align: left;
 }
-.productResult>span{
-display: block;
+.productResult > span {
+  display: block;
 }
 .pagenation {
   float:left;

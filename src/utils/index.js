@@ -216,3 +216,20 @@ export function formatting(time){
 export function repair0(m){
 	return m<10?'0'+m:m 
 }
+//中英文脱敏展示
+export function formatName(name) {
+  var newStr;
+  if (name.length === 2) {
+      newStr = name.substr(0, 1) + '*';
+  } else if (name.length > 2) {
+      var char = '';
+      for (var i = 0, len = name.length - 2; i < len; i++) {
+          char += '*';
+          char='***'
+      }
+      newStr = name.substr(0, 1) + char + name.substr(-1, 1);
+  } else {
+      newStr = name;
+  }
+  return newStr;
+}
