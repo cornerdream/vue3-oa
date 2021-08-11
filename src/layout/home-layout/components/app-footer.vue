@@ -80,7 +80,7 @@ mounted() {}
 </script>
 <style scoped>
 .footer{
-    padding:4rem 9rem;
+    padding:2rem 9rem;
     background: #0D2140;
     color: #fff;
     display: flex;

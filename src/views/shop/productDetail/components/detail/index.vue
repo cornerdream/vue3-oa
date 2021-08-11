@@ -25,7 +25,8 @@
           <div class="evaluate" v-for="(item, index) in evaluate" :key="index">
             <div class="left">
               <div class="left-cont">
-                <img class="border-img" :src="`${$url}` + item.create_uid.image" :alt="name" />{{item.create_uid.name}}
+                <img class="border-img" :src="`${$url}` + item.create_uid.image" :alt="name" />
+                {{item.create_uid.name}}
               </div>
             </div>
             <div class="right">
@@ -52,7 +53,7 @@ import productDetail from './components/product-detail.vue'
 import { getProductDetail, getevaluate } from '@/api/product'
 import $ from 'jquery'
 import star from '@/components/star.vue'
-import Pagenation from '@/components/pageNations.vue'
+import Pagenation from '@/components/pageNation.vue'
 import { formatName } from '@/utils/index'
 export default {
   name: 'detail',
@@ -79,7 +80,7 @@ export default {
       msg: 0,
       total: '',
       page: 1,
-      size: 12,
+      size: 10,
       evaluate: [],
       texts: '',
       name: ''

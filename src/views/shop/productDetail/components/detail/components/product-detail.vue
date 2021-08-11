@@ -41,12 +41,12 @@
       <div class="goods_detail_list">
         <h3 class="goods_name">{{ productInfo.name }}</h3>
         <div class="goods_detail">
-          <div class="goods_price">
+          <!-- <div class="goods_price">
             <div class="num_name">价格：</div>
             <div class="num_price">
               ¥<em>{{ productInfo.price }}</em>
             </div>
-          </div>
+          </div> -->
 
           <div class="type_select" v-for="item in productParam" :key="item.id">
             <label>{{ item.name }}:</label>
@@ -62,15 +62,21 @@
           <div class="goods_num">
             <div class="num_name">数 量：</div>
             <div class="num_add">
-              <el-input-number size="mini" v-model="num" :min="1" :max="10000" @change="changeGateway(val)"></el-input-number>
+              <el-input-number
+                size="mini"
+                v-model="num"
+                :min="1"
+                :max="10000"
+                @change="changeGateway(val)"
+              ></el-input-number>
             </div>
           </div>
-          <div class="goods_total">
+          <!-- <div class="goods_total">
             <div class="num_name">总价：</div>
             <div class="num_price">
               ¥<em>{{ productInfo.price * num }}</em>
             </div>
-          </div>
+          </div> -->
           <div class="operate_btn">
             <a href="javascript:;" class="add_cart" id="add_cart" @click="onCart">加入购物车</a>
           </div>
@@ -94,7 +100,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="体重">
+        <el-form-item label="备注">
           <el-input
             type="textarea"
             :rows="2"
@@ -185,10 +191,10 @@ export default {
     } = getCurrentInstance()
   },
   methods: {
-    changeGateway(val){
-      if(this.num == undefined){
-         this.num = '1'
-      }else {
+    changeGateway(val) {
+      if (this.num == undefined) {
+        this.num = '1'
+      } else {
         return false
       }
     },

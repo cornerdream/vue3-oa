@@ -16,10 +16,10 @@
               class="valueli"
               v-for="(items, index) in item.lines"
               :key="index"
-              @click="handelCheck(items,items.id)"
+              @click="handelCheck(items, items.id)"
             >
-              <el-checkbox-group v-model="items.checked" >
-                <el-checkbox :label="items.id" >{{ items.name }}</el-checkbox>
+              <el-checkbox-group v-model="items.checked">
+                <el-checkbox :label="items.id">{{ items.name }}</el-checkbox>
               </el-checkbox-group>
             </li>
           </ul>
@@ -31,19 +31,25 @@
         <img :src="item.img" alt="" />
         <span class="title">{{ item.title }}</span>
       </div>
-       <ul class="box-ul">
+      <ul class="box-ul" v-if="isshow">
         <li class="box-li" v-for="o in productList" :key="o" :id="o.id" @click="onClick(o.id)">
           <div class="box-img">
             <img v-if="!o.default_image_url" :src="defaultImage" />
             <img v-else :src="`${$url}` + o.default_image_url" />
           </div>
           <p class="productResult">
-            <span>{{ o.name }}</span> <span>{{ '¥' + o.price }}</span>
+            <span>{{ o.name }}</span>
+            <!-- <span>{{ '¥' + o.price }}</span> -->
           </p>
         </li>
       </ul>
+      <div class="result" v-else>
+        <el-image :src="defaultImage" class="result-image"></el-image>
+        <p style="color: #303133; font-size: 20px">404</p>
+        <p style="color: #606266;">抱歉，请求没有数据</p>
+      </div>
     </div>
-      <Pagenation
+    <Pagenation
       class="pagenation"
       :total="total"
       @pageChange="pageChange"
@@ -54,7 +60,6 @@
 </template>
 
 <script>
-// import $ from 'jquery'
 import defaultImg from '@/assets/images/mouse.png'
 import titleImg1 from '@/assets/images/home-logo1.png'
 import titleImg2 from '@/assets/images/home-logo2.png'
@@ -62,9 +67,8 @@ import { getProductList } from '@/api/product'
 import authImgs from '@/components/img.vue'
 import { keyword } from '../../../../api/search'
 import Pagenation from '@/components/pageNations.vue'
-import { toRaw } from '@vue/reactivity'
 export default {
-  components: { authImgs,Pagenation },
+  components: { authImgs, Pagenation },
   name: 'product',
   inject: ['$url'],
   data() {
@@ -73,7 +77,7 @@ export default {
         {
           title: '热销产品',
           img: titleImg1
-        },
+        }
         // {
         //   title: '促销产品',
         //   img: titleImg2
@@ -82,15 +86,16 @@ export default {
       defaultImage: defaultImg,
       productList: [],
       checkList: [],
-      query:[],
-      page:1,
-      size:12,
-      total: ''
+      query: [],
+      page: 1,
+      size: 12,
+      total: '',
+      isshow: true
     }
   },
 
   created() {
-       this.query.push({
+    this.query.push({
       page: this.page,
       size: this.size
     })
@@ -101,46 +106,50 @@ export default {
     this.$nextTick(() => {})
   },
   methods: {
-     pageChange(item) {
+    pageChange(item) {
       this.page = item.page_index
       this.size = item.page_limit
       this.query.push({
-      page: this.page,
-      size: this.size
-    })
-      this.loadProductList( this.query)
+        page: this.page,
+        size: this.size
+      })
+      this.loadProductList(this.query)
     },
-    loadProductList(obj){
-       getProductList(obj).then((res)=>{
-         this.productList = res.data.data.results
-         this.total = res.data.data.count
-       })
+    loadProductList(obj) {
+      getProductList(obj).then((res) => {
+        this.productList = res.data.data.results
+        if (this.productList.length == 0) {
+          this.isshow = false
+        } else {
+          this.isshow = true
+        }
+        this.total = res.data.data.count
+      })
     },
     onClick(id) {
       this.$router.push({ name: 'productDetail', query: { id } })
     },
-    handelCheck(val,id) {
-      val.checked =!val.checked
-      if(val.checked ==true){
-           const oItem = this.query.find((item)=>{
-             return item['key']
-           })
-           if(oItem){
-            oItem['key'] +=','+id
-           }else {
-             let o = {key:id,page: this.page, size: this.size}
-             this.query.push(o)
-           }
-      }else {
+    handelCheck(val, id) {
+      val.checked = !val.checked
+      if (val.checked == true) {
+        const oItem = this.query.find((item) => {
+          return item['key']
+        })
+        if (oItem) {
+          oItem['key'] += ',' + id
+        } else {
+          let o = { key: id, page: this.page, size: this.size }
+          this.query.push(o)
+        }
+      } else {
         let oItem = this.query.find((item) => {
-        return item['key']
-      })
-       const option = oItem['key']
+          return item['key']
+        })
+        const option = oItem['key']
         const str = String(option).indexOf(',')
-        if(str>=0){
+        if (str >= 0) {
           let optionArr = option.split(',')
-          let newArr = optionArr.filter((item) => item !=id)
-          console.log(newArr)
+          let newArr = optionArr.filter((item) => item != id)
           let newOption
           if (newArr.length == 1) {
             newOption = newArr.toString()
@@ -148,26 +157,24 @@ export default {
             newOption = newArr.join(',')
           }
           oItem['key'] = newOption
-        }else {
+        } else {
           this.query.splice(this.query.indexOf(oItem), 1)
         }
-     
       }
       this.loadProductList(this.query)
     },
     getList() {
       keyword().then((res) => {
         let list = res.data.data
-          list.map((items) => {
-            let allTags = items.lines
-           
-            allTags.map((item) => {
-              item.checked = false
-              return item
-            })
-            this.checkList = list
-            console.log(this.checkList, 'this.checkList')
+        list.map((items) => {
+          let allTags = items.lines
+
+          allTags.map((item) => {
+            item.checked = false
+            return item
           })
+          this.checkList = list
+        })
       })
     }
   }
@@ -185,7 +192,7 @@ export default {
 .product .productTitle {
   display: flex;
   align-items: center;
-  margin-bottom: 3rem;
+  // margin-bottom: 3rem;
 }
 .title {
   font-size: 1.6rem;
@@ -239,7 +246,7 @@ export default {
 #type {
   width: 100%;
   background: #fff;
-  margin: 2rem 0 5rem 0;
+  margin: 1rem 0 2rem 0;
   border-radius: 10px;
   box-shadow: 2px 2px 5px #0d2140;
 }
@@ -337,7 +344,7 @@ export default {
 }
 .box-li {
   width: 14%;
-  height: 220px;
+  height: 14rem;
   margin: 10px;
   background: #fff;
   position: relative;
@@ -357,7 +364,14 @@ export default {
 .productResult > span {
   display: block;
 }
-.pagenation{
+.pagenation {
   text-align: right;
+}
+.result {
+  text-align: center;
+}
+.result-image {
+  width: 250px;
+  height: 200px;
 }
 </style>

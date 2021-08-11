@@ -149,7 +149,7 @@ export default {
 </script>
 <style scoped>
 .app-tab {
-  padding: 20px 60px;
+  padding: 10px 60px;
   background: #000;
   display: flex;
   justify-content: space-between;

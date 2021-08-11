@@ -55,7 +55,8 @@
             <img v-else :src="`${$url}` + o.default_image_url" />
           </div>
           <p class="productResult">
-            <span>{{ o.name }}</span> <span>{{ '¥' + o.price }}</span>
+            <span>{{ o.name }}</span>
+            <!-- <span>{{ '¥' + o.price }}</span> -->
           </p>
         </li>
       </ul>
@@ -391,7 +392,7 @@ export default {
 }
 .box-li {
   width: 14%;
-  height: 220px;
+  height: 14rem;
   margin: 10px;
   background: #fff;
   position: relative;

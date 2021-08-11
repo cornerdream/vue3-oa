@@ -158,7 +158,7 @@ export default {
 <style scoped>
 .app-tab {
   /* height: 61px; */
-  padding: 20px 60px;
+  padding: 10px 60px;
   background: #000;
   display: flex;
   justify-content: space-between;

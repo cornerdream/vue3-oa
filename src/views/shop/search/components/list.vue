@@ -43,33 +43,35 @@
       </ul>
     </section>
     <div class="list-box" v-if="listShow">
-         <ul class="box-ul">
-        <li class="box-li"  v-for="o in productList" :key="o" :id="o.id" @click="onClick(o.id)">
+      <ul class="box-ul">
+        <li class="box-li" v-for="o in productList" :key="o" :id="o.id" @click="onClick(o.id)">
           <div class="box-img">
-            <img v-if="!o.default_image_url" :src="defaultImage"  />
-            <img  v-else :src="`${$url}` + o.default_image_url" />
+            <img v-if="!o.default_image_url" :src="defaultImage" />
+            <img v-else :src="`${$url}` + o.default_image_url" />
           </div>
-          <p class="productResult"> <span>{{ o.name }}</span> <span>{{ '¥' + o.price }}</span></p>
+          <p class="productResult">
+            <span>{{ o.name }}</span>
+            <!-- <span>{{ '¥' + o.price }}</span> -->
+          </p>
         </li>
       </ul>
-         <Pagenation
+      <Pagenation
         :total="total"
         @pageChange="pageChange"
         :page_index="page"
         v-if="total != []"
       ></Pagenation>
     </div>
-      <section class="result" v-else>
-        <el-result title="404" subTitle="抱歉，请求没有数据">
-          <template #icon>
-            <el-image :src="defaultImage" class="result-image"></el-image>
-          </template>
-          <template #extra>
-            <el-button type="primary" size="medium" @click="onBack">返回</el-button>
-          </template>
-        </el-result>
-      </section>
-
+    <section class="result" v-else>
+      <el-result title="404" subTitle="抱歉，请求没有数据">
+        <template #icon>
+          <el-image :src="defaultImage" class="result-image"></el-image>
+        </template>
+        <template #extra>
+          <el-button type="primary" size="medium" @click="onBack">返回</el-button>
+        </template>
+      </el-result>
+    </section>
   </div>
 </template>
 
@@ -312,7 +314,7 @@ export default {
   }
 }
 .result {
-  max-width:500px;
+  max-width: 500px;
   margin: 0 auto;
 }
 .list-box {
@@ -326,7 +328,7 @@ export default {
 }
 .box-li {
   width: 14%;
-  height: 220px;
+  height: 14rem;
   margin: 10px;
   background: #fff;
   position: relative;
@@ -347,7 +349,7 @@ export default {
   display: block;
 }
 .pagenation {
-  float:left;
+  float: left;
   width: 100%;
   height: 50px;
   text-align: right;

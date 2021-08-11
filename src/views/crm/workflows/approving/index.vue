@@ -79,7 +79,7 @@
                     <span class="project">部门</span> ：<span>{{ order.department?order.department.name:'' }}</span>
                   </p>
                   <p>
-                    <span class="project">总价</span> ： <span>{{ order.total_amount }}</span>
+                    <!-- <span class="project">总价</span> ： <span>{{ order.total_amount }}</span> -->
                   </p>
                 </div>
               </div>
@@ -94,8 +94,8 @@
                 <el-table-column prop="skuname" label="物品"> </el-table-column>
                 <el-table-column prop="count" label="数量" width="100px"> </el-table-column>
                 <el-table-column prop="uom" label="单位" width="100px"> </el-table-column>
-                <el-table-column prop="price" label="单价" width="100px"> </el-table-column>
-                <el-table-column prop="total_amount" label="合计" width="100px"> </el-table-column>
+                <!-- <el-table-column prop="price" label="单价" width="100px"> </el-table-column> -->
+                <!-- <el-table-column prop="total_amount" label="合计" width="100px"> </el-table-column> -->
               </el-table>
             </div>
           </div>

@@ -49,9 +49,8 @@ export default {
   mounted() {
     this.$nextTick(() => {})
     keyword().then((res) => {
-      console.log(res)
       this.list = res.data.data
-    })
+})
   },
   methods: {
     onSearch() {
@@ -70,7 +69,7 @@ export default {
   color: #0d2140;
 }
 .news-home-left-top {
-  margin: 9rem 0 5rem 0;
+  /* margin: 9rem 0 5rem 0; */
   font-size: 10rem;
 }
 .news-home-left-center {
@@ -78,7 +77,7 @@ export default {
 }
 .search {
   width: 100%;
-  margin: 7rem 0 4rem 0;
+  margin: 1rem 0;
 }
 .search-input {
   border: 2px solid #0d2140;
@@ -92,11 +91,12 @@ export default {
   margin-right: -21px;
 }
 .carousel {
-  margin-top: 8px;
+  /* margin-top: 8px; */
   flex: 1;
 }
 .carousel img {
   border: none;
-  width: 100%;
+  height: 300px;
+  /* width: 100%; */
 }
 </style>

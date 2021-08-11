@@ -33,9 +33,9 @@
         <img class="img"  :src="`${$url}`+scope.row.default_image_url" alt="" min-width="70" height="70" />
         </template>
       </el-table-column>
-      <el-table-column prop="name" label="商品名称" width="120"> </el-table-column>
-      <el-table-column prop="price" label="商品价格" width="120" :formatter="formatPrice">
-      </el-table-column>
+      <el-table-column prop="name" label="商品名称" width="180"> </el-table-column>
+      <!-- <el-table-column prop="price" label="商品价格" width="120" :formatter="formatPrice">
+      </el-table-column> -->
       <el-table-column prop="count" label="商品数量" width="200">
         <template v-slot="scope">
           <el-input-number
@@ -64,7 +64,7 @@
           </el-select>
         </template>
       </el-table-column>
-      <el-table-column prop="notes" label="体重" width="180">
+      <el-table-column prop="notes" label="备注" width="180">
         <template v-slot="scope">
           <el-input
             type="textarea"
@@ -99,9 +99,9 @@
     </el-table>
     
     <div class="cart-footer">
-      <div class="grid-content bg-purple order-price">
+      <!-- <div class="grid-content bg-purple order-price">
         合计：<span class="totalPrice">¥ {{ totalPrice }}</span>
-      </div>
+      </div> -->
       <el-button type="primary" size="medium" @click="onOrder" class="order">结算</el-button>
     </div>
     <el-dialog title="订单创建成功" v-model="dialogSuccessVisible" @close="handleClose">
